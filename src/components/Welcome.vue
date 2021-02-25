@@ -42,8 +42,47 @@
             </el-tabs>
           </el-col>
           <el-col :span="1">
-            <el-button type="primary">创建活动</el-button>
+            <el-button type="primary" @click="adddialogVisible = true"
+              >创建活动</el-button
+            >
           </el-col>
+          <!-- 创建活动对话框 -->
+
+          <el-dialog
+            title="创建活动"
+            :visible.sync="adddialogVisible"
+            width="30%"
+          >
+            <!-- 内容主体区 -->
+            <el-form
+              :model="addForm"
+              :rules="addrules"
+              ref="addFormref"
+              label-width="100px"
+            >
+              <el-form-item label="活动名称" prop="name">
+                <el-input v-model="addForm.name"></el-input>
+              </el-form-item>
+              <el-form-item label="走失人员" prop="missname">
+                <el-input v-model="addForm.missname"></el-input>
+              </el-form-item>
+              <el-form-item label="年龄" prop="age">
+                <el-input-number
+                  v-model="addForm.age"
+                  :min="60"
+                  :max="200"
+                  label="描述文字"
+                ></el-input-number>
+              </el-form-item>
+            </el-form>
+            <!-- 底部区 -->
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="adddialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false"
+                >确 定</el-button
+              >
+            </span>
+          </el-dialog>
         </el-row>
       </el-main>
     </el-container>
@@ -52,6 +91,13 @@
 <script>
 export default {
   data() {
+    var checkage = (rule, age, cb) => {
+      // 验证年纪的正则
+      if (age >= 60) {
+        return cb();
+      }
+      cb(new Error("年龄必须大于60岁"));
+    };
     return {
       activeName: "second",
       activity: [
@@ -76,6 +122,35 @@ export default {
           head: "拯救80岁高龄老人",
         },
       ],
+      adddialogVisible: false,
+      // 添加活动
+      addForm: {},
+      addrules: {
+        name: [
+          {
+            required: true,
+            message: "请输入活动名称",
+            trigger: "blur",
+          },
+        ],
+        missname: [
+          {
+            required: true,
+            message: "请输入走失人员",
+            trigger: "blur",
+          },
+        ],
+        age: [
+          {
+            required: true,
+            message: "请输入走失人员年龄",
+            trigger: "blur",
+          },
+          {
+            validator: checkage,
+          },
+        ],
+      },
     };
   },
   methods: {
