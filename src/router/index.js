@@ -3,8 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
-import Volunteer from '../components/Volunteer.vue'
-
+import ElderMsg from "@/components/ElderMsg"
 Vue.use(VueRouter)
 
 const routes = [{
@@ -22,12 +21,14 @@ const routes = [{
     {
         path: '/home',
         component: Home,
-        redirect: '/volunter',
+        name: '/home',
+
         children: [
-        {
-            path: '/volunter',
-            component: Volunteer
-        },
+            {
+                path: '/elderMsg',
+                component: ElderMsg
+              },
+
     ]
     }
 ]
@@ -42,9 +43,9 @@ router.beforeEach((to, form, next) => {
  // next 表示一个函数 表示放行 next('/login') 强制跳转
  if (to.path === '/login') return next();
 
-//  // 获取token
-// const tokenstr = window.sessionStorage.getItem('token')
-// if (!tokenstr) return next('/login')
+ // 获取token
+const tokenstr = window.sessionStorage.getItem('token')
+if (!tokenstr) return next('/login')
  next()
 });
 

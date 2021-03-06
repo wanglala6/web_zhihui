@@ -10,13 +10,12 @@
           />
         </div>
         <span>指挥端</span>
-
         <el-button type="info" @click="logout">退出</el-button>
       </el-header>
       <!-- 主体区 -->
       <el-container>
         <!-- 侧边栏 -->
-        <el-aside :width="iscollapse?'64px':'200px'">
+        <el-aside :width="iscollapse ? '64px' : '200px'">
           <div class="toggle_button" @click="togglecollapse">|||</div>
 
           <!-- 侧边栏菜单区 -->
@@ -26,41 +25,57 @@
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
-            router
-            :default-active="activePath"
+            router="true"
           >
             <!-- 一级菜单 -->
             <el-submenu index="1">
               <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-search"></i>
                 <!-- 文本 -->
                 <span>数据查询</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item index="/volunter" @click="saveNavState()">
+              <el-menu-item
+                index="/elderMsg"
+                :route="{ path: '/elderMsg', query: { id: id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-user"></i>
                   <!-- 文本 -->
-                  <span>志愿者查询</span>
+                  <span>老人信息</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item index="1-4-1">
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-view"></i>
+                  <!-- 文本 -->
+                  <span
+                    ><a href="#/home/valSearch" class="turn_a"
+                      >志愿者查询</a
+                    ></span
+                  >
                 </template>
               </el-menu-item>
               <el-menu-item index="1-4-2">
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-sunny"></i>
                   <!-- 文本 -->
-                  <span>天气查询</span>
+                  <span
+                    ><a href="#/home/weather" class="turn_a">天气查询</a></span
+                  >
                 </template>
               </el-menu-item>
               <el-menu-item index="1-4-3">
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-map-location"></i>
                   <!-- 文本 -->
-                  <span>地图查询</span>
+                  <span><a href="#/home/map" class="turn_a">地图查询</a></span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -68,7 +83,7 @@
               <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-edit"></i>
                 <!-- 文本 -->
                 <span>任务管理</span>
               </template>
@@ -76,9 +91,9 @@
               <el-menu-item index="2-4-1">
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-coordinate"></i>
                   <!-- 文本 -->
-                  <span>任务分配</span>
+                  <span><a href="#/home/task" class="turn_a">任务分配</a></span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -86,17 +101,20 @@
               <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-data-line"></i>
                 <!-- 文本 -->
+                <!--跳转到监控模块-->
                 <span>监控模块</span>
               </template>
               <!-- 二级菜单 -->
               <el-menu-item index="3-4-1">
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
-                  <span>队员报备</span>
+                  <span
+                    ><a href="#/home/monitor" class="turn_a">队员报备</a></span
+                  >
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -104,15 +122,27 @@
               <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
-                <i class="el-icon-menu"></i>
+                <i class="el-icon-chat-dot-square"></i>
                 <!-- 文本 -->
-                <span>数据统计</span>
+                <span><a href="#/home/news" class="turn_a">消息通知</a></span>
               </template>
-              <!-- 二级菜单 -->
+
               <el-menu-item index="4-4-1">
                 <template slot="title">
                   <!-- 图标 -->
-                  <i class="el-icon-menu"></i>
+                  <i class="el-icon-edit-outline"></i>
+                  <!-- 文本 -->
+                  <span
+                    ><a href="#/home/newsEdit" class="turn_a">发送消息</a></span
+                  >
+                </template>
+              </el-menu-item>
+
+              <!-- 二级菜单 -->
+              <el-menu-item index="4-4-2">
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-pie-chart"></i>
                   <!-- 文本 -->
                   <span>志愿者统计</span>
                 </template>
@@ -132,8 +162,9 @@
 export default {
   data() {
     return {
+      id: "",
       iscollapse: false,
-      activePath: ''
+      older: {},
     };
   },
   methods: {
@@ -145,14 +176,12 @@ export default {
     togglecollapse() {
       this.iscollapse = !this.iscollapse;
     },
-    // 保存链接的激活状态
-    saveNavState() {
-      window.sessionStorage.setItem('activePath', '/volunteer')
-    }
   },
   created() {
-    this.activePath = window.sessionStorage.getItem('activePath')
-  }
+    console.log(this.$route.params.id + "xx");
+    this.id = this.$route.params.id;
+    console.log(this.id);
+  },
 };
 </script>
 <style lang="less" scoped>
@@ -190,5 +219,9 @@ export default {
   text-align: center;
   letter-spacing: 0.2em;
   cursor: pointer;
+}
+.turn_a {
+  text-decoration: none;
+  color: #fff;
 }
 </style>

@@ -16,7 +16,7 @@
       >
         <!-- 用户名 -->
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="loginform.username"></el-input>
+          <el-input v-model="loginform.account"></el-input>
         </el-form-item>
         <!-- 密码 -->
         <el-form-item label="密码" prop="password">
@@ -32,12 +32,13 @@
   </div>
 </template>
 <script>
+import Cookies from 'js-cookie'
 export default {
-  data () {
+  data() {
     return {
       // 表单验证规则对象
       rules: {
-        username: [
+        account: [
           { required: true, message: "请输入登录名称", trigger: "blur" },
           // 长度区间
           {
@@ -60,26 +61,49 @@ export default {
       },
       // 登录表单绑定的对象
       loginform: {
-        username: "",
+        account: "",
         password: "",
       },
     };
   },
   methods: {
     // 重置
-    resetlogin () {
+    resetlogin() {
       this.$refs.loginform.resetFields();
     },
     // 登录
-   login () {
-      this.$refs.loginformref.validate(async valid => {
+    login() {
+      this.$refs.loginformref.validate((valid) => {
         if (!valid) return;
-       // await this.$http.post();
-        // this.$message.success()
-        // window.sessionStorage.setItem('token',)
-        this.$router.push('/welcome')
-      })
-    }
+
+        this.$http
+          .post("/login", JSON.stringify(this.loginform), {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          })
+          .then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              console.log(res, "login");
+              console.log(Cookies.get('COOKIE-TOKEN'));
+              // var strCookie = document.cookie;
+              // var arrCookie = strCookie.split("; ");
+              // for (var i = 0; i < arrCookie.length; i++) {
+              //   var arr = arrCookie[i].split("=");
+              //   console.log(arr);
+              // }
+
+              // sessionStorage.setItem(" account",res.data.data.account)
+              // sessionStorage.setItem("password",res.data.data.password)
+               window.sessionStorage.setItem("token", Cookies.get('COOKIE-TOKEN'));
+                this.$router.push("/welcome");
+            } else {
+              alert("登录失败，请重试");
+            }
+          });
+      });
+    },
   },
 };
 </script>
