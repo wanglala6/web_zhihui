@@ -4,6 +4,8 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import ElderMsg from "@/components/ElderMsg"
+import NewsEdit from "../components/NewsEdit"
+import News from "../components/News"
 Vue.use(VueRouter)
 
 const routes = [{
@@ -27,7 +29,15 @@ const routes = [{
             {
                 path: '/elderMsg',
                 component: ElderMsg
-              },
+            },
+            {
+              path: '/news',
+              component: News
+            },
+            {
+              path: '/newsEdit',
+              component: NewsEdit
+            },
 
     ]
     }

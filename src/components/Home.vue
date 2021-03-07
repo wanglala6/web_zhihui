@@ -25,7 +25,7 @@
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
-            router="true"
+            :router="true"
           >
             <!-- 一级菜单 -->
             <el-submenu index="1">
@@ -118,33 +118,32 @@
                 </template>
               </el-menu-item>
             </el-submenu>
-            <el-submenu index="4">
+            <el-submenu index="4" router>
               <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-chat-dot-square"></i>
                 <!-- 文本 -->
-                <span><a href="#/home/news" class="turn_a">消息通知</a></span>
+                <span>消息通知</span>
               </template>
 
-              <el-menu-item index="4-4-1">
+              <el-menu-item  index="/newsEdit" :route="{ path: '/newsEdit'}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-edit-outline"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/newsEdit" class="turn_a">发送消息</a></span
+                  <span>发送消息</span
                   >
                 </template>
               </el-menu-item>
 
               <!-- 二级菜单 -->
-              <el-menu-item index="4-4-2">
+              <el-menu-item index="/news" :route="{ path: '/news'}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-pie-chart"></i>
                   <!-- 文本 -->
-                  <span>志愿者统计</span>
+                  <span>我的消息</span>
                 </template>
               </el-menu-item>
             </el-submenu>
