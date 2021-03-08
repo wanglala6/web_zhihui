@@ -158,12 +158,18 @@
   </div>
 </template>
 <script>
+import Stomp from 'stompjs'
+// ---jq:在sysconstant.js配置文件中配置mqtt的服务端地址，账号等信息
+import { MQTT_SERVICE, MQTT_USERNAME, MQTT_PASSWORD } from '../config/sysconstant.js'
 export default {
   data() {
     return {
       id: "",
       iscollapse: false,
       older: {},
+      client: Stomp.client(MQTT_SERVICE),
+      news: {},
+      Msg: {}
     };
   },
   methods: {
@@ -175,13 +181,88 @@ export default {
     togglecollapse() {
       this.iscollapse = !this.iscollapse;
     },
+    //  jq:消息弹窗函数
+    notify() {
+      var _this = this
+      this.$notify.info({
+        title: this.Msg.title,
+        message: this.Msg.abstract,
+        onClick() {
+          _this.toDetails(); //  自定义回调,message为传的参数
+        }
+      });
+    },
+    toDetails() {
+      this.$router.push("/home/newsDetails");
+    },
+    evil (fn) {
+      // 一个变量指向Function，防止有些前端编译工具报错
+      var Fn = Function
+      return new Fn('return ' + fn)()
+    },
+    async getVolunteerById() {
+      const { data: res } = await this.$http.get(
+        "/command/volunteer/" + this.news.volunteerId)
+        console.log(res.data.name)
+        this.Msg.title = "来自志愿者:" + res.data.name
+    },
+    // jq：stomp监听消息队列相关函数
+    onConnected: function (frame) {
+      // console.log('Connected: ' + frame)s
+      var topic = '/queue/1_commander'
+      // ---订阅频道
+      this.client.subscribe(topic, this.responseCallback, this.onFailed)
+    },
+    onFailed: function (frame) {
+      console.log('Failed: ' + frame)
+    },
+    responseCallback: function (frame) {
+      // console.log('responseCallback msg=>' + frame.body)
+      // var tmp = this.evil((frame.body).replace(/ "/g, "'"))
+      this.news = JSON.parse((this.evil(decodeURI(frame.body))).replace("/\\", "")).data
+      // console.log(frame.body.type)
+      // var tmp = eval("(" + frame.body + ")")
+      // console.log(tms)
+      this.getVolunteerById()
+      // console.log(this.news)
+      if (this.news.type === "emergency_notice") {
+        this.Msg.title = this.Msg.title + "的紧急通知"
+      } else if (this.news.type === "start_report") {
+        this.Msg.title = this.Msg.title + "的出发报备"
+      } else if (this.news.type === "random_report") {
+        this.Msg.title = this.Msg.title + "的平时报备"
+      }
+      this.notify()
+      // ---接收消息
+    },
+    connect: function () {
+      // ---初始化mqtt客户端，并连接mqtt服务
+      var headers = {
+        login: MQTT_USERNAME,
+        passcode: MQTT_PASSWORD,
+        // additional header
+      }
+      this.client.connect(headers, this.onConnected, this.onFailed)
+    }
   },
+  // mounted() {
+  //   const timer = setInterval(() => {
+  //     // 某些定时器操作
+  //     //  自己需要请求数据的事件方法, 0)
+  //     setTimeout(
+  //       // }, 10000);
+  //       this.$once('hook:beforeDestroy', () => {
+  //         clearInterval(timer);
+  //       }))
+  //   })
+  // },
   created() {
+    this.connect()
     console.log(this.$route.params.id + "xx");
     this.id = this.$route.params.id;
     console.log(this.id);
-  },
-};
+  }
+}
 </script>
 <style lang="less" scoped>
 .el-header {

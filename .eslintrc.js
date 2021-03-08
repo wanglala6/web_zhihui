@@ -18,6 +18,8 @@ module.exports = {
         'no-irregular-whitespace': 'off',
         'comma-dangle': 'off',
         'indent': ["off", 2] ,
-        'space-before-function-paren' : 0
+        'space-before-function-paren' : 0,
+        "no-eval": 2,
+        "no-new-func": 2,
     }
 }
