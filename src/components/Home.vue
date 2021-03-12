@@ -127,7 +127,7 @@
                 <span>消息通知</span>
               </template>
 
-              <el-menu-item  index="/newsEdit" :route="{ path: '/newsEdit'}">
+              <el-menu-item  index="/newsEdit" :route="{ path: '/newsEdit',query: { actionId: this.id }}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-edit-outline"></i>
@@ -169,7 +169,8 @@ export default {
       older: {},
       client: Stomp.client(MQTT_SERVICE),
       news: {},
-      Msg: {}
+      Msg: {},
+      type: "",
     };
   },
   methods: {
@@ -177,7 +178,7 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/login");
     },
-    // 点击按钮切换折叠
+    // jq:点击按钮切换折叠
     togglecollapse() {
       this.iscollapse = !this.iscollapse;
     },
@@ -188,27 +189,46 @@ export default {
         title: this.Msg.title,
         message: this.Msg.abstract,
         onClick() {
-          _this.toDetails(); //  自定义回调,message为传的参数
+          console.log(this.type.type)
+          if (_this.type === "START_REPORT") {
+          _this.toStartDetails()
+            // eslint-disable-next-line brace-style
+          }//  自定义回调,message为传的参数
+          else {
+            _this.toUrgentDetails()
+          }
         }
       });
     },
-    toDetails() {
-      this.$router.push("/home/newsDetails");
+    //  实现点击弹窗后跳转到消息详情界面
+    toStartDetails() {
+      this.$router.push({ path: "/home/startNewsDetail", query: this.news.id });
     },
+    toUrgentDetails() {
+      this.$router.push("/home/urgentNewsDetail");
+    },
+    //  处理消息队列传来的json字符串
     evil (fn) {
       // 一个变量指向Function，防止有些前端编译工具报错
       var Fn = Function
       return new Fn('return ' + fn)()
     },
-    async getVolunteerById() {
+    //  获取到通知弹窗需要的相关信息
+    async dataProcess() {
       const { data: res } = await this.$http.get(
         "/command/volunteer/" + this.news.volunteerId)
-        console.log(res.data.name)
         this.Msg.title = "来自志愿者:" + res.data.name
+        if (this.type === "EMERGENCY_NOTICE") {
+          this.Msg.abstract = "紧急通知"
+        } else if (this.type === "START_REPORT") {
+          this.Msg.abstract = "出发报备"
+        } else if (this.type === "RANDOM_REPORT") {
+          this.Msg.abstract = "平时报备"
+        }
+        this.notify()
     },
     // jq：stomp监听消息队列相关函数
     onConnected: function (frame) {
-      // console.log('Connected: ' + frame)s
       var topic = '/queue/1_commander'
       // ---订阅频道
       this.client.subscribe(topic, this.responseCallback, this.onFailed)
@@ -217,22 +237,10 @@ export default {
       console.log('Failed: ' + frame)
     },
     responseCallback: function (frame) {
-      // console.log('responseCallback msg=>' + frame.body)
-      // var tmp = this.evil((frame.body).replace(/ "/g, "'"))
       this.news = JSON.parse((this.evil(decodeURI(frame.body))).replace("/\\", "")).data
-      // console.log(frame.body.type)
-      // var tmp = eval("(" + frame.body + ")")
-      // console.log(tms)
-      this.getVolunteerById()
-      // console.log(this.news)
-      if (this.news.type === "emergency_notice") {
-        this.Msg.title = this.Msg.title + "的紧急通知"
-      } else if (this.news.type === "start_report") {
-        this.Msg.title = this.Msg.title + "的出发报备"
-      } else if (this.news.type === "random_report") {
-        this.Msg.title = this.Msg.title + "的平时报备"
-      }
-      this.notify()
+      this.type = JSON.parse((this.evil(decodeURI(frame.body))).replace("/\\", "")).type
+      this.dataProcess()
+      console.log(this.type)
       // ---接收消息
     },
     connect: function () {
@@ -245,17 +253,6 @@ export default {
       this.client.connect(headers, this.onConnected, this.onFailed)
     }
   },
-  // mounted() {
-  //   const timer = setInterval(() => {
-  //     // 某些定时器操作
-  //     //  自己需要请求数据的事件方法, 0)
-  //     setTimeout(
-  //       // }, 10000);
-  //       this.$once('hook:beforeDestroy', () => {
-  //         clearInterval(timer);
-  //       }))
-  //   })
-  // },
   created() {
     this.connect()
     console.log(this.$route.params.id + "xx");

@@ -6,7 +6,7 @@ import Welcome from '../components/Welcome.vue'
 import ElderMsg from "@/components/ElderMsg"
 import NewsEdit from "../components/NewsEdit"
 import News from "../components/News"
-import NewsDetail from "@/components/NewsDetail";
+import StartNewsDetail from "@/components/StartNewsDetail";
 Vue.use(VueRouter)
 
 const routes = [{
@@ -40,8 +40,8 @@ const routes = [{
               component: NewsEdit
             },
           {
-            path: '/newsDetail',
-            component: NewsDetail
+            path: '/startNewsDetail',
+            component: StartNewsDetail
           }
 
     ]

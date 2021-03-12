@@ -4,20 +4,28 @@
       type="textarea"
       autosize
       placeholder="请输入标题"
-      v-model="newsForm.title">
+      v-model="title">
     </el-input>
+    <el-select v-model="type" placeholder="请选择">
+      <el-option
+        v-for="item in type_options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value">
+      </el-option>
+    </el-select>
     <div style="margin: 10px 0;"></div>
     <el-input
       type="textarea"
       :autosize="{ minRows: 5, maxRows: 10}"
       placeholder="请输入内容"
-      v-model="newsForm.content">
+      v-model="content">
     </el-input>
     <div class="block" style="margin-top: 10px">
       <!--      <span class="demonstration" style="font-size: 12px">发送人</span>-->
       <el-cascader
         placeholder="请选择发送人，可搜索人名"
-        v-model="newsForm.cityCode"
+        v-model="cityCode"
         :options="options"
         :props="props"
         size="medium"
@@ -26,7 +34,7 @@
         filterable>
       </el-cascader>
     </div>
-    <el-button type="primary" style="display:block; margin:20px auto;" @click = "commit">提交</el-button>
+    <el-button type="primary" style="display:block; margin:20px auto;" @click = "send_notice">提交</el-button>
   </div>
 </template>
 
@@ -35,43 +43,40 @@ export default {
   name: "NewsEdit",
   data() {
     return {
-      newsForm: {
-        title: "",
-        content: "",
-        cityCode: [] // 提交的数据
-      },
-      // title: '',
-      // content: '',
-      // cityCode: [],
+      title: '',
+      content: '',
+      cityCode: [],
       areaOptions: [], // 显示的数据
       selectAllData: [],
       selectStates: 0, //  是否全选过
-      options: [
-        {
-          value: 1,
-          label: '圆圆'
-        },
-        {
-          value: 2,
-          label: '张三'
-        },
-        {
-          value: 3,
-          label: '兮兮'
-        },
-        {
-          value: 4,
-          label: '南岸'
-        },
-      ],
+      type_options: [],
+      type: '',
+      options: [],
       props: {
         multiple: true,
       },
     }
   },
   methods: {
-    commit() {
-      console.log(this.newsForm)
+    async getTypeList() {
+      const { data: res } = await this.$http.get("/command/notice/types")
+      var that = this
+      Object.keys(res.data[0]).forEach(function(element) {
+        that.type_options.push({
+          label: res.data[0][element],
+          value: element
+        })
+      })
+    },
+    async getVolunteer() {
+      const { data: res } = await this.$http.get("/command/action/list-volunteers/" + this.actionId)
+      const that = this;
+      res.data.forEach(function(element) {
+        that.options.push({
+          label: element.name,
+          value: element.id
+        })
+      })
     },
     add() {
       const selectAllOpt = {
@@ -90,24 +95,24 @@ export default {
       }
       if (this.selectStates === 1 && value[0][0] === 0) {
         this.selectStates = 0
-        this.newsForm.cityCode = this.newsForm.cityCode.slice(1)
+        this.cityCode = this.cityCode.slice(1)
         return false;
       }
       //  思路：点击全选，判断是传入的值是否包含了“全选”的code
       for (let v = 0; v < value.length; v++) {
         if (value[v][0] === 0) { // 如果传入的值包含了全选，也就是用户希望全选
-          this.newsForm.cityCode = this.handleSelectAllCity();// 如果包含，将城市数据，赋值给要提交给接口的cityCode
+          this.cityCode = this.handleSelectAllCity();// 如果包含，将城市数据，赋值给要提交给接口的cityCode
           this.selectStates = 1 // 改变状态，设置已经全选
           console.log(this.cityCode)
           return false
         }
         //  如果已经有了全选（this.selectStates==1表示已经处于全选状态），再次点击要置空也就是取消全选
         if (this.selectStates === 1) {
-          this.newsForm.cityCode = [];
+          this.cityCode = [];
           this.selectStates = 0;
           return false
         } else { //  不是全选状态 ，正常点击城市
-          this.newsForm.cityCode = value
+          this.cityCode = value
         }
       }
     },
@@ -118,14 +123,32 @@ export default {
         this.selectAllData.push(arr)
       }
       return this.selectAllData;
+    },
+    send_notice() {
+      var body = {
+        actionId: this.actionId,
+        content: this.content,
+        reveived: this.cityCode,
+        title: this.title,
+        type: this.type
+      }
+      const res = this.$http.post("/command/notice/", body)
+      console.log(res)
     }
   },
   mounted() {
     this.add()
   },
+  created() {
+    this.actionId = this.$route.query.actionId;
+    this.getTypeList()
+    this.getVolunteer()
+  }
 }
 </script>
 
 <style scoped>
-
+.el-select{
+  margin-top:10px;
+}
 </style>
