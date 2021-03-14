@@ -25,11 +25,11 @@
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
-            router="true"
+            :router="true"
           >
             <!-- 一级菜单 -->
             <el-submenu index="1">
-              <!-- 一级菜单模板qu -->
+              <!-- 一级菜单模板数据查询 -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-search"></i>
@@ -79,8 +79,8 @@
                 </template>
               </el-menu-item>
             </el-submenu>
+            <!-- 一级菜单模板任务管理 -->
             <el-submenu index="2">
-              <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-edit"></i>
@@ -97,8 +97,9 @@
                 </template>
               </el-menu-item>
             </el-submenu>
+            <!-- 一级菜单模板监控模块 -->
+
             <el-submenu index="3">
-              <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-data-line"></i>
@@ -107,19 +108,33 @@
                 <span>监控模块</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item index="3-4-1">
+              <el-menu-item  index="/post"
+                :route="{ path: '/post', query: { id: id } }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
                   <span
-                    ><a href="#/home/monitor" class="turn_a">队员报备</a></span
+                    >队员报备</span
                   >
                 </template>
               </el-menu-item>
+              <!-- 二级菜单 -->
+              <el-menu-item
+                index="/clue"
+                :route="{ path: '/clue', query: { id: id } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-user"></i>
+                  <!-- 文本 -->
+                  <span>线索</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
+            <!-- 一级菜单模板消息通知 -->
+
             <el-submenu index="4">
-              <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-chat-dot-square"></i>

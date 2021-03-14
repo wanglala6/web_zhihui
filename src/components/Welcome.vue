@@ -43,12 +43,31 @@
                 >配置管理</el-tab-pane
               >
               <el-tab-pane label="遗留行动" name="third">角色管理</el-tab-pane>
+              <el-tab-pane label="未开始行动" name="forth">
+                <div
+                  class="activity"
+                  v-for="item in unactionList"
+                  :key="item.id"
+                >
+                  <div class="img">
+                    <a @click="undia(item)">
+                      <img
+                        src="../assets/logo.jpg"
+                        style="height: 100%; width: 100%"
+                      />
+                    </a>
+                  </div>
+                  <div class="activity_head">
+                    <p>{{ item.name }}</p>
+                    <p>指挥员: {{ item.commander.name }}</p>
+                    <p>创建时间: {{ item.createTime }}</p>
+                  </div>
+                </div>
+              </el-tab-pane>
             </el-tabs>
           </el-col>
           <el-col :span="2" style="margin-top: 20px">
-            <el-button type="primary" @click="adddialogVisible = true"
-              >创建行动</el-button
-            >
+            <el-button type="primary" @click="dialog">创建行动</el-button>
           </el-col>
           <!-- 创建活动对话框 -->
         </el-row>
@@ -62,78 +81,207 @@
             :model="addForm"
             :rules="addrules"
             ref="addFormref"
-            label-width="100px"
+            label-width="150px"
           >
-            <el-form-item label="活动名称" prop="name">
-              <el-input v-model="addForm.name"></el-input>
-            </el-form-item>
-            <el-form-item label="走失人员" prop="person">
-              <el-select
-                v-model="value"
-                filterable
-                placeholder="请选择走失人员"
-              >
+            <el-form-item label="请选择走失者" prop="lostId">
+              <el-select v-model="addForm.lostId" placeholder="请选择">
                 <el-option
                   v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
                 >
                 </el-option>
               </el-select>
             </el-form-item>
-
-            <el-form-item label="行动级别" prop="level">
-              <!--                     <el-input-number v-model="addForm.age"  :min="60" :max="200" label="描述文字"></el-input-number>-->
-              <span> 一级 （建议立即创建行动）</span>
-            </el-form-item>
-            <el-form-item label="上传老人照片">
-              <el-upload
-                class="avatar-uploader"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess"
-                :before-upload="beforeAvatarUpload"
-              >
-                <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-              </el-upload>
+            <el-form-item label="请输入活动名称" prop="name">
+              <el-input v-model="addForm.name"></el-input>
             </el-form-item>
           </el-form>
           <!-- 底部区 -->
           <span slot="footer" class="dialog-footer">
             <el-button @click="adddialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="dialogVisible = false"
-              >确 定</el-button
-            >
+            <el-button type="primary" @click="upload">确 定</el-button>
           </span>
+        </el-dialog>
+        <!-- 未开始活动对话框 -->
+        <el-dialog
+          title="选择区域 点击地点即可获得经纬度"
+          :visible.sync="addundia"
+          width="800px"
+        >
+          <!-- <mpp
+            @func="getson"
+          ></mpp> -->
+          <el-row>
+            <el-col :span="12">
+              <baidu-map
+                v-bind:style="mapStyle"
+                class="bm-view"
+                ak="pKCbOFewojmC9xuiiGwOq1MAyABiQwD8"
+                :center="center"
+                :zoom="zoom"
+                :scroll-wheel-zoom="true"
+                @click="getClickInfo"
+                @moving="syncCenterAndZoom"
+                @moveend="syncCenterAndZoom"
+                @zoomend="syncCenterAndZoom"
+              >
+                <bm-view style="width: 100%; height: 500px"></bm-view>
+                <bm-marker
+                  :position="{ lng: center.lng, lat: center.lat }"
+                  :dragging="true"
+                  animation="BMAP_ANIMATION_BOUNCE"
+                >
+                </bm-marker>
+                <bm-control :offset="{ width: '10px', height: '10px' }">
+                  <bm-auto-complete
+                    v-model="keyword"
+                    :sugStyle="{ zIndex: 999999 }"
+                  >
+                    <input
+                      type="text"
+                      placeholder="请输入搜索关键字"
+                      class="serachinput"
+                    />
+                  </bm-auto-complete>
+                </bm-control>
+                <bm-local-search
+                  :keyword="keyword"
+                  :auto-viewport="true"
+                  style="width: 0px; height: 0px; overflow: hidden"
+                ></bm-local-search>
+              </baidu-map>
+            </el-col>
+            <el-col :span="12">
+              <el-form
+                label-width="150px"
+                ref="locationref"
+                :model="location"
+                :rules="locationrules"
+              >
+                <el-form-item label="通知范围(米)" prop="distance">
+                  <el-input v-model="location.distance"></el-input>
+                </el-form-item>
+                <el-form-item label="走失者地点纬度" prop="latitude">
+                  <div>{{ location.latitude }}</div>
+                </el-form-item>
+                <el-form-item label="走失者地点经度" prop="longitude">
+                  <div>{{ location.longitude }}</div>
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                    @click="send"
+                    style="justify-content: center"
+                    type="primary"
+                    >确定</el-button
+                  >
+                  <el-button
+                    @click="close"
+                    style="justify-content: center"
+                    type="primary"
+                    >关闭</el-button
+                  >
+                </el-form-item>
+              </el-form>
+            </el-col>
+          </el-row>
+        </el-dialog>
+        <el-dialog
+          title="选择志愿者发送消息"
+          :visible.sync="volundia"
+          width="800px"
+        >
+          <el-card>
+            <el-table
+              :data="volunteerlist"
+              border
+              stripe
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column type="selection" width="55"> </el-table-column>
+              <el-table-column type="index"></el-table-column>
+              <el-table-column label="姓名" prop="name"></el-table-column>
+            </el-table>
+            <el-button
+              @click="sendmessage"
+              type="primary"
+              style="margin-top: 15px"
+              >发送消息</el-button
+            >
+            <!-- 分页区 -->
+            <!-- <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage4"
+              :page-sizes="[100, 200, 300, 400]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="400"
+            >
+            </el-pagination> -->
+          </el-card>
         </el-dialog>
       </el-main>
     </el-container>
   </div>
 </template>
 <script>
+// import Mpp from "@/components/MapComponent.vue";
+import {
+  BaiduMap,
+  BmControl,
+  BmView,
+  BmAutoComplete,
+  BmLocalSearch,
+  BmMarker,
+} from "vue-baidu-map";
 export default {
+  // components: Mpp,
+  components: {
+    BaiduMap,
+    BmControl,
+    BmView,
+    BmAutoComplete,
+    BmLocalSearch,
+    BmMarker,
+  },
   data() {
     return {
+      // 志愿者对话框
+      volundia: false,
+      volunteerlist: [],
+
+      action: {
+        actionId: "",
+        actionName: "",
+        ids: [],
+      },
+
+      location: {
+        longitude: "34",
+        latitude: "32",
+      },
+      addundia: false, // 未开始活动
+
+      showMapComponent: this.value,
+      keyword: "",
+      mapStyle: {
+        width: "100%",
+        height: this.mapHeight + "px",
+      },
+      center: { lng: 116.404, lat: 39.915 },
+      zoom: 15,
+
+      mapHeight: 400 + "px",
+      place: "",
+
+      unactionList: [],
       queryInfo: {
         currentPage: 1,
         pageSize: 5,
       },
-      options: [
-        {
-          value: 1,
-          label: "张三",
-        },
-        {
-          value: 2,
-          label: "李四",
-        },
-        {
-          value: 3,
-          label: "王二",
-        },
-      ],
+      options: [],
       value: "",
       activeName: "second",
       actionList: [],
@@ -170,25 +318,141 @@ export default {
             trigger: "blur",
           },
         ],
-        person: [
+        lostId: [
           {
             required: true,
-            message: "请输入走失人员",
-            trigger: "blur",
-          },
-        ],
-        level: [
-          {
-            required: true,
-            message: "级别",
+            message: "请选择走失者",
             trigger: "blur",
           },
         ],
       },
-      imageUrl: "",
+      locationrules: {
+        distance: [
+          {
+            required: true,
+            message: "请输入通知范围(米)",
+            trigger: "blur",
+          },
+        ],
+        latitude: [
+          {
+            required: true,
+            message: "请输入走失人员纬度",
+            // trigger: "blur",
+          },
+        ],
+        longitude: [
+          {
+            required: true,
+            message: "请输入走失人员经度",
+            // trigger: "blur",
+          },
+        ],
+      },
     };
   },
+  watch: {
+    value: function (currentValue) {
+      this.showMapComponent = currentValue;
+      if (currentValue) {
+        this.keyword = "";
+      }
+    },
+  },
+  props: {
+    // eslint-disable-next-line vue/no-dupe-keys
+    value: Boolean,
+    // eslint-disable-next-line vue/no-dupe-keys
+    mapHeight: {
+      type: Number,
+      default: 500,
+    },
+  },
   methods: {
+    close() {
+      this.addundia = false;
+      this.$refs.locationref.resetFields();
+    },
+    sendmessage() {
+      this.$http({
+        methods: "post",
+        url: "/command/action/sendDraftMsg",
+        params: { actionId: this.action.actionId },
+        data: {
+          ids: this.action.ids,
+        },
+      }).then((res) => {
+        if (res.data.code === 200) {
+          this.$message.success("发送成功");
+          this.volundia = false;
+        } else {
+          this.$message("发送失败");
+        }
+      });
+    },
+    // 选中表格
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+      console.log(val);
+      val.forEach((element) => {
+        this.action.ids.push(element.id);
+      });
+    },
+    //     // 监听页码值改变事件
+    // handleCurrentChange(newpage){
+
+    // },
+    //     // 监听pagesize改变事件
+    //     handleSizeChange(newsize) {
+    //       console.log(newsize);
+    //     },
+    // 未开始行动对话框
+    undia(item) {
+      this.addundia = true;
+      this.action.actionId = item.id;
+      this.action.actionName = item.name;
+    },
+    send() {
+      console.log(this.location);
+      this.$refs.locationref.validate((valid) => {
+        if (!valid) return;
+        this.$http({
+          methods: "get",
+          url: "/command/volunteer/by-distance",
+          params: this.location,
+        }).then((res) => {
+          console.log(res);
+          if (res.data.code === 200) {
+            this.$message.success("查询成功");
+            this.volunteerlist = res.data.data;
+            this.volundia = true;
+          } else {
+            this.$message("查询失败");
+          }
+        });
+      });
+    },
+    getunactionlist() {
+      this.$http
+        .get("/command/action/search-like", { status: 0 })
+        .then((res) => {
+          console.log(res);
+          this.unactionList = res.data.data;
+        });
+    },
+    dialog() {
+      // 查询走失者未行动
+      this.$http.get("/command/lost/not-actioned").then((res) => {
+        console.log(res);
+        if (res.data.code === 200) {
+          this.options = res.data.data;
+          console.log(this.options);
+        } else {
+          this.$message("走失者加载失败");
+        }
+      });
+      this.adddialogVisible = true;
+    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -204,20 +468,64 @@ export default {
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
     },
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+    upload() {
+      this.$refs.addFormref.validate((valid) => {
+        if (!valid) return;
+        this.$http
+          .post(
+            "/command/action/",
+            JSON.stringify({
+              lostId: parseInt(this.addForm.lostId),
+              name: this.addForm.name,
+              commanderId: this.$route.params.id,
+            }),
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          )
+          .then((res) => {
+            console.log(res);
+            if (res.data.code === 200) {
+              this.$message.success("创建活动成功");
+              this.adddialogVisible = false;
+              this.$refs.addFormref.resetFields();
+            } else {
+              this.$message("创建活动失败");
+            }
+          });
+      });
     },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
-      }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
-      }
-      return isJPG && isLt2M;
+    /***
+     * 地图点击事件。
+     */
+    getClickInfo(e) {
+      this.center.lng = e.point.lng;
+      this.center.lat = e.point.lat;
+      console.log(this.center);
+      this.location.latitude = this.center.lat.toString();
+      this.location.longitude = this.center.lng.toString();
+    },
+    syncCenterAndZoom(e) {
+      const { lng, lat } = e.target.getCenter();
+      this.center.lng = lng;
+      this.center.lat = lat;
+      this.zoom = e.target.getZoom();
+    },
+    /***
+     * 确认
+     */
+    confirm: function () {
+      this.showMapComponent = false;
+      this.$emit("map-confirm", this.center);
+    },
+    /***
+     * 取消
+     */
+    cancel: function () {
+      this.showMapComponent = false;
+      this.$emit("cancel", this.showMapComponent);
     },
   },
   // async mounted () {
@@ -226,10 +534,23 @@ export default {
   // }
   created() {
     this.getActionList();
+    this.getunactionlist();
   },
+  // mounted() {
+  //   this.initMapHeight();
+  //   this.map();
+  //   window.onresize = () => {
+  //     return (() => {
+  //       this.mapHeight = window.innerHeight + "px";
+  //     })();
+  //   };
+  // },
 };
 </script>
 <style lang="less" scoped>
+.el-table {
+  font-size: 12px;
+}
 .el-header {
   height: 100px !important;
   background-color: #373d41;
@@ -287,5 +608,10 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+#allmap {
+  height: 100%;
+  overflow: hidden;
+  margin-top: 20px;
 }
 </style>

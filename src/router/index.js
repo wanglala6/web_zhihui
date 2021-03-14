@@ -4,6 +4,11 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import ElderMsg from "@/components/ElderMsg"
+// import Map from "@/components/Map.vue";
+import MapComponent from "@/components/MapComponent.vue";
+import Clue from '@/components/Clue.vue'
+import Post from '@/components/Post.vue'
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -15,8 +20,13 @@ const routes = [{
         component: Login
     },
     {
+        path: '/map',
+        component: MapComponent
+    },
+    {
         path: '/welcome',
-        component: Welcome
+        component: Welcome,
+        name: '/welcome'
     },
     {
         path: '/home',
@@ -28,6 +38,14 @@ const routes = [{
                 path: '/elderMsg',
                 component: ElderMsg
               },
+              {
+                  path: '/clue',
+                  component: Clue
+              },
+              {
+                  path: '/post',
+                  component: Post
+              }
 
     ]
     }

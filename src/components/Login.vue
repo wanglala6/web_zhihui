@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
 export default {
   data() {
     return {
@@ -86,7 +86,7 @@ export default {
             console.log(res);
             if (res.data.code === 200) {
               console.log(res, "login");
-              console.log(Cookies.get('COOKIE-TOKEN'));
+              console.log(Cookies.get("COOKIE-TOKEN"));
               // var strCookie = document.cookie;
               // var arrCookie = strCookie.split("; ");
               // for (var i = 0; i < arrCookie.length; i++) {
@@ -96,8 +96,14 @@ export default {
 
               // sessionStorage.setItem(" account",res.data.data.account)
               // sessionStorage.setItem("password",res.data.data.password)
-               window.sessionStorage.setItem("token", Cookies.get('COOKIE-TOKEN'));
-                this.$router.push("/welcome");
+              window.sessionStorage.setItem(
+                "token",
+                Cookies.get("COOKIE-TOKEN")
+              );
+              this.$router.push({
+                name: "/welcome",
+                params: { id: res.data.data.id },
+              });
             } else {
               alert("登录失败，请重试");
             }
