@@ -279,7 +279,7 @@ export default {
       unactionList: [],
       queryInfo: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 10,
       },
       options: [],
       value: "",
@@ -373,13 +373,28 @@ export default {
       this.addundia = false;
       this.$refs.locationref.resetFields();
     },
+    // 发送消息给志愿者
     sendmessage() {
+      const staytimeGap =
+        new Date("2021-03-18 16:14").getTime() -
+        new Date("2021-03-17 16:14").getTime();
+      const stayHour = Math.floor(staytimeGap / (3600 * 1000));
+     //  const leave1 = staytimeGap % (3600 * 1000);
+      // const stayMin = Math.floor(leave1 / (60 * 1000));
+    //   const leave2 = leave1 % (60 * 1000);
+     //  const staySec = Math.floor(leave2 / 1000);
+      this.action.lostHours = stayHour;
       this.$http({
-        methods: "post",
-        url: "/command/action/sendDraftMsg",
-        params: { actionId: this.action.actionId },
+        method: "post", // method
+        url: "/command/action/sendDraftMsg/" + this.action.actionId,
+        // params: { actionId:  },
         data: {
-          ids: this.action.ids,
+          receiveIds: this.action.ids,
+          lostHours: this.action.lostHours,
+          lostPlace: this.action.lostPlace,
+        },
+        headers: {
+          "Content-Type": "application/json",
         },
       }).then((res) => {
         if (res.data.code === 200) {
@@ -395,7 +410,7 @@ export default {
       this.multipleSelection = val;
       console.log(val);
       val.forEach((element) => {
-        this.action.ids.push(element.id);
+        this.action.ids.push(parseInt(element.id));
       });
     },
     //     // 监听页码值改变事件
@@ -411,6 +426,7 @@ export default {
       this.addundia = true;
       this.action.actionId = item.id;
       this.action.actionName = item.name;
+      this.action = item;
     },
     send() {
       console.log(this.location);
@@ -468,6 +484,7 @@ export default {
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
     },
+    // 创建活动
     upload() {
       this.$refs.addFormref.validate((valid) => {
         if (!valid) return;
@@ -489,6 +506,8 @@ export default {
             console.log(res);
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
+              this.getunactionlist();
+
               this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
             } else {

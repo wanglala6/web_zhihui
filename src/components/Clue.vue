@@ -1,15 +1,28 @@
 <template>
   <div>
+    <div style="margin: 15px 0; width: 100%">
+      <el-input
+        placeholder="请输入内容"
+        v-model="keyword"
+        class="input-with-select"
+      >
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="serch"
+        ></el-button>
+      </el-input>
+    </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column
-        prop="volunteerName"
+        prop="volunteer.name"
         label="提供人"
         width="180"
         align="center"
       >
       </el-table-column>
       <el-table-column
-        prop="randomReport.createTime"
+        prop="createTime"
         label="发布时间"
         width="180"
         align="center"
@@ -60,6 +73,7 @@
 export default {
   data() {
     return {
+      keyword: "",
       dialogVisible: false,
       // 线索
       tableData: [],
@@ -73,7 +87,19 @@ export default {
     };
   },
   methods: {
-     handleSizeChange(val) {
+    serch() {
+      this.$http({
+        methods: "get",
+        url: "/command/clue/search-like",
+        params: {
+          actionId: this.$route.query.id,
+          primaryKeyVal: this.keyword,
+          currentPage: this.page.currentPage,
+          pageSize: this.page.pageSize,
+        },
+      });
+    },
+    handleSizeChange(val) {
       //  console.log(`每页 ${val} 条`);
       this.page.pageSize = val;
       this.getclue();
@@ -81,7 +107,11 @@ export default {
     handleCurrentChange(val) {
       //  console.log(`当前页: ${val}`);
       this.page.currentPage = val;
-      this.getclue();
+      if (this.keyword === "") {
+        this.getclue();
+      } else {
+        this.serch();
+      }
     },
     getclue() {
       this.$http({
@@ -95,7 +125,7 @@ export default {
         console.log(res.data);
         if (res.data.code === 200) {
           this.tableData = res.data.data;
-            this.page.total = res.data.total;
+          this.page.total = res.data.total;
         } else {
           this.$message("数据获取失败");
         }
@@ -104,7 +134,7 @@ export default {
     detail(row) {
       this.tableData.forEach((ele) => {
         if (ele.id === row.id) {
-          this.content = ele.randomReport.content;
+          this.content = ele.content;
         }
       });
       this.dialogVisible = true;
@@ -125,5 +155,8 @@ export default {
 <style lang="less" scoped>
 .el-pagination {
   padding-top: 15px;
+}
+.input-with-select {
+  width: 40%;
 }
 </style>
