@@ -108,15 +108,15 @@
                 <span>监控模块</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item  index="/post"
-                :route="{ path: '/post', query: { id: id } }">
+              <el-menu-item
+                index="/post"
+                :route="{ path: '/post', query: { id: id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
-                  <span
-                    >队员报备</span
-                  >
+                  <span>队员报备</span>
                 </template>
               </el-menu-item>
               <!-- 二级菜单 -->
@@ -134,32 +134,34 @@
             </el-submenu>
             <!-- 一级菜单模板消息通知 -->
 
-            <el-submenu index="4">
+            <el-submenu index="4" router>
+              <!-- 一级菜单模板qu -->
               <template slot="title">
                 <!-- 图标 -->
                 <i class="el-icon-chat-dot-square"></i>
                 <!-- 文本 -->
-                <span><a href="#/home/news" class="turn_a">消息通知</a></span>
+                <span>消息通知</span>
               </template>
 
-              <el-menu-item index="4-4-1">
+              <el-menu-item
+                index="/newsEdit"
+                :route="{ path: '/newsEdit', query: { actionId: this.id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-edit-outline"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/newsEdit" class="turn_a">发送消息</a></span
-                  >
+                  <span>发送消息</span>
                 </template>
               </el-menu-item>
 
               <!-- 二级菜单 -->
-              <el-menu-item index="4-4-2">
+              <el-menu-item index="/news" :route="{ path: '/news' }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-pie-chart"></i>
                   <!-- 文本 -->
-                  <span>志愿者统计</span>
+                  <span>我的消息</span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -174,12 +176,23 @@
   </div>
 </template>
 <script>
+import Stomp from "stompjs";
+// ---jq:在sysconstant.js配置文件中配置mqtt的服务端地址，账号等信息
+import {
+  MQTT_SERVICE,
+  MQTT_USERNAME,
+  MQTT_PASSWORD,
+} from "../config/sysconstant.js";
 export default {
   data() {
     return {
       id: "",
       iscollapse: false,
       older: {},
+      client: Stomp.client(MQTT_SERVICE),
+      news: {},
+      Msg: {},
+      type: "",
     };
   },
   methods: {
@@ -187,12 +200,88 @@ export default {
       window.sessionStorage.clear();
       this.$router.push("/login");
     },
-    // 点击按钮切换折叠
+    // jq:点击按钮切换折叠
     togglecollapse() {
       this.iscollapse = !this.iscollapse;
     },
+    //  jq:消息弹窗函数
+    notify() {
+      var _this = this;
+      this.$notify.info({
+        title: this.Msg.title,
+        message: this.Msg.abstract,
+        onClick() {
+          console.log(this.type.type);
+          if (_this.type === "START_REPORT") {
+            _this.toStartDetails();
+            // eslint-disable-next-line brace-style
+          } //  自定义回调,message为传的参数
+          else {
+            _this.toUrgentDetails();
+          }
+        },
+      });
+    },
+    //  实现点击弹窗后跳转到消息详情界面
+    toStartDetails() {
+      this.$router.push({ path: "/home/startNewsDetail", query: this.news.id });
+    },
+    toUrgentDetails() {
+      this.$router.push("/home/urgentNewsDetail");
+    },
+    //  处理消息队列传来的json字符串
+    evil(fn) {
+      // 一个变量指向Function，防止有些前端编译工具报错
+      var Fn = Function;
+      return new Fn("return " + fn)();
+    },
+    //  获取到通知弹窗需要的相关信息
+    async dataProcess() {
+      const { data: res } = await this.$http.get(
+        "/command/volunteer/" + this.news.volunteerId
+      );
+      this.Msg.title = "来自志愿者:" + res.data.name;
+      if (this.type === "EMERGENCY_NOTICE") {
+        this.Msg.abstract = "紧急通知";
+      } else if (this.type === "START_REPORT") {
+        this.Msg.abstract = "出发报备";
+      } else if (this.type === "RANDOM_REPORT") {
+        this.Msg.abstract = "平时报备";
+      }
+      this.notify();
+    },
+    // jq：stomp监听消息队列相关函数
+    onConnected: function (frame) {
+      var topic = "/queue/1_commander";
+      // ---订阅频道
+      this.client.subscribe(topic, this.responseCallback, this.onFailed);
+    },
+    onFailed: function (frame) {
+      console.log("Failed: " + frame);
+    },
+    responseCallback: function (frame) {
+      this.news = JSON.parse(
+        this.evil(decodeURI(frame.body)).replace("/\\", "")
+      ).data;
+      this.type = JSON.parse(
+        this.evil(decodeURI(frame.body)).replace("/\\", "")
+      ).type;
+      this.dataProcess();
+      console.log(this.type);
+      // ---接收消息
+    },
+    connect: function () {
+      // ---初始化mqtt客户端，并连接mqtt服务
+      var headers = {
+        login: MQTT_USERNAME,
+        passcode: MQTT_PASSWORD,
+        // additional header
+      };
+      this.client.connect(headers, this.onConnected, this.onFailed);
+    },
   },
   created() {
+    this.connect();
     console.log(this.$route.params.id + "xx");
     this.id = this.$route.params.id;
     console.log(this.id);

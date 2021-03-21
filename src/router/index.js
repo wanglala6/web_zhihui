@@ -9,6 +9,9 @@ import MapComponent from "@/components/MapComponent.vue";
 import Clue from '@/components/Clue.vue'
 import Post from '@/components/Post.vue'
 
+import NewsEdit from "../components/NewsEdit"
+import News from "../components/News"
+import StartNewsDetail from "@/components/StartNewsDetail";
 Vue.use(VueRouter)
 
 const routes = [{
@@ -45,7 +48,19 @@ const routes = [{
               {
                   path: '/post',
                   component: Post
-              }
+              },
+              {
+                path: '/news',
+                component: News
+              },
+              {
+                path: '/newsEdit',
+                component: NewsEdit
+              },
+            {
+              path: '/startNewsDetail',
+              component: StartNewsDetail
+            }
 
     ]
     }
