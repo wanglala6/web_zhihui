@@ -26,7 +26,18 @@
 </template>
 
 <script>
-
+export default {
+  data () {
+    return {
+      message: [],
+    }
+  },
+  methods: {
+    getData() {
+      // this.$http.get()
+    }
+  }
+}
 </script>
 
 <style scoped>

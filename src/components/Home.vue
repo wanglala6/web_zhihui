@@ -48,25 +48,20 @@
                   <span>老人信息</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="1-4-1">
+              <el-menu-item index="/valSearch" :route="{ path: '/valSearch'}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-view"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/valSearch" class="turn_a"
-                      >志愿者查询</a
-                    ></span
-                  >
+                  <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="1-4-2">
+              <el-menu-item index="/weather" :route="{ path: '/weather'}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-sunny"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/weather" class="turn_a">天气查询</a></span
+                  <span>天气查询</span
                   >
                 </template>
               </el-menu-item>
@@ -184,28 +179,29 @@ export default {
     },
     //  jq:消息弹窗函数
     notify() {
-      var _this = this
+      var that = this
+      console.log(that.type)
       this.$notify.info({
         title: this.Msg.title,
         message: this.Msg.abstract,
         onClick() {
-          console.log(this.type.type)
-          if (_this.type === "START_REPORT") {
-          _this.toStartDetails()
+          console.log(that.type)
+          if (that.type === "START_REPORT") {
+            that.toStartDetails()
             // eslint-disable-next-line brace-style
           }//  自定义回调,message为传的参数
           else {
-            _this.toUrgentDetails()
+            that.toStartDetails()
           }
         }
       });
     },
     //  实现点击弹窗后跳转到消息详情界面
     toStartDetails() {
-      this.$router.push({ path: "/home/startNewsDetail", query: this.news.id });
+      this.$router.push({ path: "/startNewsDetail", query: this.news.id });
     },
     toUrgentDetails() {
-      this.$router.push("/home/urgentNewsDetail");
+      this.$router.push("/urgentNewsDetail");
     },
     //  处理消息队列传来的json字符串
     evil (fn) {
