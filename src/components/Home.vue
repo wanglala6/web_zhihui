@@ -48,7 +48,7 @@
                   <span>老人信息</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/valSearch" :route="{ path: '/valSearch'}">
+              <el-menu-item index="/valSearch" :route="{ path: '/valSearch',query: {id: id}}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-view"></i>
@@ -151,7 +151,7 @@
               </el-menu-item>
 
               <!-- 二级菜单 -->
-              <el-menu-item index="/news" :route="{ path: '/news' }">
+              <el-menu-item index="/news" :route="{ path: '/news', query: { actionId: this.id } }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-pie-chart"></i>
