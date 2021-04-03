@@ -72,6 +72,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/phone/identify/by-action/" + this.actionId
       );
+      console.log("获取人脸识别记录成功!")
       console.log(res);
       var list = [];
       res.data.forEach((element) => {
