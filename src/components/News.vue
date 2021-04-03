@@ -4,7 +4,7 @@
     <div class="down_menu">
       <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
-          类型<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ type }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="notice">通知</el-dropdown-item>
@@ -47,6 +47,7 @@
 export default {
   data() {
     return {
+      type: "人脸识别记录",
       message: [],
       notice_list: [],
       actionId: "",
@@ -57,14 +58,19 @@ export default {
     handleCommand(command) {
       if (command === "notice") {
         this.getNotice();
+        this.type = "通知";
       } else if (command === "clue") {
         this.getClue();
+        this.type = "线索";
       } else if (command === "identify") {
         this.getIdentifyData();
+        this.type = "甄别记录";
       } else if (command === "random_report") {
         this.getMsg();
+        this.type = "消息";
       } else if (command === "start_report") {
         this.getStartReport();
+        this.type = "出发报备";
       }
     },
     // 获取人脸识别数据
@@ -72,7 +78,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/phone/identify/by-action/" + this.actionId
       );
-      console.log("获取人脸识别记录成功!")
+      console.log("获取人脸识别记录成功!");
       console.log(res);
       var list = [];
       res.data.forEach((element) => {
@@ -100,10 +106,22 @@ export default {
           const list = [];
           res.data.data.forEach((element) => {
             console.log(element);
-            const tmp = element;
-            tmp.msg = element.content.content;
-            tmp.name = "指挥端";
-            list.push(tmp);
+            if (element.type === "0") {
+              const tmp = element;
+              tmp.msg =
+                "有走失者出现!已走失" +
+                element.content.lostHours +
+                "小时, 最后走失地点为: " +
+                element.content.lostPlace +
+                ", 请尽快出动!";
+              tmp.name = "指挥端";
+              list.push(tmp);
+            } else {
+              const tmp = element;
+              tmp.msg = element.content.content;
+              tmp.name = "指挥端";
+              list.push(tmp);
+            }
           });
           _this.notice_list = list;
         })
