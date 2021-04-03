@@ -3,7 +3,7 @@
     <el-row :gutter="30" style="margin-left: 30px;">
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -19,7 +19,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -35,7 +35,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -51,7 +51,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -67,7 +67,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -83,7 +83,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
@@ -99,7 +99,7 @@
       </div></el-col>
       <el-col :span="3"><div class="grid-content bg-purple">
         <p style="left:25%; position:relative;">2月26日</p>
-        <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;111">
+        <!-- <img src="../../../../服创/vue/backhome/src/assets/Rain.svg" style="height:50px;left:25%;position:relative;111"> -->
         <p title="小雨转晴" class="wea">小雨转晴</p>
         <p class="tem">
           <span>9</span>/<i>2℃</i>
