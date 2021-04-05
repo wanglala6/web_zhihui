@@ -30,7 +30,7 @@
               <el-tab-pane label="正在行动" name="first">
                 <div class="activity" v-for="item in actionList" :key="item.id">
                   <div class="img">
-                    <a @click="jump(item.lostId)">
+                    <a @click="jump(item.id)">
                       <img
                         src="../assets/logo.jpg"
                         style="height: 100%; width: 100%"

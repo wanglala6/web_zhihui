@@ -25,7 +25,7 @@
       <!--      <span class="demonstration" style="font-size: 12px">发送人</span>-->
       <el-cascader
         placeholder="请选择发送人，可搜索人名"
-        v-model="cityCode"
+        v-model="receiveId"
         :options="options"
         :props="props"
         size="medium"
@@ -45,7 +45,7 @@ export default {
     return {
       title: '',
       content: '',
-      cityCode: [],
+      receiveId: [],
       areaOptions: [], // 显示的数据
       selectAllData: [],
       selectStates: 0, //  是否全选过
@@ -90,29 +90,30 @@ export default {
       console.log("点了")
       // console.log(this.cityCode)
       console.log(value)
+      console.log("选择了:" + this.receiveId)
       if (value.length === 0) {
         return false
       }
       if (this.selectStates === 1 && value[0][0] === 0) {
         this.selectStates = 0
-        this.cityCode = this.cityCode.slice(1)
+        this.receiveId = this.receiveId.slice(1)
         return false;
       }
       //  思路：点击全选，判断是传入的值是否包含了“全选”的code
       for (let v = 0; v < value.length; v++) {
         if (value[v][0] === 0) { // 如果传入的值包含了全选，也就是用户希望全选
-          this.cityCode = this.handleSelectAllCity();// 如果包含，将城市数据，赋值给要提交给接口的cityCode
+          this.receiveId = this.handleSelectAllCity();// 如果包含，将城市数据，赋值给要提交给接口的cityCode
           this.selectStates = 1 // 改变状态，设置已经全选
-          console.log(this.cityCode)
+          console.log(this.receiveId)
           return false
         }
         //  如果已经有了全选（this.selectStates==1表示已经处于全选状态），再次点击要置空也就是取消全选
         if (this.selectStates === 1) {
-          this.cityCode = [];
+          this.receiveId = [];
           this.selectStates = 0;
           return false
         } else { //  不是全选状态 ，正常点击城市
-          this.cityCode = value
+          this.receiveId = value
         }
       }
     },
@@ -125,15 +126,29 @@ export default {
       return this.selectAllData;
     },
     send_notice() {
+      const receiveId = []
+      this.receiveId.forEach((element) => {
+        receiveId.push(element[0])
+      })
       var body = {
         actionId: this.actionId,
-        content: this.content,
-        reveived: this.cityCode,
+        content: {
+          content: this.content
+        },
+        receiveId: receiveId,
         title: this.title,
         type: this.type
       }
-      const res = this.$http.post("/command/notice/", body)
-      console.log(res)
+      const that = this
+      this.$http.post("/command/notice/", body).then((res) => {
+        that.title = ""
+        that.content = ""
+        that.type = ""
+        that.receiveId = ""
+        console.log(res)
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   },
   mounted() {

@@ -15,7 +15,9 @@ import StartNewsDetail from "@/components/StartNewsDetail";
 import VolunteerStatus from '@/components/VolunteerStatus'
 import Inaction from '@/components/Inaction'
 import Unaction from '@/components/Unaction'
-import Servolunteer from '@/components/Servolunteer'
+import Weather from "@/components/Weather";
+import ValSearch from "@/components/ValSearch";
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -82,12 +84,15 @@ const routes = [{
                 component: VolunteerStatus
             },
             {
-                path: '/servolunteer',
-                component: Servolunteer
+              path: '/weather',
+              component: Weather
+            },
+            {
+              path: '/valSearch',
+              component: ValSearch
             }
-
     ]
-    }
+  }
 ]
 
 const router = new VueRouter({

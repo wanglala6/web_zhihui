@@ -49,26 +49,23 @@
                   <span>老人信息</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/servolunteer"
-              :route="{path:'/servolunteer',query:{id:id }}">
+              <el-menu-item
+                index="/valSearch"
+                :route="{ path: '/valSearch', query: { id: id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-view"></i>
                   <!-- 文本 -->
-                  <span>
-                      志愿者查询
-                    </span
-                  >
+                  <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="1-4-2">
+              <el-menu-item index="/weather" :route="{ path: '/weather' }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-sunny"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/weather" class="turn_a">天气查询</a></span
-                  >
+                  <span>天气查询</span>
                 </template>
               </el-menu-item>
               <el-menu-item index="1-4-3">
@@ -168,7 +165,10 @@
               </el-menu-item>
 
               <!-- 二级菜单 -->
-              <el-menu-item index="/news" :route="{ path: '/news' }">
+              <el-menu-item
+                index="/news"
+                :route="{ path: '/news', query: { actionId: this.id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-pie-chart"></i>
@@ -239,10 +239,10 @@ export default {
     },
     //  实现点击弹窗后跳转到消息详情界面
     toStartDetails() {
-      this.$router.push({ path: "/home/startNewsDetail", query: this.news.id });
+      this.$router.push({ path: "/startNewsDetail", query: this.news.id });
     },
     toUrgentDetails() {
-      this.$router.push("/home/urgentNewsDetail");
+      this.$router.push("/urgentNewsDetail");
     },
     //  处理消息队列传来的json字符串
     evil(fn) {
