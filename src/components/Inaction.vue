@@ -11,7 +11,7 @@
           <div class="activity_head">
             <h3>{{ item.name }}</h3>
             <p>指挥员: {{ item.commander.name }}</p>
-            <p>创建时间: {{ item.createTime }}</p>
+            <span class="time">创建时间: {{ item.createTime }}</span>
           </div>
         </div>
       </el-col>
@@ -24,15 +24,16 @@ export default {
     return {
       actionList: [],
       queryInfo: {
-        currentPage: 1,
-        pageSize: 100,
+        status: 1,
+        pageSize: 9999,
+        currentPage: 1
       },
     };
   },
   methods: {
     async getActionList() {
       const { data: res } = await this.$http.get(
-        "command/action/",
+        "/command/action/search-like",
         this.queryInfo
       );
       if (res.code === 200) this.actionList = res.data;
@@ -71,7 +72,11 @@ export default {
   height: 150px;
   width: 200px;
 }
-//.activity_head {
-//  text-align: center;
-//}
+.activity_head {
+ text-align: center;
+}
+.time{
+    color: #999;
+    font-size: 12px;
+}
 </style>

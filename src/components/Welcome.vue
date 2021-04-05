@@ -11,7 +11,7 @@
               />
             </div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="12" class="head_col">
             <span class="head" style="text-align: center; color: #ffffff"
               >蓝天救援队指挥中心</span
             >
@@ -684,4 +684,5 @@ export default {
   overflow: hidden;
   margin-top: 20px;
 }
+
 </style>

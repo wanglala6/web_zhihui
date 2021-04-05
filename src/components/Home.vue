@@ -198,7 +198,6 @@ import {
 export default {
   data() {
     return {
-      commanderId: '',
       id: "",
       iscollapse: false,
       older: {},
