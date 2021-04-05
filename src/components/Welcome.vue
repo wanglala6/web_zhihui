@@ -16,9 +16,14 @@
               >蓝天救援队指挥中心</span
             >
           </el-col>
+          <el-col :span="6">
+            <el-button type="info" @click="logout" style="float: right"
+              >退出</el-button
+            >
+          </el-col>
         </el-row>
       </el-header>
-      <el-main>
+      <!-- <el-main>
         <el-row class="nav">
           <el-col :span="22" style="margin-top: 20px">
             <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -42,8 +47,8 @@
               <el-tab-pane label="已完成行动" name="second"
                 >配置管理</el-tab-pane
               >
-              <el-tab-pane label="遗留行动" name="third">角色管理</el-tab-pane>
-              <el-tab-pane label="未开始行动" name="forth">
+              <el-tab-pane label="遗留行动" name="third">角色管理</el-tab-pane> -->
+              <!-- <el-tab-pane label="未开始行动" name="forth">
                 <div
                   class="activity"
                   v-for="item in unactionList"
@@ -63,14 +68,15 @@
                     <p>创建时间: {{ item.createTime }}</p>
                   </div>
                 </div>
-              </el-tab-pane>
-            </el-tabs>
-          </el-col>
-          <el-col :span="2" style="margin-top: 20px">
+              </el-tab-pane> -->
+            <!-- </el-tabs>
+          </el-col> -->
+          <!-- <el-col :span="2" style="margin-top: 20px">
             <el-button type="primary" @click="dialog">创建行动</el-button>
-          </el-col>
+          </el-col> -->
+        <!-- </el-row> -->
           <!-- 创建活动对话框 -->
-        </el-row>
+
         <el-dialog
           title="创建活动"
           :visible.sync="adddialogVisible"
@@ -222,6 +228,44 @@
             </el-pagination> -->
           </el-card>
         </el-dialog>
+      <!-- </el-main> -->
+      <el-row class="nav">
+        <el-col :span="22" style="margin-top: 20px">
+          <el-menu
+            class="el-menu-demo"
+            mode="horizontal"
+            :router="true"
+          >
+            <el-submenu index="1">
+              <template slot="title">活动</template>
+              <el-menu-item
+                index="/inaction"
+                :route="{
+                  path: '/inaction',
+                  query: { commanderId: commanderId },
+                }"
+                >正在行动</el-menu-item
+              >
+              <el-menu-item index="2-2">已完成行动</el-menu-item>
+              <el-menu-item index="2-3">遗留行动</el-menu-item>
+              <el-menu-item
+                index="/unaction"
+                :route="{
+                  path: '/unaction',
+                  query: { commanderId: commanderId },
+                }"
+                >未开始行动</el-menu-item
+              >
+            </el-submenu>
+          </el-menu>
+        </el-col>
+        <el-col :span="2" style="margin-top: 20px">
+          <el-button type="primary" @click="dialog">创建行动</el-button>
+        </el-col>
+      </el-row>
+      <!-- 主体区 -->
+      <el-main>
+        <router-view></router-view>
       </el-main>
     </el-container>
   </div>
@@ -236,6 +280,7 @@ import {
   BmLocalSearch,
   BmMarker,
 } from "vue-baidu-map";
+
 export default {
   // components: Mpp,
   components: {
@@ -248,16 +293,14 @@ export default {
   },
   data() {
     return {
+      activeIndex: "/inaction",
+      commanderId: "",
       // 志愿者对话框
       volundia: false,
       volunteerlist: [],
 
-      action: {
-        actionId: "",
-        actionName: "",
-        ids: [],
-      },
-
+      action: {},
+      ids: [], // 征集消息志愿者
       location: {
         longitude: "34",
         latitude: "32",
@@ -369,6 +412,10 @@ export default {
     },
   },
   methods: {
+    logout() {
+      window.sessionStorage.clear();
+      this.$router.push("/login");
+    },
     close() {
       this.addundia = false;
       this.$refs.locationref.resetFields();
@@ -379,19 +426,20 @@ export default {
         new Date("2021-03-18 16:14").getTime() -
         new Date("2021-03-17 16:14").getTime();
       const stayHour = Math.floor(staytimeGap / (3600 * 1000));
-     //  const leave1 = staytimeGap % (3600 * 1000);
+      //  const leave1 = staytimeGap % (3600 * 1000);
       // const stayMin = Math.floor(leave1 / (60 * 1000));
-    //   const leave2 = leave1 % (60 * 1000);
-     //  const staySec = Math.floor(leave2 / 1000);
+      //   const leave2 = leave1 % (60 * 1000);
+      //  const staySec = Math.floor(leave2 / 1000);
       this.action.lostHours = stayHour;
+      console.log(this.action);
       this.$http({
         method: "post", // method
-        url: "/command/action/sendDraftMsg/" + this.action.actionId,
+        url: "/command/action/sendDraftMsg/" + this.action.id,
         // params: { actionId:  },
         data: {
-          receiveIds: this.action.ids,
+          receiveIds: this.ids,
           lostHours: this.action.lostHours,
-          lostPlace: this.action.lostPlace,
+          lostPlace: this.action.lost.lastPlace,
         },
         headers: {
           "Content-Type": "application/json",
@@ -409,9 +457,21 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(val);
-      val.forEach((element) => {
-        this.action.ids.push(parseInt(element.id));
+      var arr = [];
+      this.multipleSelection.forEach((element) => {
+        arr.push(parseInt(element.id));
       });
+      // 数组去重
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i] === arr[j]) {
+            // 第一个等同于第二个，splice方法删除第二个
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      this.ids = arr;
     },
     //     // 监听页码值改变事件
     // handleCurrentChange(newpage){
@@ -424,9 +484,9 @@ export default {
     // 未开始行动对话框
     undia(item) {
       this.addundia = true;
-      this.action.actionId = item.id;
-      this.action.actionName = item.name;
+
       this.action = item;
+      console.log(this.action, "action");
     },
     send() {
       console.log(this.location);
@@ -474,7 +534,10 @@ export default {
     },
     jump(id) {
       console.log("mmm" + id);
-      this.$router.push({ name: "/home", params: { id: id } });
+      this.$router.push({
+        name: "/home",
+        params: { id: id, commanderId: this.$route.params.commanderId },
+      });
     },
     async getActionList() {
       const { data: res } = await this.$http.get(
@@ -488,13 +551,14 @@ export default {
     upload() {
       this.$refs.addFormref.validate((valid) => {
         if (!valid) return;
+        console.log(this.$route.params.commanderId);
         this.$http
           .post(
             "/command/action/",
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commanderId: this.$route.params.id,
+              commanderId: this.$route.params.commanderId,
             }),
             {
               headers: {
@@ -552,6 +616,7 @@ export default {
   //   console.log(res)
   // }
   created() {
+    this.commanderId = this.$route.params.commanderId;
     this.getActionList();
     this.getunactionlist();
   },

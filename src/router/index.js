@@ -12,6 +12,10 @@ import Post from '@/components/Post.vue'
 import NewsEdit from "../components/NewsEdit"
 import News from "../components/News"
 import StartNewsDetail from "@/components/StartNewsDetail";
+import VolunteerStatus from '@/components/VolunteerStatus'
+import Inaction from '@/components/Inaction'
+import Unaction from '@/components/Unaction'
+import Servolunteer from '@/components/Servolunteer'
 Vue.use(VueRouter)
 
 const routes = [{
@@ -29,12 +33,24 @@ const routes = [{
     {
         path: '/welcome',
         component: Welcome,
-        name: '/welcome'
+        name: '/welcome',
+        redirect: '/inaction',
+        children: [
+            {
+                path: '/inaction',
+                component: Inaction
+            },
+            {
+                path: '/unaction',
+                component: Unaction
+            }
+        ]
     },
     {
         path: '/home',
         component: Home,
         name: '/home',
+        redirect: '/elderMsg',
 
         children: [
             {
@@ -60,6 +76,14 @@ const routes = [{
             {
               path: '/startNewsDetail',
               component: StartNewsDetail
+            },
+            {
+                path: '/VolunteerStatus',
+                component: VolunteerStatus
+            },
+            {
+                path: '/servolunteer',
+                component: Servolunteer
             }
 
     ]

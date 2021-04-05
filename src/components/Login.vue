@@ -102,7 +102,7 @@ export default {
               );
               this.$router.push({
                 name: "/welcome",
-                params: { id: res.data.data.id },
+                params: { commanderId: res.data.data.id },
               });
             } else {
               alert("登录失败，请重试");

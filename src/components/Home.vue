@@ -26,6 +26,7 @@
             :collapse="iscollapse"
             :collapse-transition="false"
             :router="true"
+            default-active="/elderMsg"
           >
             <!-- 一级菜单 -->
             <el-submenu index="1">
@@ -48,15 +49,15 @@
                   <span>老人信息</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="1-4-1">
+              <el-menu-item index="/servolunteer"
+              :route="{path:'/servolunteer',query:{id:id }}">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-view"></i>
                   <!-- 文本 -->
-                  <span
-                    ><a href="#/home/valSearch" class="turn_a"
-                      >志愿者查询</a
-                    ></span
+                  <span>
+                      志愿者查询
+                    </span
                   >
                 </template>
               </el-menu-item>
@@ -131,6 +132,17 @@
                   <span>线索</span>
                 </template>
               </el-menu-item>
+              <el-menu-item
+                index="/VolunteerStatus"
+                :route="{ path: '/VolunteerStatus', query: { id: id } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-user"></i>
+                  <!-- 文本 -->
+                  <span>志愿者动态</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
             <!-- 一级菜单模板消息通知 -->
 
@@ -197,8 +209,11 @@ export default {
   },
   methods: {
     logout() {
-      window.sessionStorage.clear();
-      this.$router.push("/login");
+      // window.sessionStorage.clear();
+      this.$router.push({
+        name: "/welcome",
+        params: { commanderId: this.$route.params.commanderId },
+      });
     },
     // jq:点击按钮切换折叠
     togglecollapse() {
