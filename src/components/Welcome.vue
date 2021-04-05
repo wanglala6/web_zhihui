@@ -48,7 +48,7 @@
                 >配置管理</el-tab-pane
               >
               <el-tab-pane label="遗留行动" name="third">角色管理</el-tab-pane> -->
-              <!-- <el-tab-pane label="未开始行动" name="forth">
+      <!-- <el-tab-pane label="未开始行动" name="forth">
                 <div
                   class="activity"
                   v-for="item in unactionList"
@@ -69,173 +69,16 @@
                   </div>
                 </div>
               </el-tab-pane> -->
-            <!-- </el-tabs>
+      <!-- </el-tabs>
           </el-col> -->
-          <!-- <el-col :span="2" style="margin-top: 20px">
+      <!-- <el-col :span="2" style="margin-top: 20px">
             <el-button type="primary" @click="dialog">创建行动</el-button>
           </el-col> -->
-        <!-- </el-row> -->
-          <!-- 创建活动对话框 -->
-
-        <el-dialog
-          title="创建活动"
-          :visible.sync="adddialogVisible"
-          width="30%"
-        >
-          <!-- 内容主体区 -->
-          <el-form
-            :model="addForm"
-            :rules="addrules"
-            ref="addFormref"
-            label-width="150px"
-          >
-            <el-form-item label="请选择走失者" prop="lostId">
-              <el-select v-model="addForm.lostId" placeholder="请选择">
-                <el-option
-                  v-for="item in options"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="请输入活动名称" prop="name">
-              <el-input v-model="addForm.name"></el-input>
-            </el-form-item>
-          </el-form>
-          <!-- 底部区 -->
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="adddialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="upload">确 定</el-button>
-          </span>
-        </el-dialog>
-        <!-- 未开始活动对话框 -->
-        <el-dialog
-          title="选择区域 点击地点即可获得经纬度"
-          :visible.sync="addundia"
-          width="800px"
-        >
-          <!-- <mpp
-            @func="getson"
-          ></mpp> -->
-          <el-row>
-            <el-col :span="12">
-              <baidu-map
-                v-bind:style="mapStyle"
-                class="bm-view"
-                ak="pKCbOFewojmC9xuiiGwOq1MAyABiQwD8"
-                :center="center"
-                :zoom="zoom"
-                :scroll-wheel-zoom="true"
-                @click="getClickInfo"
-                @moving="syncCenterAndZoom"
-                @moveend="syncCenterAndZoom"
-                @zoomend="syncCenterAndZoom"
-              >
-                <bm-view style="width: 100%; height: 500px"></bm-view>
-                <bm-marker
-                  :position="{ lng: center.lng, lat: center.lat }"
-                  :dragging="true"
-                  animation="BMAP_ANIMATION_BOUNCE"
-                >
-                </bm-marker>
-                <bm-control :offset="{ width: '10px', height: '10px' }">
-                  <bm-auto-complete
-                    v-model="keyword"
-                    :sugStyle="{ zIndex: 999999 }"
-                  >
-                    <input
-                      type="text"
-                      placeholder="请输入搜索关键字"
-                      class="serachinput"
-                    />
-                  </bm-auto-complete>
-                </bm-control>
-                <bm-local-search
-                  :keyword="keyword"
-                  :auto-viewport="true"
-                  style="width: 0px; height: 0px; overflow: hidden"
-                ></bm-local-search>
-              </baidu-map>
-            </el-col>
-            <el-col :span="12">
-              <el-form
-                label-width="150px"
-                ref="locationref"
-                :model="location"
-                :rules="locationrules"
-              >
-                <el-form-item label="通知范围(米)" prop="distance">
-                  <el-input v-model="location.distance"></el-input>
-                </el-form-item>
-                <el-form-item label="走失者地点纬度" prop="latitude">
-                  <div>{{ location.latitude }}</div>
-                </el-form-item>
-                <el-form-item label="走失者地点经度" prop="longitude">
-                  <div>{{ location.longitude }}</div>
-                </el-form-item>
-                <el-form-item>
-                  <el-button
-                    @click="send"
-                    style="justify-content: center"
-                    type="primary"
-                    >确定</el-button
-                  >
-                  <el-button
-                    @click="close"
-                    style="justify-content: center"
-                    type="primary"
-                    >关闭</el-button
-                  >
-                </el-form-item>
-              </el-form>
-            </el-col>
-          </el-row>
-        </el-dialog>
-        <el-dialog
-          title="选择志愿者发送消息"
-          :visible.sync="volundia"
-          width="800px"
-        >
-          <el-card>
-            <el-table
-              :data="volunteerlist"
-              border
-              stripe
-              @selection-change="handleSelectionChange"
-            >
-              <el-table-column type="selection" width="55"> </el-table-column>
-              <el-table-column type="index"></el-table-column>
-              <el-table-column label="姓名" prop="name"></el-table-column>
-            </el-table>
-            <el-button
-              @click="sendmessage"
-              type="primary"
-              style="margin-top: 15px"
-              >发送消息</el-button
-            >
-            <!-- 分页区 -->
-            <!-- <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[100, 200, 300, 400]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="400"
-            >
-            </el-pagination> -->
-          </el-card>
-        </el-dialog>
+      <!-- </el-row> -->
       <!-- </el-main> -->
       <el-row class="nav">
         <el-col :span="22" style="margin-top: 20px">
-          <el-menu
-            class="el-menu-demo"
-            mode="horizontal"
-            :router="true"
-          >
+          <el-menu class="el-menu-demo" mode="horizontal" :router="true">
             <el-submenu index="1">
               <template slot="title">活动</template>
               <el-menu-item
@@ -268,6 +111,152 @@
         <router-view></router-view>
       </el-main>
     </el-container>
+    <!-- 未开始活动对话框 -->
+    <el-dialog
+      title="选择区域 点击地点即可获得经纬度"
+      :visible.sync="addundia"
+      width="800px"
+    >
+      <!-- <mpp
+            @func="getson"
+          ></mpp> -->
+      <el-row>
+        <el-col :span="12">
+          <baidu-map
+            v-bind:style="mapStyle"
+            class="bm-view"
+            ak="pKCbOFewojmC9xuiiGwOq1MAyABiQwD8"
+            :center="center"
+            :zoom="zoom"
+            :scroll-wheel-zoom="true"
+            @click="getClickInfo"
+            @moving="syncCenterAndZoom"
+            @moveend="syncCenterAndZoom"
+            @zoomend="syncCenterAndZoom"
+          >
+            <bm-view style="width: 100%; height: 500px"></bm-view>
+            <bm-marker
+              :position="{ lng: center.lng, lat: center.lat }"
+              :dragging="true"
+              animation="BMAP_ANIMATION_BOUNCE"
+            >
+            </bm-marker>
+            <bm-control :offset="{ width: '10px', height: '10px' }">
+              <bm-auto-complete
+                v-model="keyword"
+                :sugStyle="{ zIndex: 999999 }"
+              >
+                <input
+                  type="text"
+                  placeholder="请输入搜索关键字"
+                  class="serachinput"
+                />
+              </bm-auto-complete>
+            </bm-control>
+            <bm-local-search
+              :keyword="keyword"
+              :auto-viewport="true"
+              style="width: 0px; height: 0px; overflow: hidden"
+            ></bm-local-search>
+          </baidu-map>
+        </el-col>
+        <el-col :span="12">
+          <el-form
+            label-width="150px"
+            ref="locationref"
+            :model="location"
+            :rules="locationrules"
+          >
+            <el-form-item label="通知范围(米)" prop="distance">
+              <el-input v-model="location.distance"></el-input>
+            </el-form-item>
+            <el-form-item label="走失者地点纬度" prop="latitude">
+              <div>{{ location.latitude }}</div>
+            </el-form-item>
+            <el-form-item label="走失者地点经度" prop="longitude">
+              <div>{{ location.longitude }}</div>
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                @click="send"
+                style="justify-content: center"
+                type="primary"
+                >确定</el-button
+              >
+              <el-button
+                @click="close"
+                style="justify-content: center"
+                type="primary"
+                >关闭</el-button
+              >
+            </el-form-item>
+          </el-form>
+        </el-col>
+      </el-row>
+    </el-dialog>
+    <el-dialog
+      title="选择志愿者发送消息"
+      :visible.sync="volundia"
+      width="800px"
+    >
+      <el-card>
+        <el-table
+          :data="volunteerlist"
+          border
+          stripe
+          @selection-change="handleSelectionChange"
+        >
+          <el-table-column type="selection" width="55"> </el-table-column>
+          <el-table-column type="index"></el-table-column>
+          <el-table-column label="姓名" prop="name"></el-table-column>
+        </el-table>
+        <el-button @click="sendmessage" type="primary" style="margin-top: 15px"
+          >发送消息</el-button
+        >
+        <!-- 分页区 -->
+        <!-- <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage4"
+              :page-sizes="[100, 200, 300, 400]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="400"
+            >
+            </el-pagination> -->
+      </el-card>
+    </el-dialog>
+    <!-- 创建活动对话框 -->
+
+    <el-dialog title="创建活动" :visible.sync="adddialogVisible" width="30%">
+      <!-- 内容主体区 -->
+      <el-form
+        :model="addForm"
+        :rules="addrules"
+        ref="addFormref"
+        label-width="150px"
+      >
+        <el-form-item label="请选择走失者" prop="lostId">
+          <el-select v-model="addForm.lostId" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="请输入活动名称" prop="name">
+          <el-input v-model="addForm.name"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- 底部区 -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="adddialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="upload">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -294,7 +283,7 @@ export default {
   data() {
     return {
       activeIndex: "/inaction",
-      commanderId: "",
+      commanderId: 0,
       // 志愿者对话框
       volundia: false,
       volunteerlist: [],
@@ -320,10 +309,6 @@ export default {
       place: "",
 
       unactionList: [],
-      queryInfo: {
-        currentPage: 1,
-        pageSize: 10,
-      },
       options: [],
       value: "",
       activeName: "second",
@@ -402,15 +387,15 @@ export default {
       }
     },
   },
-  props: {
-    // eslint-disable-next-line vue/no-dupe-keys
-    value: Boolean,
-    // eslint-disable-next-line vue/no-dupe-keys
-    mapHeight: {
-      type: Number,
-      default: 500,
-    },
-  },
+  // props: {
+  //   // eslint-disable-next-line vue/no-dupe-keys
+  //   value: Boolean,
+  //   // eslint-disable-next-line vue/no-dupe-keys
+  //   mapHeight: {
+  //     type: Number,
+  //     default: 500,
+  //   },
+  // },
   methods: {
     logout() {
       window.sessionStorage.clear();
@@ -536,7 +521,7 @@ export default {
       console.log("mmm" + id);
       this.$router.push({
         name: "/home",
-        params: { id: id, commanderId: this.$route.params.commanderId },
+        params: { id: id, commanderId: this.commanderId },
       });
     },
     async getActionList() {
@@ -551,14 +536,13 @@ export default {
     upload() {
       this.$refs.addFormref.validate((valid) => {
         if (!valid) return;
-        console.log(this.$route.params.commanderId);
         this.$http
           .post(
             "/command/action/",
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commanderId: this.$route.params.commanderId,
+              commanderId: this.commanderId,
             }),
             {
               headers: {
@@ -616,9 +600,11 @@ export default {
   //   console.log(res)
   // }
   created() {
-    this.commanderId = this.$route.params.commanderId;
-    this.getActionList();
-    this.getunactionlist();
+    this.commanderId = this.$route.query.commanderId;
+    console.log(this.commanderId);
+
+    // this.getActionList();
+    // this.getunactionlist();
   },
   // mounted() {
   //   this.initMapHeight();

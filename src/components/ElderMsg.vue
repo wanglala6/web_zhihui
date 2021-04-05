@@ -67,11 +67,11 @@ export default {
     },
     // 老人信息
     async getold() {
-      this.id = this.$route.query.id;
+      this.lostId = this.$route.query.lostId;
       const res = await this.$http.get("/command/lost/all");
       console.log(res.data.data);
       res.data.data.forEach((element) => {
-        if (element.id === this.id) {
+        if (element.id === this.lostId) {
           this.older = element;
           console.log(this.older);
         }
@@ -79,7 +79,7 @@ export default {
     },
   },
   mounted() {
-    console.log(this.$route.query.id);
+    console.log(this.$route.query.lostId);
     this.getold();
   },
 };

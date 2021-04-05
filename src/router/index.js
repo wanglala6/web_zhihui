@@ -35,12 +35,13 @@ const routes = [{
     {
         path: '/welcome',
         component: Welcome,
-        name: '/welcome',
+        name: 'welcome',
         redirect: '/inaction',
         children: [
             {
                 path: '/inaction',
-                component: Inaction
+                component: Inaction,
+                name: '/inaction'
             },
             {
                 path: '/unaction',
@@ -57,7 +58,8 @@ const routes = [{
         children: [
             {
                 path: '/elderMsg',
-                component: ElderMsg
+                component: ElderMsg,
+                name: '/elderMsg'
               },
               {
                   path: '/clue',

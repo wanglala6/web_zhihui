@@ -40,7 +40,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/elderMsg"
-                :route="{ path: '/elderMsg', query: { id: id } }"
+                :route="{ path: '/elderMsg', query: { lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -198,6 +198,7 @@ import {
 export default {
   data() {
     return {
+      commanderId: '',
       id: "",
       iscollapse: false,
       older: {},
@@ -211,8 +212,8 @@ export default {
     logout() {
       // window.sessionStorage.clear();
       this.$router.push({
-        name: "/welcome",
-        params: { commanderId: this.$route.params.commanderId },
+        path: "/welcome",
+        query: { commanderId: this.$route.query.commanderId },
       });
     },
     // jq:点击按钮切换折叠
@@ -297,9 +298,10 @@ export default {
   },
   created() {
     this.connect();
-    console.log(this.$route.params.id + "xx");
-    this.id = this.$route.params.id;
-    console.log(this.id);
+    this.lostId = this.$route.query.lostId; // 走失者id
+this.id = this.$route.query.id // 活动id
+this.commanderId = this.$route.query.commanderId
+    console.log(this.lostId);
   },
 };
 </script>

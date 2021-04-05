@@ -100,9 +100,10 @@ export default {
                 "token",
                 Cookies.get("COOKIE-TOKEN")
               );
+              var id = res.data.data.id;
               this.$router.push({
-                name: "/welcome",
-                params: { commanderId: res.data.data.id },
+                path: "/inaction",
+                query: { commanderId: id },
               });
             } else {
               alert("登录失败，请重试");
