@@ -5,12 +5,13 @@
         <div class="activity" v-for="item in actionList" :key="item.id">
           <div class="img">
             <a @click="jump(item)">
-              <img src="../assets/logo.jpg" style="height: 100%; width: 100%" />
+              <img :src="item.lost.avatar" style="height: 100%; width: 100%" />
             </a>
           </div>
           <div class="activity_head">
-            <h3>{{ item.name }}</h3>
+            <p>{{ item.name }}</p>
             <p>指挥员: {{ item.commander.name }}</p>
+            <p>走失者：{{ item.lost.name }}</p>
             <span class="time">创建时间: {{ item.createTime }}</span>
           </div>
         </div>
@@ -25,17 +26,26 @@ export default {
       actionList: [],
       queryInfo: {
         status: 1,
-        pageSize: 9999,
-        currentPage: 1
+        pageSize: 1000,
+        currentPage: 1,
+        commanderId: this.$route.query.commanderId,
       },
     };
   },
   methods: {
+    // 删除行动
+    delete(id) {
+      this.$http({
+        methods: "put",
+        url: "/command/action/" + id,
+      }).then((res) => {});
+    },
     async getActionList() {
-      const { data: res } = await this.$http.get(
-        "/command/action/search-like",
-        this.queryInfo
-      );
+      const { data: res } = await this.$http({
+        method: "get",
+        url: "/command/action/search-like",
+        params: this.queryInfo,
+      });
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
     },
@@ -48,7 +58,7 @@ export default {
         query: {
           lostId: item.lostId,
           commanderId: this.$route.query.commanderId,
-          id: item.id
+          id: item.id,
         },
       });
     },
@@ -73,10 +83,10 @@ export default {
   width: 200px;
 }
 .activity_head {
- text-align: center;
+  text-align: center;
 }
-.time{
-    color: #999;
-    font-size: 12px;
+.time {
+  color: #999;
+  font-size: 12px;
 }
 </style>

@@ -3,12 +3,14 @@
     <div class="activity" v-for="item in unactionList" :key="item.id">
       <div class="img">
         <a @click="undia(item)">
-          <img src="../assets/logo.jpg" style="height: 100%; width: 100%" />
+          <img :src="item.lost.avatar" style="height: 100%; width: 100%" />
         </a>
       </div>
       <div class="activity_head">
-        <h3>{{ item.name }}</h3>
+        <p>{{ item.name }}</p>
         <p>指挥员: {{ item.commander.name }}</p>
+        <p>走失者：{{ item.lost.name }}</p>
+
         <span class="time">创建时间: {{ item.createTime }}</span>
       </div>
     </div>
@@ -149,10 +151,11 @@ export default {
   },
   data() {
     return {
-          queryInfo: {
+      queryInfo: {
         status: 0,
         pageSize: 9999,
-        currentPage: 1
+        currentPage: 1,
+        commanderId: this.$route.query.commanderId,
       },
       action: {},
       ids: [], // 征集消息志愿者
@@ -170,12 +173,12 @@ export default {
       keyword: "",
       mapStyle: {
         width: "100%",
-        height: this.mapHeight + "px",
+        height: this.mapHeight2 + "px",
       },
       center: { lng: 116.404, lat: 39.915 },
       zoom: 15,
 
-      mapHeight: 400 + "px",
+      mapHeight2: 400 + "px",
       place: "",
       /**/
       locationrules: {
@@ -312,12 +315,14 @@ export default {
       this.$emit("cancel", this.showMapComponent);
     },
     getunactionlist() {
-      this.$http
-        .get("/command/action/search-like", this.queryInfo)
-        .then((res) => {
-          console.log(res);
-          this.unactionList = res.data.data;
-        });
+      this.$http({
+        method: "get",
+        url: "/command/action/search-like",
+        params: this.queryInfo,
+      }).then((res) => {
+        console.log(res);
+        this.unactionList = res.data.data;
+      });
     },
     // 未开始行动对话框
     undia(item) {
@@ -365,10 +370,10 @@ export default {
   width: 200px;
 }
 .activity_head {
- text-align: center;
+  text-align: center;
 }
-.time{
-    color: #999;
-    font-size: 12px;
+.time {
+  color: #999;
+  font-size: 12px;
 }
 </style>

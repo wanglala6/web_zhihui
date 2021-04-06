@@ -17,7 +17,7 @@ import Inaction from '@/components/Inaction'
 import Unaction from '@/components/Unaction'
 import Weather from "@/components/Weather";
 import ValSearch from "@/components/ValSearch";
-
+import Volunteer from "@/components/Volunteer"
 Vue.use(VueRouter)
 
 const routes = [{
@@ -35,7 +35,6 @@ const routes = [{
     {
         path: '/welcome',
         component: Welcome,
-        name: 'welcome',
         redirect: '/inaction',
         children: [
             {
@@ -46,6 +45,10 @@ const routes = [{
             {
                 path: '/unaction',
                 component: Unaction
+            },
+            {
+                path: '/volunteer',
+                component: Volunteer
             }
         ]
     },

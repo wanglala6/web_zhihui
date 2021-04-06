@@ -100,6 +100,12 @@
                 >未开始行动</el-menu-item
               >
             </el-submenu>
+            <el-menu-item
+              index="/volunteer"
+              route="/volunteer"
+            >
+              志愿者管理
+            </el-menu-item>
           </el-menu>
         </el-col>
         <el-col :span="2" style="margin-top: 20px">
@@ -684,5 +690,4 @@ export default {
   overflow: hidden;
   margin-top: 20px;
 }
-
 </style>
