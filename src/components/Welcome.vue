@@ -100,10 +100,7 @@
                 >未开始行动</el-menu-item
               >
             </el-submenu>
-            <el-menu-item
-              index="/volunteer"
-              route="/volunteer"
-            >
+            <el-menu-item index="/volunteer" route="/volunteer">
               志愿者管理
             </el-menu-item>
           </el-menu>
@@ -561,9 +558,13 @@ export default {
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
               this.getunactionlist();
-
+              this.getActionList();
               this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
+              this.$router.push({
+                path: "/unaction",
+                query: { commanderId: this.commanderId },
+              });
             } else {
               this.$message("创建活动失败");
             }

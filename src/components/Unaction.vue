@@ -49,11 +49,7 @@
                 v-model="keyword"
                 :sugStyle="{ zIndex: 999999 }"
               >
-                <input
-                  type="text"
-                  placeholder="请输入搜索关键字"
-                  class="serachinput"
-                />
+                <input type="text" class="serachinput" />
               </bm-auto-complete>
             </bm-control>
             <bm-local-search
@@ -70,6 +66,9 @@
             :model="location"
             :rules="locationrules"
           >
+            <el-form-item label="走失者地址">
+              <span>{{ location.lastPlace }}</span>
+            </el-form-item>
             <el-form-item label="通知范围(米)" prop="distance">
               <el-input v-model="location.distance"></el-input>
             </el-form-item>
@@ -251,11 +250,13 @@ export default {
           receiveIds: this.ids,
           lostHours: this.action.lostHours,
           lostPlace: this.action.lost.lastPlace,
+          name: this.action.lost.name,
         },
         headers: {
           "Content-Type": "application/json",
         },
       }).then((res) => {
+        console.log(res);
         if (res.data.code === 200) {
           this.$message.success("发送成功");
           this.volundia = false;
@@ -326,10 +327,13 @@ export default {
     },
     // 未开始行动对话框
     undia(item) {
-      this.addundia = true;
       this.action.actionId = item.id;
       this.action.actionName = item.name;
       this.action = item;
+      this.keyword = item.lost.lastPlace;
+      this.showMapComponent = item.lost.lastPlace;
+      this.location.lastPlace = this.action.lost.lastPlace;
+      this.addundia = true;
     },
     send() {
       console.log(this.location);

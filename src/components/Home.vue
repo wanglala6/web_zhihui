@@ -300,7 +300,7 @@ export default {
     this.lostId = this.$route.query.lostId; // 走失者id
 this.id = this.$route.query.id // 活动id
 this.commanderId = this.$route.query.commanderId
-    console.log(this.lostId);
+    console.log(this.commanderId);
   },
 };
 </script>
