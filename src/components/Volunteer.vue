@@ -16,13 +16,13 @@
         >添加志愿者</el-button
       >
     </div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column prop="name" label="志愿者" width="200" align="center">
+    <el-table :data="tableData" style="width: 100%">
+      <el-table-column prop="name" label="志愿者" width="140" align="center">
       </el-table-column>
       <el-table-column
         prop="telephone"
         label="电话"
-        width="200"
+        width="180"
         align="center"
         sort
       >
@@ -30,7 +30,7 @@
       <el-table-column
         prop="residence.name"
         label="地址"
-        width="300"
+        width="280"
         align="center"
         sort
       >
@@ -52,7 +52,8 @@
         align="center"
       >
       </el-table-column>
-      <el-table-column label="操作" width="200" align="center">
+
+      <el-table-column label="操作" width="160" align="center">
         <template slot-scope="scope">
           <el-button
             type="primary"
@@ -60,12 +61,12 @@
             circle
             @click="edit(scope.row)"
           ></el-button>
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              @click="del(scope.row)"
-            ></el-button>
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            circle
+            @click="del(scope.row)"
+          ></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -103,7 +104,7 @@
         <el-form-item label="账户" prop="account">
           <el-input v-model="newvol.account"></el-input>
         </el-form-item>
-         <el-form-item label="密码" prop="password">
+        <el-form-item label="密码" prop="password">
           <el-input v-model="newvol.password"></el-input>
         </el-form-item>
         <el-form-item label="QQ" prop="qq">
