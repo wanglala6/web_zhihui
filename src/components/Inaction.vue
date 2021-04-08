@@ -9,9 +9,9 @@
             </a>
           </div>
           <div class="activity_head">
-            <p>{{ item.name }}</p>
-            <p>指挥员: {{ item.commander.name }}</p>
-            <p>走失者：{{ item.lost.name }}</p>
+            <div>{{ item.name }}</div>
+            <div>指挥员: {{ item.commander.name }}</div>
+            <div>走失者：{{ item.lost.name }}</div>
             <span class="time">创建时间: {{ item.createTime }}</span>
           </div>
         </div>
@@ -72,7 +72,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .activity {
-  height: 300px;
+  height: 250px;
   width: 200px;
   margin: 10px;
   float: left;

@@ -18,6 +18,7 @@ import Unaction from '@/components/Unaction'
 import Weather from "@/components/Weather";
 import ValSearch from "@/components/ValSearch";
 import Volunteer from "@/components/Volunteer"
+import Monitor from "@/components/Monitor"
 Vue.use(VueRouter)
 
 const routes = [{
@@ -59,6 +60,10 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/monitor',
+            component: Monitor
+          },
             {
                 path: '/elderMsg',
                 component: ElderMsg,

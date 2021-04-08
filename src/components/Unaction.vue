@@ -7,11 +7,18 @@
         </a>
       </div>
       <div class="activity_head">
-        <p>{{ item.name }}</p>
-        <p>指挥员: {{ item.commander.name }}</p>
-        <p>走失者：{{ item.lost.name }}</p>
+        <div>{{ item.name }}</div>
+        <div>指挥员: {{ item.commander.name }}</div>
+        <div>走失者：{{ item.lost.name }}</div>
 
         <span class="time">创建时间: {{ item.createTime }}</span>
+        <!-- <el-button class="del_btn" icon="el-icon-delete" circle></el-button> -->
+        <el-button @click="del(item)" size="mini" class="del_btn"
+          >删除</el-button
+        >
+        <el-button @click="editdia(item)" size="mini" class="edltbtn"
+          >修改</el-button
+        >
       </div>
     </div>
     <!-- 未开始活动对话框 -->
@@ -96,6 +103,7 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <!-- 发送消息 -->
     <el-dialog
       title="选择志愿者发送消息"
       :visible.sync="volundia"
@@ -128,6 +136,17 @@
             </el-pagination> -->
       </el-card>
     </el-dialog>
+    <!-- 修改名字 -->
+    <el-dialog :visible.sync="diaedit" width="30%">
+      <el-form :model="form" label-width="80px">
+        <el-form-item label="活动名称">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item class="text-align:center" label-width="45%">
+          <el-button @click="edit" type="primary">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -150,6 +169,10 @@ export default {
   },
   data() {
     return {
+      diaedit: false,
+      form: {
+        name: "",
+      },
       queryInfo: {
         status: 0,
         pageSize: 9999,
@@ -223,6 +246,46 @@ export default {
     },
   },
   methods: {
+    editdia(row) {
+      this.diaedit = true;
+      this.form.name = row.name;
+      this.form.id = row.id;
+    },
+    edit() {
+      const a = JSON.stringify({
+        name: this.form.name,
+      });
+      this.$http({
+        method: "put",
+        url: "/command/action/" + this.form.id,
+        data: a,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        if (res.data.code === 200) {
+          this.$message.success("修改成功");
+          this.getunactionlist();
+          this.diaedit = false;
+        } else {
+          this.$message("修改失败");
+        }
+      });
+    },
+    del(row) {
+      this.$http({
+        methods: "delete",
+        url: "/command/action/" + row.id,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.code === 200) {
+          this.$message.success("删除成功");
+          this.getunactionlist();
+        } else {
+          this.$message("删除失败");
+        }
+      });
+    },
     close() {
       this.addundia = false;
       this.$refs.locationref.resetFields();
@@ -260,6 +323,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success("发送成功");
           this.volundia = false;
+          this.addundia = false;
         } else {
           this.$message("发送失败");
         }
@@ -363,7 +427,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .activity {
-  height: 300px;
+  padding: 20px;
+  height: 250px;
   width: 200px;
   margin: 10px;
   float: left;
@@ -379,5 +444,17 @@ export default {
 .time {
   color: #999;
   font-size: 12px;
+}
+.del_btn {
+  display: none;
+}
+.edltbtn {
+  display: none;
+}
+.activity:hover .del_btn {
+  display: inline-block;
+}
+.activity:hover .edltbtn {
+  display: inline-block;
 }
 </style>
