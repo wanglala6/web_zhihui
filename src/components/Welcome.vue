@@ -1,61 +1,8 @@
 <template>
   <div class="bgc">
     <el-container>
-      <!-- <el-main>
-        <el-row class="nav">
-          <el-col :span="22" style="margin-top: 20px">
-            <el-tabs v-model="activeName" @tab-click="handleClick">
-              <el-tab-pane label="正在行动" name="first">
-                <div class="activity" v-for="item in actionList" :key="item.id">
-                  <div class="img">
-                    <a @click="jump(item.id)">
-                      <img
-                        src="../assets/logo.jpg"
-                        style="height: 100%; width: 100%"
-                      />
-                    </a>
-                  </div>
-                  <div class="activity_head">
-                    <p>{{ item.name }}</p>
-                    <p>指挥员: {{ item.commander.name }}</p>
-                    <p>创建时间: {{ item.createTime }}</p>
-                  </div>
-                </div>
-              </el-tab-pane>
-              <el-tab-pane label="已完成行动" name="second"
-                >配置管理</el-tab-pane
-              >
-              <el-tab-pane label="遗留行动" name="third">角色管理</el-tab-pane> -->
-      <!-- <el-tab-pane label="未开始行动" name="forth">
-                <div
-                  class="activity"
-                  v-for="item in unactionList"
-                  :key="item.id"
-                >
-                  <div class="img">
-                    <a @click="undia(item)">
-                      <img
-                        src="../assets/logo.jpg"
-                        style="height: 100%; width: 100%"
-                      />
-                    </a>
-                  </div>
-                  <div class="activity_head">
-                    <p>{{ item.name }}</p>
-                    <p>指挥员: {{ item.commander.name }}</p>
-                    <p>创建时间: {{ item.createTime }}</p>
-                  </div>
-                </div>
-              </el-tab-pane> -->
-      <!-- </el-tabs>
-          </el-col> -->
-      <!-- <el-col :span="2" style="margin-top: 20px">
-            <el-button type="primary" @click="dialog">创建行动</el-button>
-          </el-col> -->
-      <!-- </el-row> -->
-      <!-- </el-main> -->
-         <el-header>
-        <el-row :gutter="100">
+      <el-header>
+        <el-row>
           <el-col :span="6">
             <div style="width: 80px; height: 80px; border-radius: 50%">
               <img
@@ -71,48 +18,49 @@
           </el-col>
           <el-col :span="6">
             <el-button type="info" @click="logout" style="float: right"
-              >退出</el-button
-            >
+              >退出</el-button>
           </el-col>
         </el-row>
       </el-header>
-      <el-row class="nav">
-        <el-col :span="22" style="margin-top: 20px">
-          <el-menu class="el-menu-demo" mode="horizontal" :router="true">
-            <el-submenu index="1">
-              <template slot="title">活动</template>
-              <el-menu-item
-                index="/inaction"
-                :route="{
-                  path: '/inaction',
-                  query: { commanderId: commanderId },
-                }"
-                >正在行动</el-menu-item
-              >
-              <el-menu-item index="2-2">已完成行动</el-menu-item>
-              <el-menu-item index="2-3">遗留行动</el-menu-item>
-              <el-menu-item
-                index="/unaction"
-                :route="{
-                  path: '/unaction',
-                  query: { commanderId: commanderId },
-                }"
-                >未开始行动</el-menu-item
-              >
-            </el-submenu>
-            <el-menu-item index="/volunteer" route="/volunteer">
-              志愿者管理
-            </el-menu-item>
-          </el-menu>
-        </el-col>
-        <el-col :span="2" style="margin-top: 20px">
-          <el-button type="primary" @click="dialog">创建行动</el-button>
-        </el-col>
-      </el-row>
-      <!-- 主体区 -->
-      <el-main>
-        <router-view></router-view>
-      </el-main>
+      <div class="container">
+        <el-row class="nav">
+          <el-col :span="22" style="margin-top: 20px">
+            <el-menu class="el-menu-demo" mode="horizontal" :router="true">
+              <el-submenu index="1">
+                <template slot="title">活动</template>
+                <el-menu-item
+                  index="/inaction"
+                  :route="{
+                    path: '/inaction',
+                    query: { commanderId: commanderId },
+                  }"
+                  >正在行动</el-menu-item
+                >
+                <el-menu-item index="2-2">已完成行动</el-menu-item>
+                <el-menu-item index="2-3">遗留行动</el-menu-item>
+                <el-menu-item
+                  index="/unaction"
+                  :route="{
+                    path: '/unaction',
+                    query: { commanderId: commanderId },
+                  }"
+                  >未开始行动</el-menu-item
+                >
+              </el-submenu>
+              <el-menu-item index="/volunteer" route="/volunteer">
+                志愿者管理
+              </el-menu-item>
+            </el-menu>
+          </el-col>
+          <el-col :span="2" style="margin-top: 20px">
+            <el-button type="primary" @click="dialog">创建行动</el-button>
+          </el-col>
+        </el-row>
+        <!-- 主体区 -->
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </div>
     </el-container>
     <!-- 未开始活动对话框 -->
     <el-dialog
@@ -216,17 +164,7 @@
         <el-button @click="sendmessage" type="primary" style="margin-top: 15px"
           >发送消息</el-button
         >
-        <!-- 分页区 -->
-        <!-- <el-pagination
-              @size-change="handleSizeChange"
-              @current-change="handleCurrentChange"
-              :current-page="currentPage4"
-              :page-sizes="[100, 200, 300, 400]"
-              :page-size="100"
-              layout="total, sizes, prev, pager, next, jumper"
-              :total="400"
-            >
-            </el-pagination> -->
+
       </el-card>
     </el-dialog>
     <!-- 创建活动对话框 -->
@@ -390,15 +328,7 @@ export default {
       }
     },
   },
-  // props: {
-  //   // eslint-disable-next-line vue/no-dupe-keys
-  //   value: Boolean,
-  //   // eslint-disable-next-line vue/no-dupe-keys
-  //   mapHeight: {
-  //     type: Number,
-  //     default: 500,
-  //   },
-  // },
+
   methods: {
     logout() {
       window.sessionStorage.clear();
@@ -414,10 +344,7 @@ export default {
         new Date("2021-03-18 16:14").getTime() -
         new Date("2021-03-17 16:14").getTime();
       const stayHour = Math.floor(staytimeGap / (3600 * 1000));
-      //  const leave1 = staytimeGap % (3600 * 1000);
-      // const stayMin = Math.floor(leave1 / (60 * 1000));
-      //   const leave2 = leave1 % (60 * 1000);
-      //  const staySec = Math.floor(leave2 / 1000);
+
       this.action.lostHours = stayHour;
       console.log(this.action);
       this.$http({
@@ -461,14 +388,7 @@ export default {
       }
       this.ids = arr;
     },
-    //     // 监听页码值改变事件
-    // handleCurrentChange(newpage){
 
-    // },
-    //     // 监听pagesize改变事件
-    //     handleSizeChange(newsize) {
-    //       console.log(newsize);
-    //     },
     // 未开始行动对话框
     undia(item) {
       this.addundia = true;
@@ -602,29 +522,19 @@ export default {
       this.$emit("cancel", this.showMapComponent);
     },
   },
-  // async mounted () {
-  //   const { data: res } = await this.$http.post('command/action', this.loginform)
-  //   console.log(res)
-  // }
+
   created() {
     this.commanderId = this.$route.query.commanderId;
     console.log(this.commanderId);
-
-    // this.getActionList();
-    // this.getunactionlist();
   },
-  // mounted() {
-  //   this.initMapHeight();
-  //   this.map();
-  //   window.onresize = () => {
-  //     return (() => {
-  //       this.mapHeight = window.innerHeight + "px";
-  //     })();
-  //   };
-  // },
+
 };
 </script>
 <style lang="less" scoped>
+.container {
+  margin: 0 220px
+}
+
 .el-table {
   font-size: 12px;
 }
@@ -635,12 +545,10 @@ export default {
 .bgc {
   height: 100%;
   width: 100%;
-  // background-color: #f6f8fa;
 }
+
 .el-container {
   height: 100%;
-
-  margin: 0 220px;
   background-color: #fff;
 }
 .head {
@@ -659,9 +567,6 @@ export default {
   height: 150px;
   width: 200px;
 }
-//.activity_head {
-//  text-align: center;
-//}
 
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
