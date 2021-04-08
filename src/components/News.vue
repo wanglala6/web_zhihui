@@ -59,6 +59,15 @@
     >
       <p>{{this.clue_msg.msg}}</p>
       <p></p>
+      <div class="demo-image__preview" v-for="img in clue_msg.imgs" :key="img.id">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="img"
+          :preview-src-list="clue_msg.imgs"
+          z-index = "99999999999"
+        >
+        </el-image>
+      </div>
       <div style="position:absolute;right:10px;">
         <p>{{this.clue_msg.time}}</p>
       </div>
@@ -72,7 +81,8 @@
       <p class="pen">{{identify_msg.volunteerName}}：</p>
       <p class="default">{{identify_msg.msg}}</p>
       <p>提交的用于识别的图片：</p>
-      <div class="demo-image__preview">
+      <div class="demo-image__preview" @click="not_see_identify"
+          >
         <el-image
           style="width: 100px; height: 100px"
           :src="identify_msg.url"
@@ -85,7 +95,7 @@
       :visible.sync="see_random_report"
       width="700px"
     >
-      <span>{{random_report_msg.msg}}</span>
+      <span>{{random_report_msg}}</span>
     </el-dialog>
     <el-dialog
       title="开始报备"
@@ -110,7 +120,7 @@
 </template>
 
 <script>
-import {devServer} from "../../vue.config"
+import { devServer } from "../../vue.config"
 
 export default {
   data() {
@@ -132,6 +142,9 @@ export default {
     };
   },
   methods: {
+    not_see_identify() {
+      this.see_identify = false;
+    },
     seeDetail(item) {
       if (this.type === "通知") {
         this.see_notice_detail(item);
@@ -154,24 +167,31 @@ export default {
     console.log(item)
   },
   see_clue_detail(item) {
-    this.see_clue = true
-    this.clue_msg.msg = item.msg
-    this.clue_msg.time = item.createTime
-    console.log(item)
+      this.see_clue = true
+      this.clue_msg.msg = item.content.content
+      this.clue_msg.time = item.createTime
+      this.clue_msg.imgs = []
+      var _this = this
+      item.content.imgs.forEach((element) => {
+        _this.clue_msg.imgs.push(devServer.proxy["/"].target + element)
+      })
+    console.log(this.clue_msg.imgs)
   },
   see_identify_detail(item) {
     this.see_identify = true
     console.log(item)
     this.identify_msg.url = devServer.proxy["/"].target + "/files/download?filename=" + item.imgUrl
-    this.identify_msg.srcList = [this.identify_msg.url,this.identify_msg.url]
+    this.identify_msg.srcList = [this.identify_msg.url, this.identify_msg.url]
     this.identify_msg.volunteerName = item.volunteerName
     this.identify_msg.msg = item.msg
     this.identify_msg.time = item.createTime
   },
   see_random_report_detail(item) {
     this.see_random_report = true
-    this.random_report_msg = item.msg
+    this.random_report_msg = item.content.content
+    this.random_report_imgs = item.content.imgs
     console.log(item)
+    console.log(this.random_report_msg)
   },
   see_start_report_detail(item) {
     this.see_start_report = true
@@ -203,7 +223,7 @@ export default {
   },
   // 获取人脸识别数据
   async getIdentifyData() {
-    const {data: res} = await this.$http.get(
+    const { data: res } = await this.$http.get(
       "/phone/identify/by-action/" + this.actionId
     );
     console.log("获取人脸识别记录成功!");
