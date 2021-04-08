@@ -1,28 +1,6 @@
 <template>
   <div class="bgc">
     <el-container>
-      <el-header>
-        <el-row :gutter="100">
-          <el-col :span="6">
-            <div style="width: 80px; height: 80px; border-radius: 50%">
-              <img
-                src="../assets/logo.jpg"
-                style="height: 100%; width: 100%; border-radius: 50%"
-              />
-            </div>
-          </el-col>
-          <el-col :span="12" class="head_col">
-            <span class="head" style="text-align: center; color: #ffffff"
-              >蓝天救援队指挥中心</span
-            >
-          </el-col>
-          <el-col :span="6">
-            <el-button type="info" @click="logout" style="float: right"
-              >退出</el-button
-            >
-          </el-col>
-        </el-row>
-      </el-header>
       <!-- <el-main>
         <el-row class="nav">
           <el-col :span="22" style="margin-top: 20px">
@@ -76,6 +54,28 @@
           </el-col> -->
       <!-- </el-row> -->
       <!-- </el-main> -->
+         <el-header>
+        <el-row :gutter="100">
+          <el-col :span="6">
+            <div style="width: 80px; height: 80px; border-radius: 50%">
+              <img
+                src="../assets/logo.jpg"
+                style="height: 100%; width: 100%; border-radius: 50%"
+              />
+            </div>
+          </el-col>
+          <el-col :span="12" class="head_col">
+            <span class="head" style="text-align: center; color: #ffffff"
+              >蓝天救援队指挥中心</span
+            >
+          </el-col>
+          <el-col :span="6">
+            <el-button type="info" @click="logout" style="float: right"
+              >退出</el-button
+            >
+          </el-col>
+        </el-row>
+      </el-header>
       <el-row class="nav">
         <el-col :span="22" style="margin-top: 20px">
           <el-menu class="el-menu-demo" mode="horizontal" :router="true">
@@ -100,10 +100,7 @@
                 >未开始行动</el-menu-item
               >
             </el-submenu>
-            <el-menu-item
-              index="/volunteer"
-              route="/volunteer"
-            >
+            <el-menu-item index="/volunteer" route="/volunteer">
               志愿者管理
             </el-menu-item>
           </el-menu>
@@ -561,9 +558,13 @@ export default {
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
               this.getunactionlist();
-
+              this.getActionList();
               this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
+              this.$router.push({
+                path: "/unaction",
+                query: { commanderId: this.commanderId },
+              });
             } else {
               this.$message("创建活动失败");
             }
@@ -634,7 +635,7 @@ export default {
 .bgc {
   height: 100%;
   width: 100%;
-  background-color: #f6f8fa;
+  // background-color: #f6f8fa;
 }
 .el-container {
   height: 100%;

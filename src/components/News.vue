@@ -36,24 +36,21 @@
                 <div class="notice-right-down">{{ item.msg }}</div>
               </div>
               <div class="see-detail-right">
-                <el-link type="primary" @click="seeDetail(item)">查看详情</el-link>
+                <el-link type="primary" @click="seeDetail(item)"
+                  >查看详情</el-link>
               </div>
             </div>
           </el-card>
         </el-timeline-item>
       </el-timeline>
     </div>
-    <el-dialog
-      title="通知详情"
-      :visible.sync="see_notice"
-      width="500px"
-    >
-      <p>{{this.notice_msg.msg}}</p>
+    <el-dialog title="通知详情" :visible.sync="see_notice" width="500px">
+      <p>{{ this.notice_msg.msg }}</p>
       <p></p>
-      <div style="position:absolute;right:10px;">
-        <p>{{this.notice_msg.time}}</p>
+      <div style="position: absolute; right: 10px">
+        <p>{{ this.notice_msg.time }}</p>
       </div>
-      <p> </p>
+      <p></p>
     </el-dialog>
     <el-dialog
       title="线索详情"

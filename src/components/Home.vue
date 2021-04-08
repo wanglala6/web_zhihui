@@ -106,6 +106,20 @@
                 <span>监控模块</span>
               </template>
               <!-- 二级菜单 -->
+
+                   <el-menu-item
+                index="/monitor"
+                :route="{ path: '/monitor', query: { id: id } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-mobile"></i>
+                  <!-- 文本 -->
+                  <span>队员报备</span>
+                </template>
+              </el-menu-item>
+              <!-- 二级菜单 -->
+
               <el-menu-item
                 index="/post"
                 :route="{ path: '/post', query: { id: id } }"
@@ -300,7 +314,7 @@ export default {
     this.lostId = this.$route.query.lostId; // 走失者id
 this.id = this.$route.query.id // 活动id
 this.commanderId = this.$route.query.commanderId
-    console.log(this.lostId);
+    console.log(this.commanderId);
   },
 };
 </script>
