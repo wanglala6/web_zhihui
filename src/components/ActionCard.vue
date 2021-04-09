@@ -5,6 +5,7 @@
       v-bind:class="{ 'action-img-hover': isHover }"
       @mouseenter="showBotton"
       @mouseleave="hideBotton"
+      @click="jump(action)"
     >
       <img
         :class="{ 'action-img-hover': isHover }"
@@ -118,6 +119,19 @@ export default {
         } else {
           this.$message("修改失败");
         }
+      });
+    },
+    jump(item) {
+      console.log(this.$route.query.commanderId);
+
+      console.log("mmm", item.lostId);
+      this.$router.push({
+        path: "/elderMsg",
+        query: {
+          lostId: item.lostId,
+          commanderId: this.$route.query.commanderId,
+          id: item.id,
+        },
       });
     },
   },
