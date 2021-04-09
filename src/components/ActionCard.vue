@@ -76,7 +76,7 @@ export default {
   props: ["action"],
   methods: {
     showBotton: function () {
-      this.isHover = true;
+      this.isHover = false;
     },
     hideBotton: function () {
       this.isHover = false;
