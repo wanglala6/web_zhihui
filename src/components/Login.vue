@@ -100,9 +100,14 @@ export default {
                 "token",
                 Cookies.get("COOKIE-TOKEN")
               );
+              // 存储登陆对象
+              window.sessionStorage.setItem(
+                "user",
+                JSON.stringify(res.data.data)
+              )
               var id = res.data.data.id;
               this.$router.push({
-                path: "/inaction",
+                path: "/inAction",
                 query: { commanderId: id },
               });
             } else {

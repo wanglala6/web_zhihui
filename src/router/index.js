@@ -13,12 +13,14 @@ import NewsEdit from "../components/NewsEdit"
 import News from "../components/News"
 import StartNewsDetail from "@/components/StartNewsDetail";
 import VolunteerStatus from '@/components/VolunteerStatus'
-import Inaction from '@/components/Inaction'
-import Unaction from '@/components/Unaction'
+import UnAction from '@/components/Unaction'
 import Weather from "@/components/Weather";
 import ValSearch from "@/components/ValSearch";
 import Volunteer from "@/components/Volunteer"
 import Monitor from "@/components/Monitor"
+import Action from "@/components/Action"
+import InAction from "@/components/InAction"
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -36,16 +38,24 @@ const routes = [{
     {
         path: '/welcome',
         component: Welcome,
-        redirect: '/inaction',
+        redirect: '/action',
         children: [
             {
-                path: '/inaction',
-                component: Inaction,
-                name: '/inaction'
-            },
-            {
-                path: '/unaction',
-                component: Unaction
+                path: '/action',
+                component: Action,
+                name: '/action',
+                children: [
+                  {
+                    path: '/inAction',
+                    component: InAction,
+                    name: '/inAction'
+                  },
+                  {
+                    path: '/unAction',
+                    component: UnAction,
+                    name: '/unAction'
+                  }
+                ]
             },
             {
                 path: '/volunteer',

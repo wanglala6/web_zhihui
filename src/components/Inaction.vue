@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="22" style="margin-top: 20px">
+      <el-col :span="24">
         <div class="activity" v-for="item in actionList" :key="item.id">
           <div class="img">
             <a @click="jump(item)">
