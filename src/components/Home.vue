@@ -281,7 +281,7 @@ export default {
     },
     // jq：stomp监听消息队列相关函数
     onConnected: function (frame) {
-      var topic = "/queue/1_commander";
+      var topic = "/queue/" + this.id + "_commander";
       // ---订阅频道
       this.client.subscribe(topic, this.responseCallback, this.onFailed);
     },
@@ -312,8 +312,8 @@ export default {
   created() {
     this.connect();
     this.lostId = this.$route.query.lostId; // 走失者id
-this.id = this.$route.query.id // 活动id
-this.commanderId = this.$route.query.commanderId
+    this.id = this.$route.query.id // 活动id
+    this.commanderId = this.$route.query.commanderId
     console.log(this.commanderId);
   },
 };
