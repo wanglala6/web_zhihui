@@ -1,14 +1,30 @@
 <template>
   <div class="action">
-    <div class="action-img" @mouseenter="showBotton" @mouseleave="hideBotton">
-      <img style="width: 100%; height: 100%" :src="action.lost.avatar" />
+    <div
+      class="action-img"
+      v-bind:class="{ 'action-img-hover': isHover }"
+      @mouseenter="showBotton"
+      @mouseleave="hideBotton"
+    >
+      <img
+        :class="{ 'action-img-hover': isHover }"
+        style="width: 100%; height: 100%"
+        :src="action.lost.avatar"
+      />
       <div class="action-img-botton" v-if="isHover">
-        <el-button @click="del(item)" size="mini" class="del_btn"
-          >删除</el-button
-        >
-        <el-button @click="editdia(item)" size="mini" class="edltbtn"
-          >修改</el-button
-        >
+        <div class="action-img-title">{{ action.lost.name }}</div>
+        <div class="action-img-btn">
+          <el-button
+            @click="del(action)"
+            size="mini"
+            class="del-btn"
+            v-if="action.status == 0"
+            >删除</el-button
+          >
+          <el-button @click="editdia(action)" size="mini" class="edit-btn"
+            >修改</el-button
+          >
+        </div>
       </div>
     </div>
     <div class="action_head">
@@ -30,23 +46,80 @@
         <div style="margin-left: 3px">{{ action.createTime }}</div>
       </div>
     </div>
+
+    <!-- 修改名字 -->
+    <el-dialog :visible.sync="diaedit" width="30%">
+      <el-form :model="form" label-width="80px">
+        <el-form-item label="活动名称">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item class="text-align:center" label-width="45%">
+          <el-button @click="edit" type="primary">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 <script>
 export default {
   data() {
     return {
-        isHover: false
+      isHover: true,
+      diaedit: false,
+      form: {
+        name: "",
+        id: "",
+      },
     };
   },
   props: ["action"],
   methods: {
     showBotton: function () {
-        this.isHover = true;
+      this.isHover = true;
     },
     hideBotton: function () {
-        this.isHover = false;
-    }
+      this.isHover = false;
+    },
+    del(row) {
+      this.$http({
+        methods: "delete",
+        url: "/command/action/" + row.id,
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.code === 200) {
+          this.$message.success("删除成功");
+          this.getunactionlist();
+        } else {
+          this.$message("删除失败");
+        }
+      });
+    },
+    editdia(row) {
+      this.diaedit = true;
+      this.form.name = row.name;
+      this.form.id = row.id;
+    },
+    edit() {
+      const a = JSON.stringify({
+        name: this.form.name,
+      });
+      this.$http({
+        method: "put",
+        url: "/command/action/" + this.form.id,
+        data: a,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        if (res.data.code === 200) {
+          this.$message.success("修改成功");
+          this.getunactionlist();
+          this.diaedit = false;
+        } else {
+          this.$message("修改失败");
+        }
+      });
+    },
   },
 };
 </script>
@@ -76,10 +149,11 @@ export default {
   width: 100%;
   height: 150px;
   position: relative;
+  border-radius: 5px;
 }
 
 .action-img-hover {
-  background: #000;
+  background: #2b2b27;
 }
 
 .action-img img {
@@ -87,15 +161,39 @@ export default {
   border-top-right-radius: 5px;
 }
 
-.action-img img:hover {
+.action-img-title {
+  text-align: center;
+  color: #ffffff;
+  font-size: 18px;
+  margin-bottom: 45px;
+}
+
+.action-img-btn {
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+}
+
+.action-img-hover {
   opacity: 0.6;
   filter: alpha(opacity=60);
 }
 
 .action-img-botton {
   position: absolute;
-  left: 20%;
-  top: 50%;
+  left: 50%;
+  top: 20%;
+  width: 150px;
+  margin-left: -75px;
+}
+
+.del-btn,
+.edit-btn {
+  background-color: #000;
+  opacity: 0.6;
+  color: #fff;
 }
 
 .action_head_name {
