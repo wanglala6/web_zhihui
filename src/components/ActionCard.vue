@@ -65,7 +65,7 @@
 export default {
   data() {
     return {
-      isHover: true,
+      isHover: false,
       diaedit: false,
       form: {
         name: "",
@@ -76,7 +76,7 @@ export default {
   props: ["action"],
   methods: {
     showBotton: function () {
-      this.isHover = false;
+      this.isHover = true;
     },
     hideBotton: function () {
       this.isHover = false;
