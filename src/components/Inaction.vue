@@ -1,8 +1,13 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="24">
-        <ActionCard v-for="item in actionList" v-bind:key="item.id" v-bind:action="item"></ActionCard>
+      <el-col :span="24" class="action-list">
+        <ActionCard
+          v-for="item in actionList"
+          v-bind:key="item.id"
+          v-bind:action="item"
+          v-on:flush="getActionList"
+        ></ActionCard>
       </el-col>
     </el-row>
   </div>
@@ -48,4 +53,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.action-list {
+  display: flex;
+}
 </style>
