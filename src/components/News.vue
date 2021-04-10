@@ -95,7 +95,19 @@
       :visible.sync="see_random_report"
       width="700px"
     >
-      <span>{{random_report_msg}}</span>
+      <span>{{random_report_msg.msg}}</span>
+      <div class="demo-image__preview" v-for="img in random_report_msg.imgs" :key="img.id">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="img"
+          :preview-src-list="random_report_msg.imgs"
+          z-index = "99999999999"
+        >
+        </el-image>
+      </div>
+      <div style="position:absolute;right:10px;">
+        <p>{{this.random_report_msg.time}}</p>
+      </div>
     </el-dialog>
     <el-dialog
       title="开始报备"
@@ -188,10 +200,13 @@ export default {
   },
   see_random_report_detail(item) {
     this.see_random_report = true
-    this.random_report_msg = item.content.content
-    this.random_report_imgs = item.content.imgs
-    console.log(item)
-    console.log(this.random_report_msg)
+    this.random_report_msg.msg = item.content.content
+    this.random_report_msg.time = item.createTime
+    this.random_report_msg.imgs = []
+    var _this = this
+    item.content.imgs.forEach((element) => {
+      _this.random_report_msg.imgs.push(devServer.proxy["/"].target + element)
+    })
   },
   see_start_report_detail(item) {
     this.see_start_report = true

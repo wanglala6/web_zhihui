@@ -68,33 +68,33 @@
                   <span>天气查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="1-4-3">
+              <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg' }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-map-location"></i>
                   <!-- 文本 -->
-                  <span><a href="#/home/map" class="turn_a">地图查询</a></span>
+                  <span>地图查询</span>
                 </template>
               </el-menu-item>
             </el-submenu>
             <!-- 一级菜单模板任务管理 -->
-            <el-submenu index="2">
-              <template slot="title">
-                <!-- 图标 -->
-                <i class="el-icon-edit"></i>
-                <!-- 文本 -->
-                <span>任务管理</span>
-              </template>
-              <!-- 二级菜单 -->
-              <el-menu-item index="2-4-1">
-                <template slot="title">
-                  <!-- 图标 -->
-                  <i class="el-icon-coordinate"></i>
-                  <!-- 文本 -->
-                  <span><a href="#/home/task" class="turn_a">任务分配</a></span>
-                </template>
-              </el-menu-item>
-            </el-submenu>
+<!--            <el-submenu index="2">-->
+<!--              <template slot="title">-->
+<!--                &lt;!&ndash; 图标 &ndash;&gt;-->
+<!--                <i class="el-icon-edit"></i>-->
+<!--                &lt;!&ndash; 文本 &ndash;&gt;-->
+<!--                <span>任务管理</span>-->
+<!--              </template>-->
+<!--              &lt;!&ndash; 二级菜单 &ndash;&gt;-->
+<!--              <el-menu-item index="2-4-1">-->
+<!--                <template slot="title">-->
+<!--                  &lt;!&ndash; 图标 &ndash;&gt;-->
+<!--                  <i class="el-icon-coordinate"></i>-->
+<!--                  &lt;!&ndash; 文本 &ndash;&gt;-->
+<!--                  <span><a href="#/home/task" class="turn_a">任务分配</a></span>-->
+<!--                </template>-->
+<!--              </el-menu-item>-->
+<!--            </el-submenu>-->
             <!-- 一级菜单模板监控模块 -->
 
             <el-submenu index="3">
@@ -106,16 +106,15 @@
                 <span>监控模块</span>
               </template>
               <!-- 二级菜单 -->
-
-                   <el-menu-item
-                index="/monitor"
-                :route="{ path: '/monitor', query: { id: id } }"
+              <el-menu-item
+                index="/mainMonitor"
+                :route="{ path: '/mainMonitor', query: { id: id } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
-                  <span>队员报备</span>
+                  <span>监控界面</span>
                 </template>
               </el-menu-item>
               <!-- 二级菜单 -->
@@ -269,6 +268,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/command/volunteer/" + this.news.volunteerId
       );
+      print(this.type)
       this.Msg.title = "来自志愿者:" + res.data.name;
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
@@ -340,7 +340,9 @@ export default {
   }
 }
 .el-main {
-  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  background-color: #f6f6f6;
 }
 .home_container {
   height: 100%;
