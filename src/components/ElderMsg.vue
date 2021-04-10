@@ -10,7 +10,7 @@
             :src="older.avatar"
           ></el-avatar>
         </el-col>
-        <el-col :span="18" :offset="1" style="padding-right: 40px;">
+        <el-col :span="18" :offset="1" style="padding-right: 40px">
           <div class="lost-name">
             {{ older.name }}
           </div>
@@ -57,14 +57,22 @@
             <div class="lost-info-item">
               <div class="lost-info-itemLabel">走失者图片</div>
               <div class="lost-info-itemValue">
-                <el-avatar
+                <!-- <el-avatar
                   shape="square"
                   :size="100"
                   :src="url"
                   v-for="url in pictures"
                   v-bind:key="url"
                   style="margin-right:10px"
-                ></el-avatar>
+                ></el-avatar> -->
+                <el-image
+                  style="width: 100px; height: 100px; margin-right: 10px;border-radius:5px;"
+                  :src="url"
+                  v-for="url in pictures"
+                  v-bind:key="url"
+                  :preview-src-list="pictures"
+                >
+                </el-image>
               </div>
             </div>
           </div>
