@@ -3,59 +3,43 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :span="6">
-            <div style="width: 80px; height: 80px; border-radius: 50%">
-              <img
-                src="../assets/logo.jpg"
-                style="height: 100%; width: 100%; border-radius: 50%"
-              />
-            </div>
-          </el-col>
-          <el-col :span="12" class="head_col">
+          <el-col :offset="3" :span="4" class="head_col">
             <span class="head" style="text-align: center; color: #ffffff"
               >蓝天救援队指挥中心</span
             >
           </el-col>
-          <el-col :span="6">
-            <el-button type="info" @click="logout" style="float: right"
-              >退出</el-button>
+          <el-col :span="12">
+            <el-link
+              class="head-item"
+              :href="'/#/inAction?commanderId=' + commanderId"
+              :underline="false"
+              >行动管理</el-link
+            >
+            <el-link
+              class="head-item"
+              :href="'/#/volunteer?'"
+              :underline="false"
+              >志愿者管理</el-link
+            >
+          </el-col>
+          <el-col :span="2">
+            <div class="head-avatar">
+              <el-dropdown @command="handleCommand">
+                <span class="el-dropdown-link">
+                  <el-avatar> {{ username }} </el-avatar>
+                </span>
+                <i
+                  class="el-icon-caret-bottom el-icon--right head-avatar-arrow"
+                ></i>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item command="logout">安全退出</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </div>
           </el-col>
         </el-row>
       </el-header>
       <div class="container">
-        <el-row class="nav">
-          <el-col :span="22" style="margin-top: 20px">
-            <el-menu class="el-menu-demo" mode="horizontal" :router="true">
-              <el-submenu index="1">
-                <template slot="title">活动</template>
-                <el-menu-item
-                  index="/inaction"
-                  :route="{
-                    path: '/inaction',
-                    query: { commanderId: commanderId },
-                  }"
-                  >正在行动</el-menu-item
-                >
-                <el-menu-item index="2-2">已完成行动</el-menu-item>
-                <el-menu-item index="2-3">遗留行动</el-menu-item>
-                <el-menu-item
-                  index="/unaction"
-                  :route="{
-                    path: '/unaction',
-                    query: { commanderId: commanderId },
-                  }"
-                  >未开始行动</el-menu-item
-                >
-              </el-submenu>
-              <el-menu-item index="/volunteer" route="/volunteer">
-                志愿者管理
-              </el-menu-item>
-            </el-menu>
-          </el-col>
-          <el-col :span="2" style="margin-top: 20px">
-            <el-button type="primary" @click="dialog">创建行动</el-button>
-          </el-col>
-        </el-row>
         <!-- 主体区 -->
         <el-main>
           <router-view></router-view>
@@ -164,39 +148,7 @@
         <el-button @click="sendmessage" type="primary" style="margin-top: 15px"
           >发送消息</el-button
         >
-
       </el-card>
-    </el-dialog>
-    <!-- 创建活动对话框 -->
-
-    <el-dialog title="创建活动" :visible.sync="adddialogVisible" width="30%">
-      <!-- 内容主体区 -->
-      <el-form
-        :model="addForm"
-        :rules="addrules"
-        ref="addFormref"
-        label-width="150px"
-      >
-        <el-form-item label="请选择走失者" prop="lostId">
-          <el-select v-model="addForm.lostId" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            >
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="请输入活动名称" prop="name">
-          <el-input v-model="addForm.name"></el-input>
-        </el-form-item>
-      </el-form>
-      <!-- 底部区 -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="adddialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="upload">确 定</el-button>
-      </span>
     </el-dialog>
   </div>
 </template>
@@ -225,6 +177,7 @@ export default {
     return {
       activeIndex: "/inaction",
       commanderId: 0,
+      username: "",
       // 志愿者对话框
       volundia: false,
       volunteerlist: [],
@@ -250,7 +203,6 @@ export default {
       place: "",
 
       unactionList: [],
-      options: [],
       value: "",
       activeName: "second",
       actionList: [],
@@ -276,25 +228,6 @@ export default {
           head: "拯救80岁高龄老人",
         },
       ],
-      adddialogVisible: false,
-      // 添加活动
-      addForm: {},
-      addrules: {
-        name: [
-          {
-            required: true,
-            message: "请输入活动名称",
-            trigger: "blur",
-          },
-        ],
-        lostId: [
-          {
-            required: true,
-            message: "请选择走失者",
-            trigger: "blur",
-          },
-        ],
-      },
       locationrules: {
         distance: [
           {
@@ -424,19 +357,6 @@ export default {
           this.unactionList = res.data.data;
         });
     },
-    dialog() {
-      // 查询走失者未行动
-      this.$http.get("/command/lost/not-actioned").then((res) => {
-        console.log(res);
-        if (res.data.code === 200) {
-          this.options = res.data.data;
-          console.log(this.options);
-        } else {
-          this.$message("走失者加载失败");
-        }
-      });
-      this.adddialogVisible = true;
-    },
     handleClick(tab, event) {
       // console.log(tab, event);
     },
@@ -454,42 +374,6 @@ export default {
       );
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
-    },
-    // 创建活动
-    upload() {
-      this.$refs.addFormref.validate((valid) => {
-        if (!valid) return;
-        this.$http
-          .post(
-            "/command/action/",
-            JSON.stringify({
-              lostId: parseInt(this.addForm.lostId),
-              name: this.addForm.name,
-              commanderId: this.commanderId,
-            }),
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-            }
-          )
-          .then((res) => {
-            console.log(res);
-            if (res.data.code === 200) {
-              this.$message.success("创建活动成功");
-              this.getunactionlist();
-              this.getActionList();
-              this.adddialogVisible = false;
-              this.$refs.addFormref.resetFields();
-              this.$router.push({
-                path: "/unaction",
-                query: { commanderId: this.commanderId },
-              });
-            } else {
-              this.$message("创建活动失败");
-            }
-          });
-      });
     },
     /***
      * 地图点击事件。
@@ -521,18 +405,23 @@ export default {
       this.showMapComponent = false;
       this.$emit("cancel", this.showMapComponent);
     },
+    handleCommand(command) {
+      if (command === "logout") {
+        this.logout();
+      }
+    },
   },
 
   created() {
     this.commanderId = this.$route.query.commanderId;
     console.log(this.commanderId);
+    this.username = JSON.parse(window.sessionStorage.getItem("user")).name;
   },
-
 };
 </script>
 <style lang="less" scoped>
 .container {
-  margin: 0 220px
+  margin: 0 12.5%;
 }
 
 .el-table {
@@ -542,20 +431,50 @@ export default {
   height: 100px !important;
   background-color: #373d41;
 }
+
+.head-avatar {
+  margin: 30px 0;
+  padding-left: 20px;
+  text-align: center;
+}
+
+.head-avatar-arrow {
+  position: absolute;
+  top: 45%;
+}
+
 .bgc {
   height: 100%;
   width: 100%;
+  background-color: #f5f5f5;
+}
+
+.el-menu-demo {
+  background-color: #373d41;
+  border: 0px !important;
+}
+
+.el-menu-demo-item {
+  color: #ffffff;
+  font-size: 16px;
 }
 
 .el-container {
   height: 100%;
-  background-color: #fff;
+  background-color: #f9f9f9;
 }
 .head {
   line-height: 100px;
-  font-size: 25px;
+  font-size: 20px;
   letter-spacing: 2px;
 }
+
+.head-item {
+  line-height: 100px;
+  margin-right: 20px;
+  font-size: 16px;
+}
+
 .activity {
   height: 300px;
   width: 200px;

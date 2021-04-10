@@ -1,26 +1,21 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="22" style="margin-top: 20px">
-        <div class="activity" v-for="item in actionList" :key="item.id">
-          <div class="img">
-            <a @click="jump(item)">
-              <img :src="item.lost.avatar" style="height: 100%; width: 100%" />
-            </a>
-          </div>
-          <div class="activity_head">
-            <div>{{ item.name }}</div>
-            <div>指挥员: {{ item.commander.name }}</div>
-            <div>走失者：{{ item.lost.name }}</div>
-            <span class="time">创建时间: {{ item.createTime }}</span>
-          </div>
-        </div>
+      <el-col :span="24" class="action-list">
+        <ActionCard
+          v-for="item in actionList"
+          v-bind:key="item.id"
+          v-bind:action="item"
+          v-on:flush="getActionList"
+        ></ActionCard>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
+import ActionCard from "@/components/ActionCard";
 export default {
+  components: { ActionCard },
   data() {
     return {
       actionList: [],
@@ -49,19 +44,6 @@ export default {
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
     },
-    jump(item) {
-      console.log(this.$route.query.commanderId);
-
-      console.log("mmm", item.lostId);
-      this.$router.push({
-        path: "/elderMsg",
-        query: {
-          lostId: item.lostId,
-          commanderId: this.$route.query.commanderId,
-          id: item.id,
-        },
-      });
-    },
   },
   created() {
     console.log(this.$route.query.commanderId);
@@ -71,22 +53,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.activity {
-  height: 250px;
-  width: 200px;
-  margin: 10px;
-  float: left;
-  background: #f3f3f3;
-}
-.img {
-  height: 150px;
-  width: 200px;
-}
-.activity_head {
-  text-align: center;
-}
-.time {
-  color: #999;
-  font-size: 12px;
+.action-list {
+  display: flex;
 }
 </style>

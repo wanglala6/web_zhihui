@@ -1,20 +1,14 @@
 <template>
-  <div>
-    <!-- 面包屑导航 -->
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-      <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-      <el-breadcrumb-item>数据查询</el-breadcrumb-item>
-      <el-breadcrumb-item>志愿者查询</el-breadcrumb-item>
-    </el-breadcrumb>
-    <el-input placeholder="请输入搜寻志愿者相关信息" v-model="inputMsg" class="input-with-select" style="margin-top:20px;">
+  <div class="container">
+
+    <el-input placeholder="请输入搜寻志愿者相关信息" v-model="inputMsg" class="input-with-select" style="margin-top:30px;width: 100%">
       <el-button slot="append" icon="el-icon-search" @click="searchResult"></el-button>
     </el-input>
-    <div style="height:20px;margin-top:10px">搜索结果</div>
+    <div style="height:20px;margin-top:10px;margin-bottom:10px;">搜索结果</div>
     <el-table
       :data="result"
-      height="550"
-      border
-      style="width: 100%">
+      style="width: 100%"
+      border>
       <el-table-column
         prop="name"
         label="姓名"
@@ -28,6 +22,10 @@
       <el-table-column
         prop="addr"
         label="地址">
+      </el-table-column>
+            <el-table-column
+        prop="createTime"
+        label="创建时间">
       </el-table-column>
     </el-table>
   </div>
@@ -53,7 +51,8 @@ export default {
         that.result.push({
           name: element.name,
           tel: element.telephone,
-          addr: element.residence.name
+          addr: element.residence.name,
+          createTime: element.createTime
         })
       })
     },
@@ -68,8 +67,8 @@ export default {
         }
       ).then((res) => {
         console.log(res)
-        res.data.data.forEach(function (element) {
         _this.result = []
+        res.data.data.forEach(function (element) {
         _this.result.push({
             name: element.name,
             tel: element.telephone,
@@ -88,5 +87,11 @@ export default {
 </script>
 
 <style scoped>
-
+.container {
+  background-color: #ffffff;
+  width: 90%;
+  height: 100%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
 </style>
