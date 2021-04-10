@@ -1,46 +1,75 @@
 <template>
-  <div>
-    <h1 style="font-size: 25px">{{ older.name }}</h1>
-    <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="item in pictures" :key="item">
-        <el-image
-          :src="item"
-          style="height: 100%; width: 100%"
-          :preview-src-list="pictures"
-        ></el-image>
-      </el-carousel-item>
-    </el-carousel>
-    <el-divider></el-divider>
-    <p>身份信息</p>
-    <el-divider></el-divider>
-    <div>
-      <p>姓名：{{ older.name }}</p>
-      <p>年龄：{{ older.age }}</p>
-      <p>性别：男</p>
+  <div class="container">
+    <div class="lost">
+      <el-row>
+        <el-col :span="4" :offset="1">
+          <el-avatar
+            shape="square"
+            :size="150"
+            fit="fit"
+            :src="older.avatar"
+          ></el-avatar>
+        </el-col>
+        <el-col :span="18" :offset="1" style="padding-right: 40px;">
+          <div class="lost-name">
+            {{ older.name }}
+          </div>
+          <div class="lost-info">
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">性别</div>
+              <div class="lost-info-itemValue">{{ older.gender }}</div>
+            </div>
 
-      <p>身份证号：xxxxxx</p>
-    </div>
-    <el-divider></el-divider>
-    <p>走失地点</p>
-    <el-divider></el-divider>
-    <div>
-      <p>走失时间：{{ older.lostTime }}</p>
-      <p>走失地点：{{ older.lastPlace }}</p>
-    </div>
-    <el-divider></el-divider>
-    <p>外貌特征</p>
-    <el-divider></el-divider>
-    <div>
-      <p>外貌特点：xxxxxxxx</p>
-      <p>衣着特征：{{ older.feature }}</p>
-      <p>行为特征：xxxxxxxx</p>
-    </div>
-    <el-divider></el-divider>
-    <p>备注信息</p>
-    <el-divider></el-divider>
-    <div>
-      <p>患{{ older.disease }}</p>
-      <p>曾于xx年走失，在xx地找到</p>
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">年龄</div>
+              <div class="lost-info-itemValue">{{ older.age }}</div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">外貌特征</div>
+              <div class="lost-info-itemValue">{{ older.feature }}</div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">病历</div>
+              <div class="lost-info-itemValue">{{ older.disease }}</div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">走失地点</div>
+              <div class="lost-info-itemValue">{{ older.lastPlace }}</div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">走失时间段</div>
+              <div class="lost-info-itemValue">
+                {{ older.lostTimeBegin }} ~ {{ older.lostTimeEnd }}
+              </div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">家人联系电话</div>
+              <div class="lost-info-itemValue">
+                {{ older.familyTelephone }}
+              </div>
+            </div>
+
+            <div class="lost-info-item">
+              <div class="lost-info-itemLabel">走失者图片</div>
+              <div class="lost-info-itemValue">
+                <el-avatar
+                  shape="square"
+                  :size="100"
+                  :src="url"
+                  v-for="url in pictures"
+                  v-bind:key="url"
+                  style="margin-right:10px"
+                ></el-avatar>
+              </div>
+            </div>
+          </div>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
@@ -51,12 +80,7 @@ export default {
   data() {
     return {
       id: "",
-      pictures: [
-        "../assets/img/01.jpg",
-        "../assets/img/02.jfif",
-        "../assets/img/03.jfif",
-        "../assets/img/04.jfif",
-      ],
+      pictures: [],
       activeNames: ["1"],
       older: {},
     };
@@ -67,14 +91,17 @@ export default {
     },
     // 老人信息
     async getold() {
+      console.log("获取老人信息");
       this.lostId = this.$route.query.lostId;
-      const res = await this.$http.get("/command/lost/all");
+      let res = await this.$http.get("/command/lost/" + this.lostId);
       console.log(res.data.data);
+      this.older = res.data.data;
+      // 获取人脸图片
+      console.log("获取人脸图片");
+      res = await this.$http.get("/face/lost/" + this.lostId);
+      console.log(res);
       res.data.data.forEach((element) => {
-        if (element.id === this.lostId) {
-          this.older = element;
-          console.log(this.older);
-        }
+        this.pictures.push(element.faceImg);
       });
     },
   },
@@ -86,21 +113,43 @@ export default {
 </script>
 
 <style scoped>
-.el-carousel__item h3 {
-  color: #475669;
-  font-size: 24px;
-  opacity: 0.75;
-  line-height: 200px;
-  margin: 0;
-}
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
+.container {
+  height: 100%;
+  width: 100%;
 }
 
-.el-carousel__item:nth-child(2n + 1) {
-  background-color: #d3dce6;
+.lost {
+  width: 80%;
+  background-color: #fff;
+  height: 100%;
+  margin: 20px auto;
+  border-radius: 5px;
+  box-shadow: 1px 1px 2px #ededed;
+  padding-top: 20px;
 }
-.el-collapse-item {
-  font-size: 24px;
+
+.lost-name {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.lost-info {
+  margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lost-info-item {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid #ebebeb;
+  padding: 30px 0;
+}
+
+.lost-info-itemLabel {
+  font-weight: bold;
+  font-size: 15px;
+  width: 100px;
+  margin-right: 40px;
 }
 </style>

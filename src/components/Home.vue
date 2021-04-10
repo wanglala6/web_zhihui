@@ -107,7 +107,7 @@
               </template>
               <!-- 二级菜单 -->
 
-                   <el-menu-item
+              <el-menu-item
                 index="/monitor"
                 :route="{ path: '/monitor', query: { id: id } }"
               >
@@ -312,8 +312,8 @@ export default {
   created() {
     this.connect();
     this.lostId = this.$route.query.lostId; // 走失者id
-    this.id = this.$route.query.id // 活动id
-    this.commanderId = this.$route.query.commanderId
+    this.id = this.$route.query.id; // 活动id
+    this.commanderId = this.$route.query.commanderId;
     console.log(this.commanderId);
   },
 };
@@ -340,7 +340,9 @@ export default {
   }
 }
 .el-main {
-  background-color: #fff;
+  padding: 0;
+  margin: 0;
+  background-color: #f6f6f6;
 }
 .home_container {
   height: 100%;
