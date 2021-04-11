@@ -14,6 +14,13 @@
           <el-dropdown-item command="identify">甄别记录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+<!--      <el-tabs v-model="type" type="card" @tab-click="handleCommand">-->
+<!--        <el-tab-pane label="通知" command="notice" name="notice">通知</el-tab-pane>-->
+<!--        <el-tab-pane label="线索" command="clue" name="clue">线索</el-tab-pane>-->
+<!--        <el-tab-pane label="消息" command="random_report" name="random_report">消息</el-tab-pane>-->
+<!--        <el-tab-pane label="出发报备" command="start_report" name="start_report">出发报备</el-tab-pane>-->
+<!--        <el-tab-pane label="甄别记录" command="identify" name="fourth">甄别记录</el-tab-pane>-->
+<!--      </el-tabs>-->
     </div>
     <!-- 消息卡片 -->
     <div class="block">
@@ -131,6 +138,7 @@ import { devServer } from "../../vue.config";
 export default {
   data() {
     return {
+      activeName: 'first',
       type: "甄别记录",
       message: [],
       notice_list: [],
@@ -148,6 +156,9 @@ export default {
     };
   },
   methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
     not_see_identify() {
       this.see_identify = false;
     },

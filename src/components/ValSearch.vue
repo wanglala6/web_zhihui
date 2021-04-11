@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <el-input placeholder="请输入搜寻志愿者相关信息" v-model="inputMsg" class="input-with-select" style="margin-top:30px;width: 100%">
       <el-button slot="append" icon="el-icon-search" @click="searchResult"></el-button>
     </el-input>
@@ -8,7 +7,7 @@
     <el-table
       :data="result"
       style="width: 100%"
-      border>
+      >
       <el-table-column
         prop="name"
         label="姓名"
@@ -23,11 +22,31 @@
         prop="addr"
         label="地址">
       </el-table-column>
-            <el-table-column
+      <el-table-column
         prop="createTime"
         label="创建时间">
       </el-table-column>
+      <el-table-column
+        prop="status"
+        label="志愿者状态">
+      </el-table-column>
+      <el-table-column
+        prop="partner"
+        label="队友">
+      </el-table-column>
     </el-table>
+    <div class="team-up">
+      <h3>夜间组队</h3>
+      <el-transfer
+        v-model="value"
+        :props="{
+        key: 'value',
+        label: 'desc'
+      }"
+        :volList="volList">
+      </el-transfer>
+      <el-button type="primary" @click="setPartner">确定</el-button>
+    </div>
   </div>
 </template>
 
@@ -39,15 +58,19 @@ export default {
       result: [],
       actionId: "",
       inputMsg: "",
-    }
+      volList: []
+    };
   },
   methods: {
+    setPartner() {
+    },
     async searchAll() {
       const { data: res } = await this.$http.get("/command/action/list-volunteers/" + this.actionId)
       const that = this;
       console.log("查询所有")
       console.log(res)
       res.data.forEach(function (element) {
+        that.volList.push(element.name)
         that.result.push({
           name: element.name,
           tel: element.telephone,

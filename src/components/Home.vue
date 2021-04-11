@@ -28,6 +28,25 @@
             :router="true"
             default-active="/elderMsg"
           >
+
+            <!-- 一级菜单模板任务管理 -->
+            <el-submenu index="2">
+              <template slot="title">
+                <!-- 图标 -->
+                <i class="el-icon-edit"></i>
+                <!-- 文本 -->
+                <span>行动管理</span>
+              </template>
+              <!-- 二级菜单 -->
+              <el-menu-item index="/actionManage">
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-coordinate"></i>
+                  <!-- 文本 -->
+                  <span>状态管理</span>
+                </template>
+              </el-menu-item>
+            </el-submenu>
             <!-- 一级菜单 -->
             <el-submenu index="1">
               <!-- 一级菜单模板数据查询 -->
@@ -77,24 +96,6 @@
                 </template>
               </el-menu-item>
             </el-submenu>
-            <!-- 一级菜单模板任务管理 -->
-<!--            <el-submenu index="2">-->
-<!--              <template slot="title">-->
-<!--                &lt;!&ndash; 图标 &ndash;&gt;-->
-<!--                <i class="el-icon-edit"></i>-->
-<!--                &lt;!&ndash; 文本 &ndash;&gt;-->
-<!--                <span>任务管理</span>-->
-<!--              </template>-->
-<!--              &lt;!&ndash; 二级菜单 &ndash;&gt;-->
-<!--              <el-menu-item index="2-4-1">-->
-<!--                <template slot="title">-->
-<!--                  &lt;!&ndash; 图标 &ndash;&gt;-->
-<!--                  <i class="el-icon-coordinate"></i>-->
-<!--                  &lt;!&ndash; 文本 &ndash;&gt;-->
-<!--                  <span><a href="#/home/task" class="turn_a">任务分配</a></span>-->
-<!--                </template>-->
-<!--              </el-menu-item>-->
-<!--            </el-submenu>-->
             <!-- 一级菜单模板监控模块 -->
 
             <el-submenu index="3">
@@ -208,6 +209,7 @@ import {
   MQTT_USERNAME,
   MQTT_PASSWORD,
 } from "../config/sysconstant.js";
+
 export default {
   data() {
     return {
@@ -328,25 +330,31 @@ export default {
   align-items: center; //垂直居中
   color: #fff;
   font-size: 28px;
+
   > div {
     display: flex;
     align-items: center;
   }
 }
+
 .el-aside {
   background-color: #333744;
+
   .el-menu {
     border-right: none;
   }
 }
+
 .el-main {
   margin: 0;
   padding: 0;
   background-color: #f6f6f6;
 }
+
 .home_container {
   height: 100%;
 }
+
 .toggle_button {
   background-color: #4a5064;
   font-size: 10px;
@@ -356,6 +364,7 @@ export default {
   letter-spacing: 0.2em;
   cursor: pointer;
 }
+
 .turn_a {
   text-decoration: none;
   color: #fff;

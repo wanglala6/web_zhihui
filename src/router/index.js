@@ -8,7 +8,7 @@ import Map from "@/components/Map.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import Clue from '@/components/Clue.vue'
 import Post from '@/components/Post.vue'
-
+import ActionManage from "@/components/ActionManage";
 import NewsEdit from "../components/NewsEdit"
 import News from "../components/News"
 import StartNewsDetail from "@/components/StartNewsDetail";
@@ -85,6 +85,11 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/actionManage',
+            component: ActionManage,
+            name: 'actionManage'
+          },
           {
             path: '/mainMonitor',
             component: MainMonitor,

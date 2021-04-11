@@ -73,6 +73,8 @@ export default {
   width: 500px;
   border-radius: 2px;
   border: 1px solid #e6e9e5;
+  margin-left:30%;
+  margin-top: 10%;
 }
 .top_box{
   height:70px;
