@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="newsEdit_container">
     <el-input
       type="textarea"
       autosize
@@ -163,6 +163,9 @@ export default {
 </script>
 
 <style scoped>
+.newsEdit_container{
+  padding:10px;
+}
 .el-select{
   margin-top:10px;
 }

@@ -10,7 +10,7 @@
             :src="older.avatar"
           ></el-avatar>
         </el-col>
-        <el-col :span="18" :offset="1" style="padding-right: 40px">
+        <el-col :span="18" :offset="1" style="padding-right:40px">
           <div class="lost-name">
             {{ older.name }}
           </div>
@@ -142,7 +142,7 @@ export default {
 }
 
 .lost-info {
-  margin-top: 40px;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
 }
@@ -151,7 +151,7 @@ export default {
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #ebebeb;
-  padding: 30px 0;
+  padding: 15px 0;
 }
 
 .lost-info-itemLabel {

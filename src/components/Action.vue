@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="22">
+      <el-col :span="20">
         <el-tabs v-model="tab_active_value" @tab-click="handleClick">
           <el-tab-pane label="正在进行" name="inAction"></el-tab-pane>
           <el-tab-pane label="尚未开始" name="unAction"></el-tab-pane>
@@ -13,8 +13,9 @@
         <el-button type="primary" @click="dialog">创建行动</el-button>
       </el-col>
     </el-row>
-    <router-view></router-view>
-
+    <div class="Inaction_container">
+      <router-view></router-view>
+    </div>
     <!-- 创建活动对话框 -->
 
     <el-dialog title="创建活动" :visible.sync="adddialogVisible" width="30%">
@@ -147,4 +148,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.inaction_container{
+}
 </style>

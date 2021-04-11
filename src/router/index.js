@@ -30,6 +30,7 @@ import ClueNewest from "@/components/Monitor/ClueNewest";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
+import NotFound from "@/components/NotFound"
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,10 @@ const routes = [{
     {
         path: '/map',
         component: MapComponent
+    },
+    {
+      path: '/notFound',
+      component: NotFound
     },
     {
         path: '/welcome',
@@ -168,7 +173,11 @@ const routes = [{
               component: Map
             }
     ]
-  }
+  },
+    {
+      path: '*',
+      redirect: '/notFound',
+    }
 ]
 
 const router = new VueRouter({
