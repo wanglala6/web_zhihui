@@ -10,7 +10,10 @@
           />
         </div>
         <span>指挥端</span>
-        <el-button type="info" @click="logout">退出</el-button>
+        <div>
+          <div id="he-plugin-simple"></div>
+          <el-button type="info" @click="logout">退出</el-button>
+        </div>
       </el-header>
       <!-- 主体区 -->
       <el-container>
@@ -28,7 +31,6 @@
             :router="true"
             default-active="/elderMsg"
           >
-
             <!-- 一级菜单模板任务管理 -->
             <el-submenu index="2">
               <template slot="title">
@@ -270,7 +272,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/command/volunteer/" + this.news.volunteerId
       );
-      print(this.type)
+      print(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
@@ -314,9 +316,38 @@ export default {
   created() {
     this.connect();
     this.lostId = this.$route.query.lostId; // 走失者id
-    this.id = this.$route.query.id // 活动id
-    this.commanderId = this.$route.query.commanderId
+    this.id = this.$route.query.id; // 活动id
+    this.commanderId = this.$route.query.commanderId;
     console.log(this.commanderId);
+    // 链接天气插件
+    window.WIDGET = {
+      CONFIG: {
+        modules: "01234",
+        background: "4",
+        backgroundColor: "373D41",
+        tmpColor: "FFFFFF",
+        tmpSize: "16",
+        cityColor: "FFFFFF",
+        citySize: "16",
+        aqiColor: "FFFFFF",
+        aqiSize: "16",
+        weatherIconSize: "24",
+        alertIconSize: "18",
+        padding: "10px 10px 10px 10px",
+        shadow: "0",
+        language: "auto",
+        fixed: "false",
+        vertical: "top",
+        horizontal: "left",
+        key: "bb6e2e6313854a9488526b271dff6679",
+      },
+    };
+
+    const oScript = document.createElement("script");
+    oScript.type = "text/javascript";
+    oScript.src =
+      "https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0";
+    document.body.appendChild(oScript);
   },
 };
 </script>
