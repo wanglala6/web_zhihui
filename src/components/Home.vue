@@ -9,9 +9,28 @@
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-        <span>指挥端</span>
+        <!-- <span>指挥端</span> -->
         <div>
           <div id="he-plugin-simple"></div>
+          <el-dropdown class="notify">
+            <el-badge :value="1" class="notify-icon">
+              <div class="el-icon-message-solid"></div>
+            </el-badge>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item class="notify-title">我的消息</el-dropdown-item>
+              <el-dropdown-item class="notify-item">
+                <el-avatar
+                  shape="square"
+                  :size="50"
+                  :src="squareUrl"
+                ></el-avatar>
+                <div class="notify-item-body">
+                  <div class="notify-item-name">黄希希</div>
+                  <div class="notify-item-msg">发现了一条线索</div>
+                </div>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
           <el-button type="info" @click="logout">退出</el-button>
         </div>
       </el-header>
@@ -399,5 +418,44 @@ export default {
 .turn_a {
   text-decoration: none;
   color: #fff;
+}
+
+.notify {
+  font-size: 22px;
+  color: #f6f6f6;
+}
+
+.notify-icon {
+  margin: 0 30px 0 20px;
+  cursor: pointer;
+}
+
+.notify-title {
+  text-align: center;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.notify-item {
+  width: 300px;
+  height: 44px;
+  padding: 14px;
+  display: flex;
+}
+
+.notify-item-body {
+  width: 200px;
+  height: 44px;
+  margin-left: 20px;
+}
+
+.notify-item-name {
+  font-size: 16px;
+  line-height: 20px;
+  height: 20px;
+}
+
+.notify-item-msg {
+  color: #8f99ad;
+  font-size: 14px
 }
 </style>
