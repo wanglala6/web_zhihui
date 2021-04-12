@@ -7,7 +7,7 @@
     <el-table
       :data="result"
       style="width: 100%"
-      >
+    >
       <el-table-column
         prop="name"
         label="姓名"
@@ -26,13 +26,33 @@
         prop="createTime"
         label="创建时间">
       </el-table-column>
-      </el-table>
+      <el-table-column
+        prop="status"
+        label="志愿者状态">
+      </el-table-column>
+      <el-table-column
+        prop="partner"
+        label="队友">
+      </el-table-column>
+    </el-table>
+    <div class="team-up">
+      <h3>夜间组队</h3>
+      <el-transfer
+        v-model="value"
+        :props="{
+        key: 'value',
+        label: 'desc'
+      }"
+        :volList="volList">
+      </el-transfer>
+      <el-button type="primary" @click="setPartner">确定</el-button>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-  name: "ValSearch",
+  name: "VolManage",
   data() {
     return {
       result: [],
@@ -60,7 +80,7 @@ export default {
       })
     },
     searchResult() {
-    var _this = this
+      var _this = this
       this.$http.get(
         "/command/volunteer/search-like",
         {
@@ -72,7 +92,7 @@ export default {
         console.log(res)
         _this.result = []
         res.data.data.forEach(function (element) {
-        _this.result.push({
+          _this.result.push({
             name: element.name,
             tel: element.telephone,
             addr: element.residence.name
