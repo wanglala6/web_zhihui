@@ -11,7 +11,7 @@
         </div>
         <!-- <span>指挥端</span> -->
         <div>
-          <div id="he-plugin-simple"></div>
+          <div id="he-plugin-simple" class="weather"></div>
           <el-dropdown class="notify">
             <el-badge :value="1" class="notify-icon">
               <div class="el-icon-message-solid"></div>
@@ -40,10 +40,10 @@
         <el-aside :width="iscollapse ? '64px' : '200px'">
           <div class="toggle_button" @click="togglecollapse">|||</div>
 
-          <!-- 侧边栏菜单区 -->
+<!--          &lt;!&ndash; 侧边栏菜单区 &ndash;&gt; //#333744-->
           <el-menu
-            background-color="#333744"
-            text-color="#fff"
+            background-color="#ececec"
+            text-color="#000"
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
@@ -371,8 +371,16 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.weather{
+  z-index: 99999999;
+}
+.el-menu-item{
+  //border-bottom: 0.5px solid #dedede;
+}
 .el-header {
-  background-color: #373d41;
+  opacity: 0.99;
+  background-color: #373d41; //#373d41
+  border-radius: 1px;
   //流式布局
   display: flex;
   justify-content: space-between; //贴边对齐
@@ -388,7 +396,7 @@ export default {
 }
 
 .el-aside {
-  background-color: #333744;
+  background-color: #ececec; //#333744
 
   .el-menu {
     border-right: none;
@@ -406,7 +414,7 @@ export default {
 }
 
 .toggle_button {
-  background-color: #4a5064;
+  background-color: #ececec;
   font-size: 10px;
   line-height: 24px;
   color: #fff;
@@ -417,12 +425,12 @@ export default {
 
 .turn_a {
   text-decoration: none;
-  color: #fff;
+  color: #000;
 }
 
 .notify {
   font-size: 22px;
-  color: #f6f6f6;
+  color: #000;
 }
 
 .notify-icon {

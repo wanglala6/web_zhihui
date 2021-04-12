@@ -31,11 +31,6 @@
     <el-dialog title="登录" :visible.sync="see_login" class="login_style">
       <div class="login_con">
         <div class="login_box">
-<!--          &lt;!&ndash; 头像区 &ndash;&gt;-->
-<!--          <div class="avatar_box">-->
-<!--            <img src="../assets/logo.jpg" />-->
-<!--          </div>-->
-          <!-- 表单 -->
           <el-form
             label-width="60px"
             ref="loginformref"
