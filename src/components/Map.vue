@@ -5,7 +5,7 @@
 <!--        <el-button slot="append" icon="el-icon-search"></el-button>-->
 <!--      </el-input>-->
 <!--    </div>-->
-    <div id="allmap" ref="allmap"></div>
+    <div id="allmap" ref="allmap" :style="{height:mapHeight}"></div>
   </div>
 </template>
 <script>
@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      mapHeight: 480 + "px",
+      mapHeight: document.body.clientHeight - 60 + "px",
       place: ''
     };
   },
@@ -55,7 +55,7 @@ export default {
 </script>
 <style>
 #allmap {
-  height: 480px;
+  /* height: 480px; */
   overflow: hidden;
 }
 </style>

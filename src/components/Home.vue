@@ -436,6 +436,7 @@ export default {
 .notify-icon {
   margin: 0 30px 0 20px;
   cursor: pointer;
+  color: #fff;
 }
 
 .notify-title {

@@ -17,18 +17,19 @@ import ClueNewest from "@/components/Monitor/ClueNewest";
 
 export default {
   name: "VaryMsgTabs",
-  components: { ClueNewest, VolStatus }
-}
+  components: { ClueNewest, VolStatus },
+};
 </script>
 
 <style scoped>
 .msg_container {
-  height: 230px;
-  padding: 0;
+  height: 300px;
 }
 
 .el-tabs {
   padding: 0;
-  margin: 0;
+  margin-top: 20px;
+  box-shadow: 0 0 0;
+  border: none;
 }
 </style>
