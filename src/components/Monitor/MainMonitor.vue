@@ -25,17 +25,49 @@
       <div class="top-right">
         <Map></Map>
         <div class="btn-list">
-          <MapBtn
-            value="在线识别记录"
-            iconClass="el-icon-camera"
-            :isActive="false"
-            class="map-btn"
-          ></MapBtn>
-          <MapBtn
-            value="行动状态"
-            iconClass="el-icon-tickets"
-            :isActive="false"
-          ></MapBtn>
+          <!-- 最相似图片 -->
+          <el-popover placement="left" width="200" trigger="click">
+            <div class="donutChartWrapper">
+              <div class="donutChart">
+                <DonutChart gaugeData="gaugeData"></DonutChart>
+              </div>
+            </div>
+            <div class="com_img box_style">
+              <div class="image-top">最相似的图片</div>
+              <el-image
+                src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true"
+                :fit="fit"
+                class="image"
+              ></el-image>
+            </div>
+            <MapBtn
+              value="相似度最高图片"
+              iconClass="el-icon-picture"
+              :isActive="false"
+              class="map-btn"
+              slot="reference"
+            ></MapBtn>
+          </el-popover>
+
+          <el-popover placement="left" width="200" trigger="click">
+            <RecognizedImgs></RecognizedImgs>
+            <MapBtn
+              value="人脸识别记录"
+              iconClass="el-icon-camera"
+              :isActive="false"
+              slot="reference"
+            ></MapBtn>
+          </el-popover>
+
+          <el-popover placement="left" width="200" trigger="click">
+            <StatisticsCard></StatisticsCard>
+            <MapBtn
+              value="行动状态"
+              iconClass="el-icon-tickets"
+              :isActive="false"
+              slot="reference"
+            ></MapBtn>
+          </el-popover>
         </div>
       </div>
       <!-- <el-row>
@@ -56,24 +88,24 @@
 
 <script>
 import Map from "@/components/Map";
-// import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
+import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
 // import VolStatusTb from "@/components/Monitor/VolStatusTb"
 // import CountTable from "@/components/Monitor/CountTable"
 import MsgBox from "@/components/Monitor/MsgBox";
 // import DonutChart from "@/components/Monitor/DonutChart";
 import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
 import MapBtn from "@/components/Monitor/MapBtn";
-// import StatisticsCard from "@/components/Monitor/StatisticsCard";
+import StatisticsCard from "@/components/Monitor/StatisticsCard";
 export default {
   name: "MainMonitor",
   components: {
-    // StatisticsCard,
     VaryMsgTabs,
     // DonutChart,
-    // RecognizedImgs,
+    RecognizedImgs,
     Map,
     MsgBox,
     MapBtn,
+    StatisticsCard,
   },
   data() {
     return {
@@ -84,8 +116,7 @@ export default {
       },
     };
   },
-  methods: {
-  },
+  methods: {},
 };
 </script>
 
