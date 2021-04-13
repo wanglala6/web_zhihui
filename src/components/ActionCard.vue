@@ -28,17 +28,6 @@
       </div>
     </div>
     <div class="action_head">
-      <div class="action_head_name">{{ action.name }}</div>
-      <div class="action_head_lost">
-        <i class="el-icon-user-solid"></i>
-        <span style="font-weight: bold; margin-left: 3px"
-          >走失者: {{ action.lost.name }}</span
-        >
-      </div>
-      <div class="action_head_commaner">
-        <i class="el-icon-s-custom"></i>
-        指挥员: {{ action.commander.name }}
-      </div>
       <div class="action_head">
         <div class="action_head_name">{{ action.name }}</div>
         <div class="action_head_lost">
