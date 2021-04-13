@@ -37,7 +37,12 @@ import IdentifyRecord from "@/components/IdentifyRecord";
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
+    path: '*',
+    redirect: '/notFound'
+  },
+  {
         path: '/',
         redirect: '/login'
     },

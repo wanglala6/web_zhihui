@@ -427,7 +427,7 @@ export default {
   background-color: #ececec;
   font-size: 10px;
   line-height: 24px;
-  color: #fff;
+  color: #b4c7d0;
   text-align: center;
   letter-spacing: 0.2em;
   cursor: pointer;
