@@ -58,4 +58,11 @@ export default {
   /* height: 480px; */
   overflow: hidden;
 }
+.BMap_cpyCtrl {
+  display: none;
+}
+.anchorBL {
+  display: none;
+}
+
 </style>
