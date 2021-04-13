@@ -20,12 +20,17 @@ import Volunteer from "@/components/Volunteer"
 import Monitor from "@/components/Monitor"
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
-
+import Statistics from "@/components/Statistics"
+import Location from "@/components/Location";
 Vue.use(VueRouter)
 
 const routes = [{
         path: '/',
         redirect: '/login'
+    },
+    {
+      path: '/location',
+      component: Location
     },
     {
         path: '/login',
@@ -60,6 +65,10 @@ const routes = [{
             {
                 path: '/volunteer',
                 component: Volunteer
+            },
+            {
+              path: '/statistics',
+              component: Statistics
             }
         ]
     },

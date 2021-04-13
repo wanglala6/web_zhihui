@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 // 导入全局样式表 入口文件
 import './assets/css/global.css'
 import axios from 'axios'
+
 axios.defaults.baseURL = '/'
 axios.defaults.withCredentials = true// axios默认不让后端写入cookie
 axios.interceptors.request.use(config => {

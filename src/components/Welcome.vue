@@ -21,12 +21,18 @@
               :underline="false"
               >志愿者管理</el-link
             >
+            <el-link
+              class="head-item"
+              :href="'/#/statistics'"
+              :underline="false"
+              >大数据统计平台</el-link
+            >
           </el-col>
           <el-col :span="2">
             <div class="head-avatar">
               <el-dropdown>
                 <span class="el-dropdown-link">
-                  <el-avatar> {{username}} </el-avatar>
+                  <el-avatar> {{ username }} </el-avatar>
                 </span>
                 <i
                   class="el-icon-caret-bottom el-icon--right head-avatar-arrow"
@@ -510,4 +516,5 @@ export default {
   overflow: hidden;
   margin-top: 20px;
 }
+
 </style>
