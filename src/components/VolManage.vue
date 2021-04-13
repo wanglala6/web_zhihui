@@ -1,46 +1,71 @@
 <template>
   <div class="container">
-    <el-input
-      placeholder="请输入搜寻志愿者相关信息"
-      v-model="inputMsg"
-      class="input-with-select"
-      style="margin-top: 30px; width: 100%"
-    >
-      <el-button
-        slot="append"
-        icon="el-icon-search"
-        @click="searchResult"
-      ></el-button>
-    </el-input>
-    <div style="height: 20px; margin-top: 10px; margin-bottom: 10px">
-      搜索结果
-    </div>
-    <el-table :data="result" style="width: 100%">
-      <el-table-column prop="name" label="姓名" width="180"> </el-table-column>
-      <el-table-column prop="tel" label="电话" width="180"> </el-table-column>
-      <el-table-column prop="addr" label="地址"> </el-table-column>
-      <el-table-column prop="createTime" label="创建时间"> </el-table-column>
-      <el-table-column prop="status" label="志愿者状态"> </el-table-column>
-      <el-table-column prop="partner" label="队伍">
-        <template slot-scope="scope">
-          <el-select
-            v-model="scope.row.value"
-            placeholder="请选择类型"
-            filterable
-            allow-create
-            default-first-option
-          >
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+    <div>
+      <el-input
+        placeholder="请输入搜寻志愿者相关信息"
+        v-model="inputMsg"
+        class="input-with-select"
+        style="margin-top: 30px; width: 100%"
+      >
+        <el-button
+          slot="append"
+          icon="el-icon-search"
+          @click="searchResult"
+        ></el-button>
+      </el-input>
+      <div style="height: 0px; margin-top: 10px; margin-bottom: 10px"></div>
+      <el-table :data="result" style="width: 100%">
+        <el-table-column prop="name" label="姓名" width="180">
+        </el-table-column>
+        <el-table-column prop="tel" label="电话" width="180"> </el-table-column>
+        <el-table-column prop="addr" label="地址"> </el-table-column>
+        <el-table-column prop="createTime" label="创建时间"> </el-table-column>
+        <el-table-column prop="status" label="志愿者状态"> </el-table-column>
+        <el-table-column prop="partner" label="队伍">
+          <template slot-scope="scope">
+            <el-select
+              v-model="scope.row.value"
+              placeholder="请选择类型"
+              filterable
+              default-first-option
             >
-            </el-option>
-          </el-select>
-        </template>
-      </el-table-column>
-    </el-table>
+              <el-option
+                v-for="item in options"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
+          </template>
+        </el-table-column>
+
+        <el-table-column align="right">
+          <template slot="header">
+            <el-switch v-model="isTeamUp" active-text="组队模式"> </el-switch>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        background
+        layout="prev, pager, next"
+        :total="1000"
+        class="pagination"
+      >
+      </el-pagination>
+    </div>
+
+    <!-- 队伍表 -->
+    <div>
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>队伍一</span>
+        </div>
+        <div v-for="o in 2" :key="o" class="text item">
+          {{ "列表内容 " + o }}
+        </div>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -53,13 +78,10 @@ export default {
       actionId: "",
       inputMsg: "",
       volList: [],
-      options: [
-        {
-          value: "1",
-          label: "1",
-        }
-      ],
+      options: [],
       value: [],
+      // 是否开启组队模式
+      isTeamUp: false,
     };
   },
   methods: {
@@ -80,6 +102,16 @@ export default {
           createTime: element.createTime,
         });
       });
+      const teamCount = Math.ceil(that.result.length / 2);
+      console.log(teamCount);
+      const team = [];
+      for (let i = 1; i <= teamCount; i++) {
+        team.push({
+          value: i,
+          label: "队伍" + i,
+        });
+      }
+      that.options = team;
     },
     searchResult() {
       var _this = this;
@@ -118,4 +150,15 @@ export default {
   padding-left: 5%;
   padding-right: 5%;
 }
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.box-card {
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+  }
 </style>
