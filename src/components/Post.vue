@@ -1,78 +1,82 @@
 <template>
-  <div>
-    <el-table :data="tableData" border style="width: 100%">
-      <el-table-column
-        prop="volunteer.name"
-        label="提供人"
-        width="180"
-        align="center"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="createTime"
-        label="发布时间"
-        width="180"
-        align="center"
-        sort
-      >
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="detail(scope.row)"
-            >查看</el-button
-          >
-          <el-button type="text" size="small" @click="publishdia(scope.row)"
-            >发布线索</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-    <!-- 分页 -->
-    <el-pagination
-      @size-change="handleSizeChange"
-      @current-change="handleCurrentChange"
-      :current-page="page.currentPage"
-      :page-sizes="[10, 5, 2, 1]"
-      :page-size="page.pageSize"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="page.total"
-    >
-    </el-pagination>
-    <!-- 线索内容 -->
+  <div class="post_container">
+<!--    <el-table :data="tableData" border style="width: 100%">-->
+<!--      <el-table-column-->
+<!--        prop="volunteer.name"-->
+<!--        label="提供人"-->
+<!--        width="180"-->
+<!--        align="center"-->
+<!--      >-->
+<!--      </el-table-column>-->
+<!--      <el-table-column-->
+<!--        prop="createTime"-->
+<!--        label="发布时间"-->
+<!--        width="180"-->
+<!--        align="center"-->
+<!--        sort-->
+<!--      >-->
+<!--      </el-table-column>-->
+<!--      <el-table-column fixed="right" label="操作" align="center">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button type="text" size="small" @click="detail(scope.row)"-->
+<!--            >查看</el-button-->
+<!--          >-->
+<!--&lt;!&ndash;          <el-button type="text" size="small" @click="publishdia(scope.row)"&ndash;&gt;-->
+<!--&lt;!&ndash;            >发布线索</el-button&ndash;&gt;-->
+<!--&lt;!&ndash;          >&ndash;&gt;-->
+<!--          <el-button type="text" size="small" @click="detail(scope.row)"-->
+<!--          >修改</el-button>-->
+<!--          <el-button type="text" size="small" @click="detail(scope.row)"-->
+<!--          >删除</el-button>-->
+<!--        </template>-->
+<!--      </el-table-column>-->
+<!--    </el-table>-->
+<!--    &lt;!&ndash; 分页 &ndash;&gt;-->
+<!--    <el-pagination-->
+<!--      @size-change="handleSizeChange"-->
+<!--      @current-change="handleCurrentChange"-->
+<!--      :current-page="page.currentPage"-->
+<!--      :page-sizes="[10, 5, 2, 1]"-->
+<!--      :page-size="page.pageSize"-->
+<!--      layout="total, sizes, prev, pager, next, jumper"-->
+<!--      :total="page.total"-->
+<!--    >-->
+<!--    </el-pagination>-->
+<!--    &lt;!&ndash; 线索内容 &ndash;&gt;-->
 
-    <el-dialog
-      title="线索内容"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <div class="block" v-for="fit in content.imgs" :key="fit">
-        <el-image
-          style="width: 100px; height: 100px"
-          :src="fit"
-        ></el-image>
-      </div>
-      <span>{{ content.content }}</span>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">返回</el-button>
-      </span>
-    </el-dialog>
-    <!-- 发布线索 -->
-    <el-dialog
-      title="发布线索"
-      :visible.sync="pubishdialogVisible"
-      width="30%"
-      :before-close="handleClose2"
-    >
-      <el-form :model="form" ref="formref" :rules="formrules">
-        <el-form-item label="标题">
-          <el-input v-model="form.title"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button @click="publish" type="primary"> 发布线索</el-button>
-        </el-form-item>
-      </el-form>
-    </el-dialog>
+<!--    <el-dialog-->
+<!--      title="线索内容"-->
+<!--      :visible.sync="dialogVisible"-->
+<!--      width="30%"-->
+<!--      :before-close="handleClose"-->
+<!--    >-->
+<!--      <div class="block" v-for="fit in content.imgs" :key="fit">-->
+<!--        <el-image-->
+<!--          style="width: 100px; height: 100px"-->
+<!--          :src="fit"-->
+<!--        ></el-image>-->
+<!--      </div>-->
+<!--      <span>{{ content.content }}</span>-->
+<!--      <span slot="footer" class="dialog-footer">-->
+<!--        <el-button @click="dialogVisible = false">返回</el-button>-->
+<!--      </span>-->
+<!--    </el-dialog>-->
+<!--    &lt;!&ndash; 发布线索 &ndash;&gt;-->
+<!--    <el-dialog-->
+<!--      title="发布线索"-->
+<!--      :visible.sync="pubishdialogVisible"-->
+<!--      width="30%"-->
+<!--    >-->
+<!--&lt;!&ndash;      :before-close="handleClose2"&ndash;&gt;-->
+<!--      <el-form :model="form" ref="formref" :rules="formrules">-->
+<!--        <el-form-item label="标题">-->
+<!--          <el-input v-model="form.title"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item>-->
+<!--          <el-button @click="publish" type="primary"> 发布线索</el-button>-->
+<!--        </el-form-item>-->
+<!--      </el-form>-->
+<!--    </el-dialog>-->
   </div>
 </template>
 <script>
@@ -109,13 +113,13 @@ export default {
       this.page.currentPage = val;
       this.getpost();
     },
-    handleClose2(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
+    // handleClose2(done) {
+    //   this.$confirm("确认关闭？")
+    //     .then((_) => {
+    //       done();
+    //     })
+    //     .catch((_) => {});
+    // },
     getpost() {
       this.$http({
         methods: "get",
@@ -143,13 +147,13 @@ export default {
       });
       this.dialogVisible = true;
     },
-    handleClose(done) {
-      this.$confirm("确认关闭？")
-        .then((_) => {
-          done();
-        })
-        .catch((_) => {});
-    },
+    // handleClose(done) {
+    //   this.$confirm("确认关闭？")
+    //     .then((_) => {
+    //       done();
+    //     })
+    //     .catch((_) => {});
+    // },
     publishdia(row) {
       console.log(row);
       this.randomReport.actionId = row.actionId;
@@ -197,6 +201,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.post_container {
+  padding:15px;
+}
 .el-pagination {
   padding-top: 15px;
 }

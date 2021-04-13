@@ -67,6 +67,17 @@
                   <span>状态管理</span>
                 </template>
               </el-menu-item>
+              <el-menu-item
+                index="/volManage"
+                :route="{ path: '/volManage', query: { id: id } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-mobile"></i>
+                  <!-- 文本 -->
+                  <span>行动管理</span>
+                </template>
+              </el-menu-item>
             </el-submenu>
             <!-- 一级菜单 -->
             <el-submenu index="1">
@@ -100,14 +111,14 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/weather" :route="{ path: '/weather' }">
-                <template slot="title">
-                  <!-- 图标 -->
-                  <i class="el-icon-sunny"></i>
-                  <!-- 文本 -->
-                  <span>天气查询</span>
-                </template>
-              </el-menu-item>
+<!--              <el-menu-item index="/weather" :route="{ path: '/weather' }">-->
+<!--                <template slot="title">-->
+<!--                  &lt;!&ndash; 图标 &ndash;&gt;-->
+<!--                  <i class="el-icon-sunny"></i>-->
+<!--                  &lt;!&ndash; 文本 &ndash;&gt;-->
+<!--                  <span>天气查询</span>-->
+<!--                </template>-->
+<!--              </el-menu-item>-->
               <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg' }">
                 <template slot="title">
                   <!-- 图标 -->
@@ -118,7 +129,6 @@
               </el-menu-item>
             </el-submenu>
             <!-- 一级菜单模板监控模块 -->
-
             <el-submenu index="3">
               <template slot="title">
                 <!-- 图标 -->

@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container_box">
     <!-- 类型选择框 -->
     <div class="down_menu">
       <el-dropdown @command="handleCommand">
@@ -367,6 +367,9 @@ export default {
 },
   created() {
     this.actionId = this.$route.query.actionId;
+    if (this.$route.query.type !== undefined) {
+      this.type = this.$route.query.type;
+    }
     this.getIdentifyData();
   }
   }
@@ -406,8 +409,7 @@ export default {
 
 .down_menu {
   position: absolute;
-  right: 3%;
-  top: 10%;
+  padding:15px;
 }
 
 .el-dropdown-link {

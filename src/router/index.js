@@ -31,6 +31,7 @@ import StatisticsCard from "@/components/Monitor/StatisticsCard";
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
 import NotFound from "@/components/NotFound"
+import VolManage from "@/components/VolManage";
 
 Vue.use(VueRouter)
 
@@ -53,7 +54,7 @@ const routes = [{
     {
         path: '/welcome',
         component: Welcome,
-        redirect: '/action',
+        redirect: '/inAction',
         children: [
             {
                 path: '/action',
@@ -85,6 +86,10 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/volManage',
+            component: VolManage,
+          },
           {
             path: '/actionManage',
             component: ActionManage,
