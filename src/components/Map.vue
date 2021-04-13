@@ -21,6 +21,7 @@ export default {
           mapTypes: [window.BMAP_NORMAL_MAP, window.BMAP_HYBRID_MAP],
         })
       );
+      map.setMapStyle({ style: 'grayscale' });
       map.setCurrentCity("渠县"); // 设置地图显示的城市 此项是必须设置的
       map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
       //  设置地图显示元素
@@ -28,6 +29,17 @@ export default {
         //  是否显示POI信息
         poi: true,
       })
+      var icon = new window.BMap.Icon("../assets/avatar.png", new window.BMap.Size(100, 100));
+      //  设置标注的经纬度
+      var marker = new window.BMap.Marker(new window.BMap.Point(106.94, 30.85), { icon: icon });
+      //  把标注添加到地图上
+      map.addOverlay(marker);
+      // var point = new window.BMap.Point(106.94, 30.85);
+      // var marker = new window.BMap.Marker(point);
+      // marker.setTitle("我是标题");
+      // map.addOverlay(marker);
+      // // 设置标注动画效果。如果参数为null，则取消动画效果。该方法需要在addOverlay方法后设置
+      // // marker.setAnimation(Animation);
     },
     initMapHeight() {
       var main = document.getElementById("map");

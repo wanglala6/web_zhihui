@@ -29,12 +29,30 @@
         sort
       >
       </el-table-column>
-      <el-table-column prop="title" label="标题" align="center">
+      <el-table-column prop="content.content" label="内容" align="center">
+      </el-table-column>
+      <el-table-column prop="imgs" label="图片" align="center">
+        <template  slot-scope="scope">
+          <img v-for="item in scope.row.imgs" :src="item" :key="item" width="40" height="40"/>
+        </template>
+<!--        <div-->
+<!--          class="demo-image__preview"-->
+<!--          v-for="img in imgs"-->
+<!--          :key="img.id"-->
+<!--        >-->
+<!--          <el-image-->
+<!--            style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"-->
+<!--            :src="img"-->
+<!--            :preview-src-list="imgs"-->
+<!--            z-index="99999999999"-->
+<!--          >-->
+<!--          </el-image>-->
+<!--        </div>-->
       </el-table-column>
       <el-table-column fixed="right" label="线索" width="180" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row)"
-            >查看</el-button
+            >完整内容</el-button
           >
         </template>
       </el-table-column>
@@ -56,7 +74,6 @@
       title="线索内容"
       :visible.sync="dialogVisible"
       width="30%"
-      :before-close="handleClose"
     >
       <div class="block" v-for="fit in content.imgs" :key="fit">
         <el-image style="width: 100px; height: 100px" :src="fit"></el-image>
@@ -70,16 +87,20 @@
   </div>
 </template>
 <script>
+import { devServer } from "../../vue.config";
+
 export default {
   data() {
     return {
+      tmp: "",
+      clue_msg: {},
       keyword: "",
       dialogVisible: false,
       // 线索
       tableData: [],
       page: {
         currentPage: 1,
-        pageSize: 5,
+        pageSize: 999,
       },
       // 线索id
       id: "",
@@ -97,6 +118,14 @@ export default {
           currentPage: this.page.currentPage,
           pageSize: this.page.pageSize,
         },
+      }).then((res) => {
+        console.log(res.data);
+        if (res.data.code === 200) {
+          this.tableData = res.data.data;
+          this.page.total = res.data.total;
+        } else {
+          this.$message("数据获取失败");
+        }
       });
     },
     handleSizeChange(val) {
@@ -124,8 +153,18 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.code === 200) {
+          var _this = this;
           this.tableData = res.data.data;
           this.page.total = res.data.total;
+          this.tableData.imgs = []
+          this.tableData.forEach((ele) => {
+            ele.content.imgs.forEach((e) => {
+              _this.tmp = []
+              _this.tmp.push(devServer.proxy["/"].target + e)
+            })
+            _this.tableData.imgs.push(_this.tmp)
+            })
+          // console.log(this.tableData.imgs)
         } else {
           this.$message("数据获取失败");
         }

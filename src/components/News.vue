@@ -408,8 +408,8 @@ export default {
 }
 
 .down_menu {
-  position: absolute;
   padding:15px;
+  margin-left: 80%;
 }
 
 .el-dropdown-link {

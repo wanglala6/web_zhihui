@@ -171,18 +171,18 @@
                   <!-- 图标 -->
                   <i class="el-icon-user"></i>
                   <!-- 文本 -->
-                  <span>线索</span>
+                  <span>线索记录</span>
                 </template>
               </el-menu-item>
               <el-menu-item
-                index="/VolunteerStatus"
-                :route="{ path: '/VolunteerStatus', query: { id: id } }"
+                index="/identifyRecord"
+                :route="{ path: '/identifyRecord', query: { id: id } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-user"></i>
                   <!-- 文本 -->
-                  <span>志愿者动态</span>
+                  <span>甄别记录</span>
                 </template>
               </el-menu-item>
             </el-submenu>

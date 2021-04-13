@@ -32,6 +32,8 @@ import Action from "@/components/Action"
 import InAction from "@/components/InAction"
 import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
+import VolPositionMap from "@/components/VolPositionMap";
+import IdentifyRecord from "@/components/IdentifyRecord";
 
 Vue.use(VueRouter)
 
@@ -86,6 +88,14 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/identifyRecord',
+            component: IdentifyRecord,
+          },
+          {
+            path: '/volPositionMap',
+            component: VolPositionMap,
+          },
           {
             path: '/volManage',
             component: VolManage,
