@@ -140,18 +140,28 @@ export default {
         });
     },
     chooseTeam(e) {
+      // 判断志愿者是否已经在其他队伍中，如果在则移除
       for (var team in this.teams) {
+        console.log(team);
         if (this.teams[team].indexOf(e.name) !== -1) {
+          console.log("在里面");
+          console.log(this.teams);
           const index = this.teams[team].indexOf(e.name);
-          this.teams[team] = this.teams[team].splice(index, 1);
+          this.teams[team].splice(index, 1);
+          console.log("修改后");
+          console.log(this.teams);
           break;
         }
       }
+      // 将志愿者添加到队伍
       if (e.value in this.teams) {
         this.teams[e.value].push(e.name);
       } else {
         this.teams[e.value] = [e.name];
       }
+
+      this.$forceUpdate();
+      console.log(this.teams);
     },
   },
   created() {
