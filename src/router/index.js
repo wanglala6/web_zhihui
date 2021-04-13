@@ -30,6 +30,8 @@ import ClueNewest from "@/components/Monitor/ClueNewest";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
+import Statistics from "@/components/Statistics"
+import Location from "@/components/Location";
 import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
 
@@ -38,6 +40,10 @@ Vue.use(VueRouter)
 const routes = [{
         path: '/',
         redirect: '/login'
+    },
+    {
+      path: '/location',
+      component: Location
     },
     {
         path: '/login',
@@ -76,6 +82,10 @@ const routes = [{
             {
                 path: '/volunteer',
                 component: Volunteer
+            },
+            {
+              path: '/statistics',
+              component: Statistics
             }
         ]
     },

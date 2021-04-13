@@ -188,14 +188,14 @@ export default {
     edit(row) {
       this.vol = row;
       this.vol2 = row;
-      if (this.vol2.forbidden === "正常") {
+      this.diaedit = true;
+    },
+    editaffirm() {
+       if (this.vol2.forbidden === "正常") {
         this.vol2.forbidden = false;
       } else {
         this.vol2.forbidden = true;
       }
-      this.diaedit = true;
-    },
-    editaffirm() {
       this.$http({
         method: "put",
         url: "/command/volunteer/" + this.vol.id,
@@ -207,6 +207,7 @@ export default {
         console.log(res.data);
         if (res.data.code === 200) {
           this.$message.success("修改成功");
+          this.getvol()
         } else {
           this.$message(res.data.message);
         }
