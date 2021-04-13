@@ -34,12 +34,10 @@
       <el-table-column prop="imgs" label="图片" align="center">
         <template slot-scope="scope">
           <el-image
-            style="width: 100px; height: 100px"
+            style="width: 50px; height: 50px; margin-left:5px;"
             v-for="item in scope.row.content.imgs"
             :src="item"
             :key="item"
-            width="40"
-            height="40"
             :preview-src-list="scope.row.content.imgs">
           </el-image>
 <!--          <img v-for="item in scope.row.content.imgs" :src="item" :key="item" width="40" height="40"/>-->
@@ -58,14 +56,14 @@
         <!--          </el-image>-->
         <!--        </div>-->
       </el-table-column>
-      <el-table-column fixed="right" label="线索" width="180" align="center">
-        <template slot-scope="scope">
-          <el-button type="text" size="small" @click="detail(scope.row)"
-          >完整内容
-          </el-button
-          >
-        </template>
-      </el-table-column>
+<!--      <el-table-column fixed="right" label="线索" width="180" align="center">-->
+<!--        <template slot-scope="scope">-->
+<!--          <el-button type="text" size="small" @click="detail(scope.row)"-->
+<!--          >完整内容-->
+<!--          </el-button-->
+<!--          >-->
+<!--        </template>-->
+<!--      </el-table-column>-->
     </el-table>
     <!-- 分页 -->
     <el-pagination
