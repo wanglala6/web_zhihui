@@ -8,6 +8,16 @@ import 'element-ui/lib/theme-chalk/index.css';
 // 导入全局样式表 入口文件
 import './assets/css/global.css'
 import axios from 'axios'
+import BaiduMap from 'vue-baidu-map'
+Vue.use(BaiduMap, {
+  ak: 'pKCbOFewojmC9xuiiGwOq1MAyABiQwD8'
+})
+
+// import dataV from '@jiaminghi/data-view'
+// import echarts from 'echart'
+//
+// Vue.use(dataV)
+// Vue.prototype.$echarts = echarts
 
 axios.defaults.baseURL = '/'
 axios.defaults.withCredentials = true// axios默认不让后端写入cookie

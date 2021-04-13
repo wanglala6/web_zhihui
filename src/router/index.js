@@ -34,10 +34,17 @@ import Statistics from "@/components/Statistics"
 import Location from "@/components/Location";
 import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
+import VolPositionMap from "@/components/VolPositionMap";
+import IdentifyRecord from "@/components/IdentifyRecord";
 
 Vue.use(VueRouter)
 
-const routes = [{
+const routes = [
+  {
+    path: '*',
+    redirect: '/notFound'
+  },
+  {
         path: '/',
         redirect: '/login'
     },
@@ -96,6 +103,14 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/identifyRecord',
+            component: IdentifyRecord,
+          },
+          {
+            path: '/volPositionMap',
+            component: VolPositionMap,
+          },
           {
             path: '/volManage',
             component: VolManage,
