@@ -35,7 +35,7 @@
             <div class="com_img box_style">
               <div class="image-top">最相似的图片</div>
               <el-image
-                src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true"
+                src="http://47.106.239.161:5000/files/download?filename=77f334e953c44745e30c008aad7df8b9.jpg&onlineOpen=true"
                 :fit="fit"
                 class="image"
               ></el-image>
