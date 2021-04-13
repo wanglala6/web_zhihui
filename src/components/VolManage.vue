@@ -28,6 +28,7 @@
               placeholder="请选择类型"
               filterable
               default-first-option
+              @change="chooseTeam(scope.row)"
             >
               <el-option
                 v-for="item in options"
@@ -56,13 +57,17 @@
     </div>
 
     <!-- 队伍表 -->
-    <div>
-      <el-card class="box-card">
+    <div class="flex">
+      <el-card
+        class="box-card"
+        v-for="(volunteers, team, index) in teams"
+        v-bind:key="index"
+      >
         <div slot="header" class="clearfix">
-          <span>队伍一</span>
+          <span>队伍{{ team }}</span>
         </div>
-        <div v-for="o in 2" :key="o" class="text item">
-          {{ "列表内容 " + o }}
+        <div v-for="volunteer in volunteers" :key="volunteer" class="text item">
+          {{ volunteer }}
         </div>
       </el-card>
     </div>
@@ -82,6 +87,7 @@ export default {
       value: [],
       // 是否开启组队模式
       isTeamUp: false,
+      teams: {},
     };
   },
   methods: {
@@ -133,6 +139,20 @@ export default {
           });
         });
     },
+    chooseTeam(e) {
+      for (var team in this.teams) {
+        if (this.teams[team].indexOf(e.name) !== -1) {
+          const index = this.teams[team].indexOf(e.name);
+          this.teams[team] = this.teams[team].splice(index, 1);
+          break;
+        }
+      }
+      if (e.value in this.teams) {
+        this.teams[e.value].push(e.name);
+      } else {
+        this.teams[e.value] = [e.name];
+      }
+    },
   },
   created() {
     this.actionId = this.$route.query.id;
@@ -157,8 +177,13 @@ export default {
 }
 
 .box-card {
-    width: 150px;
-    height: 150px;
-    margin-top: 20px;
-  }
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.flex {
+  display: flex;
+}
 </style>
