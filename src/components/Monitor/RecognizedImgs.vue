@@ -2,7 +2,6 @@
   <div class="imgList">
     <div
       class="imgList-item imgList-item-active"
-      v-infinite-scroll="load"
       v-for="i in 4"
       :key="i"
     >

@@ -43,7 +43,6 @@
             <MapBtn
               value="相似度最高图片"
               iconClass="el-icon-picture"
-              :isActive="false"
               class="map-btn"
               slot="reference"
             ></MapBtn>
@@ -54,7 +53,6 @@
             <MapBtn
               value="人脸识别记录"
               iconClass="el-icon-camera"
-              :isActive="false"
               slot="reference"
             ></MapBtn>
           </el-popover>
@@ -64,7 +62,6 @@
             <MapBtn
               value="行动状态"
               iconClass="el-icon-tickets"
-              :isActive="false"
               slot="reference"
             ></MapBtn>
           </el-popover>
