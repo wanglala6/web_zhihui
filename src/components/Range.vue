@@ -31,7 +31,7 @@ export default {
     };
   },
   mounted() {
-    setInterval(this.getage(), 5000);
+    setInterval(this.getage(), 2000);
   },
   methods: {
     getage() {
