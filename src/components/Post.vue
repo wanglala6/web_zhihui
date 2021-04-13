@@ -28,6 +28,9 @@
       </el-table-column>
     </el-table>
     <h1>志愿者当前位置</h1>
+    <div class="position_map">
+      <VolPositionMap></VolPositionMap>
+      </div>
 <!--    <div class="card_box">-->
 <!--      <el-row>-->
 <!--        <el-col :span="2" class="card_left">-->
@@ -121,7 +124,9 @@
   </div>
 </template>
 <script>
+import VolPositionMap from "@/components/VolPositionMap";
 export default {
+  components: { VolPositionMap },
   data() {
     return {
       table_content: [],
@@ -269,6 +274,12 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.position_map {
+  height:350px;
+  width: 900px;
+  border: 1px solid;
+  border-radius: 5px;
+}
 //.name_box {
 //  margin-top:1%;
 //  font-size:7px;

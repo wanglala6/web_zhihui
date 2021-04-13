@@ -3,224 +3,222 @@
     <div class="lost">
       <el-row>
         <el-col :span="4" :offset="1">
-          <el-avatar
-            shape="square"
-            :size="150"
-            fit="fit"
+          <el-image
+            style="width: 100%;border-radius: 5px"
             :src="older.avatar"
-          ></el-avatar>
-        </el-col>
-        <el-col :span="18" :offset="1" style="padding-right: 40px">
-          <div class="lost-name flex">
-            <p>{{ older.name }}</p>
-            <el-link type="primary" v-if="isEdit" href="/#/newsEdit">信息已修改，点击通知志愿者</el-link>
+            :fit="fit"></el-image>
+    </el-col>
+    <el-col :span="18" :offset="1" style="padding-right: 40px">
+      <div class="lost-name flex">
+        <p>{{ older.name }}</p>
+        <el-link type="primary" v-if="isEdit" href="/#/newsEdit">信息已修改，点击通知志愿者</el-link>
+      </div>
+      <div class="lost-info">
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('sex')"
+          @mouseleave="handleLeave('sex')"
+        >
+          <div class="lost-info-itemLabel">性别</div>
+          <div class="lost-info-itemValue" v-if="!isSexEdit">
+            {{ older.gender }}
+            <div
+              class="el-icon-edit lost-info-edit"
+              v-if="sexEdit"
+              @click="startEdit('sex')"
+            >
+              修改
+            </div>
           </div>
-          <div class="lost-info">
+          <el-form ref="form" :model="form" v-if="isSexEdit">
+            <el-form-item>
+              <el-radio-group v-model="form.sex">
+                <el-radio label="男">男</el-radio>
+                <el-radio label="女">女</el-radio>
+              </el-radio-group>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('sex')">修改</el-button>
+              <el-button @click="cancelEdit('sex')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('age')"
+          @mouseleave="handleLeave('age')"
+        >
+          <div class="lost-info-itemLabel">年龄</div>
+          <div class="lost-info-itemValue" v-if="!isAgeEdit">
+            {{ older.age }}
             <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('sex')"
-              @mouseleave="handleLeave('sex')"
+              class="el-icon-edit lost-info-edit"
+              v-if="ageEdit"
+              @click="startEdit('age')"
             >
-              <div class="lost-info-itemLabel">性别</div>
-              <div class="lost-info-itemValue" v-if="!isSexEdit">
-                {{ older.gender }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="sexEdit"
-                  @click="startEdit('sex')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isSexEdit">
-                <el-form-item>
-                  <el-radio-group v-model="form.sex">
-                    <el-radio label="男">男</el-radio>
-                    <el-radio label="女">女</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('sex')">修改</el-button>
-                  <el-button @click="cancelEdit('sex')">取消</el-button>
-                </el-form-item>
-              </el-form>
+              修改
             </div>
-            <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('age')"
-              @mouseleave="handleLeave('age')"
-            >
-              <div class="lost-info-itemLabel">年龄</div>
-              <div class="lost-info-itemValue" v-if="!isAgeEdit">
-                {{ older.age }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="ageEdit"
-                  @click="startEdit('age')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isAgeEdit">
-                <el-form-item>
-                  <el-input v-model="form.age"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('age')">修改</el-button>
-                  <el-button @click="cancelEdit('age')">取消</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
+          </div>
+          <el-form ref="form" :model="form" v-if="isAgeEdit">
+            <el-form-item>
+              <el-input v-model="form.age"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('age')">修改</el-button>
+              <el-button @click="cancelEdit('age')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('feature')"
+          @mouseleave="handleLeave('feature')"
+        >
+          <div class="lost-info-itemLabel">外貌特征</div>
+          <div class="lost-info-itemValue" v-if="!isFeatureEdit">
+            {{ older.feature }}
             <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('feature')"
-              @mouseleave="handleLeave('feature')"
+              class="el-icon-edit lost-info-edit"
+              v-if="featureEdit"
+              @click="startEdit('feature')"
             >
-              <div class="lost-info-itemLabel">外貌特征</div>
-              <div class="lost-info-itemValue" v-if="!isFeatureEdit">
-                {{ older.feature }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="featureEdit"
-                  @click="startEdit('feature')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isFeatureEdit">
-                <el-form-item>
-                  <el-input v-model="form.feature" type="textarea"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('feature')">修改</el-button>
-                  <el-button @click="cancelEdit('feature')">取消</el-button>
-                </el-form-item>
-              </el-form>
+              修改
             </div>
+          </div>
+          <el-form ref="form" :model="form" v-if="isFeatureEdit">
+            <el-form-item>
+              <el-input v-model="form.feature" type="textarea"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('feature')">修改</el-button>
+              <el-button @click="cancelEdit('feature')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('disease')"
+          @mouseleave="handleLeave('disease')"
+        >
+          <div class="lost-info-itemLabel">病历</div>
+          <div class="lost-info-itemValue" v-if="!isDiseaseEdit">
+            {{ older.disease }}
             <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('disease')"
-              @mouseleave="handleLeave('disease')"
+              class="el-icon-edit lost-info-edit"
+              v-if="diseaseEdit"
+              @click="startEdit('disease')"
             >
-              <div class="lost-info-itemLabel">病历</div>
-              <div class="lost-info-itemValue" v-if="!isDiseaseEdit">
-                {{ older.disease }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="diseaseEdit"
-                  @click="startEdit('disease')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isDiseaseEdit">
-                <el-form-item>
-                  <el-input v-model="form.disease" type="textarea"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('disease')">修改</el-button>
-                  <el-button @click="cancelEdit('disease')">取消</el-button>
-                </el-form-item>
-              </el-form>
+              修改
             </div>
+          </div>
+          <el-form ref="form" :model="form" v-if="isDiseaseEdit">
+            <el-form-item>
+              <el-input v-model="form.disease" type="textarea"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('disease')">修改</el-button>
+              <el-button @click="cancelEdit('disease')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('place')"
+          @mouseleave="handleLeave('place')"
+        >
+          <div class="lost-info-itemLabel">走失地点</div>
+          <div class="lost-info-itemValue" v-if="!isPlaceEdit">
+            {{ older.lastPlace }}
             <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('place')"
-              @mouseleave="handleLeave('place')"
+              class="el-icon-edit lost-info-edit"
+              v-if="placeEdit"
+              @click="startEdit('place')"
             >
-              <div class="lost-info-itemLabel">走失地点</div>
-              <div class="lost-info-itemValue" v-if="!isPlaceEdit">
-                {{ older.lastPlace }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="placeEdit"
-                  @click="startEdit('place')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isPlaceEdit">
-                <el-form-item>
-                  <el-input v-model="form.lastPlace" type="textarea"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('place')">修改</el-button>
-                  <el-button @click="cancelEdit('place')">取消</el-button>
-                </el-form-item>
-              </el-form>
+              修改
             </div>
+          </div>
+          <el-form ref="form" :model="form" v-if="isPlaceEdit">
+            <el-form-item>
+              <el-input v-model="form.lastPlace" type="textarea"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('place')">修改</el-button>
+              <el-button @click="cancelEdit('place')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('time')"
+          @mouseleave="handleLeave('time')"
+        >
+          <div class="lost-info-itemLabel">走失时间段</div>
+          <div class="lost-info-itemValue">
+            {{ older.lostTimeBegin }} ~ {{ older.lostTimeEnd }}
+          </div>
+        </div>
+
+        <div
+          class="lost-info-item"
+          @mouseenter="handleEnter('phone')"
+          @mouseleave="handleLeave('phone')"
+        >
+          <div class="lost-info-itemLabel">家人联系电话</div>
+          <div class="lost-info-itemValue" v-if="!isPhoneEdit">
+            {{ older.familyTelephone }}
             <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('time')"
-              @mouseleave="handleLeave('time')"
+              class="el-icon-edit lost-info-edit"
+              v-if="phoneEdit"
+              @click="startEdit('phone')"
             >
-              <div class="lost-info-itemLabel">走失时间段</div>
-              <div class="lost-info-itemValue">
-                {{ older.lostTimeBegin }} ~ {{ older.lostTimeEnd }}
-              </div>
+              修改
             </div>
+          </div>
+          <el-form ref="form" :model="form" v-if="isPhoneEdit">
+            <el-form-item>
+              <el-input v-model="form.familyTelephone"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit('phone')">修改</el-button>
+              <el-button @click="cancelEdit('phone')">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
 
-            <div
-              class="lost-info-item"
-              @mouseenter="handleEnter('phone')"
-              @mouseleave="handleLeave('phone')"
-            >
-              <div class="lost-info-itemLabel">家人联系电话</div>
-              <div class="lost-info-itemValue" v-if="!isPhoneEdit">
-                {{ older.familyTelephone }}
-                <div
-                  class="el-icon-edit lost-info-edit"
-                  v-if="phoneEdit"
-                  @click="startEdit('phone')"
-                >
-                  修改
-                </div>
-              </div>
-              <el-form ref="form" :model="form" v-if="isPhoneEdit">
-                <el-form-item>
-                  <el-input v-model="form.familyTelephone"></el-input>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="onSubmit('phone')">修改</el-button>
-                  <el-button @click="cancelEdit('phone')">取消</el-button>
-                </el-form-item>
-              </el-form>
-            </div>
-
-            <div class="lost-info-item">
-              <div class="lost-info-itemLabel">走失者图片</div>
-              <div class="lost-info-itemValue flex">
-                <el-image
-                  style="
+        <div class="lost-info-item">
+          <div class="lost-info-itemLabel">走失者图片</div>
+          <div class="lost-info-itemValue flex">
+            <el-image
+              style="
                     width: 148px;
                     height: 148px;
                     margin-right: 10px;
                     border-radius: 5px;
                   "
-                  :src="url"
-                  v-for="url in pictures"
-                  v-bind:key="url"
-                  :preview-src-list="pictures"
-                >
-                </el-image>
-                <el-upload
-                  action="#"
-                  list-type="picture-card"
-                  :auto-upload="false"
-                  :file-list="fileList"
-                >
-                  <i slot="default" class="el-icon-plus"></i>
-                  <div slot="file" slot-scope="{ file }">
-                    <img
-                      class="el-upload-list__item-thumbnail"
-                      :src="file.url"
-                      alt=""
-                    />
-                    <span class="el-upload-list__item-actions">
+              :src="url"
+              v-for="url in pictures"
+              v-bind:key="url"
+              :preview-src-list="pictures"
+            >
+            </el-image>
+            <el-upload
+              action="#"
+              list-type="picture-card"
+              :auto-upload="false"
+              :file-list="fileList"
+            >
+              <i slot="default" class="el-icon-plus"></i>
+              <div slot="file" slot-scope="{ file }">
+                <img
+                  class="el-upload-list__item-thumbnail"
+                  :src="file.url"
+                  alt=""
+                />
+                <span class="el-upload-list__item-actions">
                       <span
                         class="el-upload-list__item-preview"
                         @click="handlePictureCardPreview(file)"
@@ -242,17 +240,17 @@
                         <i class="el-icon-delete"></i>
                       </span>
                     </span>
-                  </div>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible">
-                  <img width="100%" :src="dialogImageUrl" alt="" />
-                </el-dialog>
               </div>
-            </div>
+            </el-upload>
+            <el-dialog :visible.sync="dialogVisible">
+              <img width="100%" :src="dialogImageUrl" alt=""/>
+            </el-dialog>
           </div>
-        </el-col>
-      </el-row>
-    </div>
+        </div>
+      </div>
+    </el-col>
+    </el-row>
+  </div>
   </div>
 </template>
 
