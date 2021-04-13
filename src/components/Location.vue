@@ -11,8 +11,8 @@
 <script>
 import echarts from "echarts";
 
-import "echarts/map/js/world.js";
-import "echarts/map/js/china.js";
+// import "echarts/map/js/world.js";
+// import "echarts/map/js/china.js";
 // import "echarts/extension-src/bmap/bmap.js";
 // import BMap from "vue-baidu-map";
 require("echarts");
