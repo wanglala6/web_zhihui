@@ -1,10 +1,9 @@
 <template>
-  <div class="flex" @click="isShow">
+  <div class="flex" @click="isShow" v-clickoutside="handleClose">
     <div class="btn-value">{{ value }}</div>
     <div
       :class="[{ active: isActive }, iconClass]"
       class="btn-icon"
-      v-clickoutside="handleClose"
     ></div>
   </div>
 </template>
@@ -38,9 +37,11 @@ const clickoutside = {
 
 export default {
   name: "MapBtn",
-  props: ["value", "iconClass", "isActive"],
+  props: ["value", "iconClass"],
   data() {
-    return {};
+    return {
+      isActive: false
+    };
   },
   directives: { clickoutside },
   methods: {

@@ -26,14 +26,14 @@
         <Map></Map>
         <div class="btn-list">
           <!-- 最相似图片 -->
-          <el-popover placement="left" width="200" trigger="click">
+          <el-popover placement="left" width="200" trigger="click" :offset="-100">
             <div class="donutChartWrapper">
               <div class="donutChart">
                 <DonutChart gaugeData="gaugeData"></DonutChart>
               </div>
             </div>
             <div class="com_img box_style">
-              <div class="image-top">最相似的图片</div>
+              <div class="image-top">相似度:90%</div>
               <el-image
                 src="http://47.106.239.161:5000/files/download?filename=77f334e953c44745e30c008aad7df8b9.jpg&onlineOpen=true"
                 :fit="fit"
@@ -43,18 +43,16 @@
             <MapBtn
               value="相似度最高图片"
               iconClass="el-icon-picture"
-              :isActive="false"
               class="map-btn"
               slot="reference"
             ></MapBtn>
           </el-popover>
 
-          <el-popover placement="left" width="200" trigger="click">
+          <el-popover placement="left" width="230" trigger="click" :offset="-50">
             <RecognizedImgs></RecognizedImgs>
             <MapBtn
               value="人脸识别记录"
               iconClass="el-icon-camera"
-              :isActive="false"
               slot="reference"
             ></MapBtn>
           </el-popover>
@@ -64,7 +62,6 @@
             <MapBtn
               value="行动状态"
               iconClass="el-icon-tickets"
-              :isActive="false"
               slot="reference"
             ></MapBtn>
           </el-popover>
@@ -220,7 +217,7 @@ export default {
 
 .btn-list {
   position: absolute;
-  top: 10%;
+  top: 12%;
   right: 2%;
 }
 </style>

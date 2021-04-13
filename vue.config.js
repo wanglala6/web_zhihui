@@ -1,7 +1,8 @@
 module.exports = {
     configureWebpack: {
       externals: {
-        BMap: "BMap"
+        // eslint-disable-next-line quote-props
+        'BMap': 'BMap'
       }
     },
     devServer: {
