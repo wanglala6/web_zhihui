@@ -2,10 +2,22 @@
   <div class="container">
     <div class="action-status">
       <el-steps :active="2" align-center>
-        <el-step title="提交老人信息" description="走失者家属上传信息"></el-step>
-        <el-step title="行动创建" description="指派指挥员执行任务并征集志愿者"></el-step>
-        <el-step title="搜寻老人" description="志愿者开始配合搜索走失者"></el-step>
-        <el-step title="行动结束" description="找到走失者或行动时间超过72小时"></el-step>
+        <el-step
+          title="提交老人信息"
+          description="走失者家属上传信息"
+        ></el-step>
+        <el-step
+          title="行动创建"
+          description="指派指挥员执行任务并征集志愿者"
+        ></el-step>
+        <el-step
+          title="搜寻老人"
+          description="志愿者开始配合搜索走失者"
+        ></el-step>
+        <el-step
+          title="行动结束"
+          description="找到走失者或行动时间超过72小时"
+        ></el-step>
       </el-steps>
     </div>
 
@@ -31,20 +43,84 @@
     <div class="action-change-wrapper">
       <el-row class="action-change">
         <el-col :span="12">
-          <el-button type="success">确认找到老人</el-button>
+          <el-button type="success" @click="findLostDialogFormVisible = true"
+            >确认找到老人</el-button
+          >
         </el-col>
         <el-col :span="12">
-          <el-button type="danger">确认遗留行动</el-button>
+          <el-button
+            type="danger"
+            @click="archiveActionDialogFormVisible = true"
+            >确认遗留行动</el-button
+          >
         </el-col>
       </el-row>
     </div>
+
+    <!-- 找到老人对话框 -->
+    <el-dialog
+      title="确定找到走失者了吗？"
+      :visible.sync="findLostDialogFormVisible"
+      center
+      style="font-weight: bold"
+    >
+      <el-form :model="form">
+        <el-form-item label="信息记录">
+          <el-input
+            v-model="form.name"
+            type="textarea"
+            placeholder="记录在何时何地找到了走失者"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="findLostDialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="findLostDialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
+
+    <el-dialog
+      title="确定遗留行动吗？"
+      :visible.sync="archiveActionDialogFormVisible"
+      center
+      style="font-weight: bold"
+    >
+      <el-form :model="form">
+        <el-form-item label="信息记录">
+          <el-input
+            v-model="form.name"
+            type="textarea"
+            placeholder="记录行动遗留原因"
+          ></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="archiveActionDialogFormVisible = false"
+          >取 消</el-button
+        >
+        <el-button
+          type="primary"
+          @click="archiveActionDialogFormVisible = false"
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ActionManage"
-}
+  name: "ActionManage",
+  data() {
+    return {
+      form: {},
+      findLostDialogFormVisible: false,
+      archiveActionDialogFormVisible: false,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -81,5 +157,4 @@ export default {
   margin: 30px auto;
   text-align: center;
 }
-
 </style>
