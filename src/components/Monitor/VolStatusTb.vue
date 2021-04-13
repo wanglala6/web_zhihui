@@ -3,11 +3,12 @@
     <el-table
       :data="tableData"
       style="width: 100%"
-      height="280px"
+      height="200px"
       highlight-current-row
       size="small"
       :row-class-name="tableRowClassName">
       <el-table-column
+        fixed
         prop="name"
         label="姓名"
         width="100">
