@@ -2,10 +2,10 @@
   <div class="main-container">
     <div class="row">
       <div class="top-left">
-        <div style="height: 255px; margin-bottom: 5px" class="msg-box">
+        <div style="height: 48%; margin-bottom: 5px" class="msg-box">
           <MsgBox></MsgBox>
         </div>
-        <div>
+        <div class="left_bottom">
           <VaryMsgTabs></VaryMsgTabs>
         </div>
         <!-- <div class="donutChartWrapper">
@@ -219,5 +219,8 @@ export default {
   position: absolute;
   top: 12%;
   right: 2%;
+}
+.left_bottom {
+  height:40%;
 }
 </style>

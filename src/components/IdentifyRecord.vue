@@ -1,49 +1,80 @@
 <template>
   <div class="identify_container">
+    <h1>志愿者上传照片集</h1>
     <el-row>
-      <el-col :span="12">
-        <h1>志愿者上传照片集</h1>
-        <el-carousel class="block">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3 class="small">{{ item }}</h3>
+      <el-col :span="4" v-for="item in result" :key="item">
+        <div class="img_card">
             <el-image
-              style="height:320px;width:500px"
-              :src="url"
-              :fit="fit">
+              :src="item.img"
+              :fit="fit"
+              style="height: 150px;">
             </el-image>
-          </el-carousel-item>
-        </el-carousel>
-      </el-col>
-      <el-col :span="12">
-        <h1>当前走失老人照片集</h1>
-        <el-carousel class="block">
-          <el-carousel-item v-for="item in 4" :key="item">
-            <h3 class="small">{{ item }}</h3>
-            <el-image
-              style="height:320px;width:500px"
-              :src="url2"
-              :fit="fit">
-            </el-image>
-          </el-carousel-item>
-        </el-carousel>
+          <p>相似度：{{item.similarity}}</p>
+          <p>上传者：{{item.name}}</p>
+        </div>
+<!--        <el-carousel class="block">-->
+<!--          <el-carousel-item v-for="item in 4" :key="item">-->
+<!--            <h3 class="small">{{ item }}</h3>-->
+<!--            <el-image-->
+<!--              style="height:320px;width:500px"-->
+<!--              :src="url"-->
+<!--              :fit="fit">-->
+<!--            </el-image>-->
+<!--          </el-carousel-item>-->
+<!--        </el-carousel>-->
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
+import { devServer } from "../../vue.config";
+
 export default {
 name: "IdentifyRecord",
   data() {
   return {
     url: "http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true",
     url2: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
+    actionId: "",
+    result: []
   }
+  },
+  methods: {
+    async getIdentifyImgs() {
+      const { data: res } = await this.$http.get(
+        "/phone/identify/by-action/" + this.actionId
+      );
+      var _this = this
+      console.log("获取人脸识别记录成功!");
+      console.log(res);
+      var list = {};
+      res.data.forEach((element) => {
+        console.log(element)
+        list = {}
+        list = {
+          img: (devServer.proxy["/"].target + "/files/download?filename=" + element.imgUrl),
+          name: element.volunteer.name,
+          similarity: element.similarity + "%"
+        }
+        _this.result.push(list);
+      });
+    },
+  },
+  created() {
+    this.actionId = this.$route.query.actionId
+    this.getIdentifyImgs()
   }
 }
 </script>
 
 <style scoped>
+.img_card {
+  border: 1px solid #dedede;
+  text-align: center;
+  margin: 10px;
+  font-size: 8px;
+}
 .identify_container{
   padding: 15px;
 }

@@ -176,7 +176,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { id: id } }"
+                :route="{ path: '/identifyRecord', query: { actionId: id } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
