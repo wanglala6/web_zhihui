@@ -48,6 +48,12 @@ export default {
       var option = {
         tooltip: {
           trigger: "item",
+          formatter: (p) => {
+            // console.log(JSON.stringify(p));
+            const dataCon = p.data;
+              const txtCon = `${dataCon.name}`;
+            return txtCon;
+          },
         },
         bmap: {
           center: [104.114129, 37.550339],
