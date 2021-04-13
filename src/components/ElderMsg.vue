@@ -11,8 +11,9 @@
           ></el-avatar>
         </el-col>
         <el-col :span="18" :offset="1" style="padding-right: 40px">
-          <div class="lost-name">
-            {{ older.name }}
+          <div class="lost-name flex">
+            <p>{{ older.name }}</p>
+            <el-link type="primary" v-if="isEdit" href="/#/newsEdit">信息已修改，点击通知志愿者</el-link>
           </div>
           <div class="lost-info">
             <div
@@ -39,7 +40,7 @@
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('sex')">修改</el-button>
                   <el-button @click="cancelEdit('sex')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -65,7 +66,7 @@
                   <el-input v-model="form.age"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('age')">修改</el-button>
                   <el-button @click="cancelEdit('age')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -92,7 +93,7 @@
                   <el-input v-model="form.feature" type="textarea"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('feature')">修改</el-button>
                   <el-button @click="cancelEdit('feature')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -119,7 +120,7 @@
                   <el-input v-model="form.disease" type="textarea"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('disease')">修改</el-button>
                   <el-button @click="cancelEdit('disease')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -146,7 +147,7 @@
                   <el-input v-model="form.lastPlace" type="textarea"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('place')">修改</el-button>
                   <el-button @click="cancelEdit('place')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -184,7 +185,7 @@
                   <el-input v-model="form.familyTelephone"></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="onSubmit">修改</el-button>
+                  <el-button type="primary" @click="onSubmit('phone')">修改</el-button>
                   <el-button @click="cancelEdit('phone')">取消</el-button>
                 </el-form-item>
               </el-form>
@@ -276,6 +277,7 @@ export default {
       isDiseaseEdit: false,
       isPlaceEdit: false,
       isPhoneEdit: false,
+      isEdit: false,
       form: {},
       // 图片上传
       dialogImageUrl: "",
@@ -375,6 +377,28 @@ export default {
         this.phoneEdit = false;
       }
     },
+    onSubmit(e) {
+      if (e === "sex") {
+        this.isSexEdit = false;
+        this.sexEdit = false;
+      } else if (e === "age") {
+        this.isAgeEdit = false;
+        this.ageEdit = false;
+      } else if (e === "feature") {
+        this.isFeatureEdit = false;
+        this.featureEdit = false;
+      } else if (e === "disease") {
+        this.isDiseaseEdit = false;
+        this.diseaseEdit = false;
+      } else if (e === "place") {
+        this.isPlaceEdit = false;
+        this.placeEdit = false;
+      } else if (e === "phone") {
+        this.isPhoneEdit = false;
+        this.phoneEdit = false;
+      }
+      this.isEdit = true;
+    },
     // 图片上传
     handleRemove(file) {
       console.log(file);
@@ -443,5 +467,6 @@ export default {
 
 .flex {
   display: flex;
+  justify-content: space-between;
 }
 </style>
