@@ -32,27 +32,37 @@
       <el-table-column prop="content.content" label="内容" align="center">
       </el-table-column>
       <el-table-column prop="imgs" label="图片" align="center">
-        <template  slot-scope="scope">
-          <img v-for="item in scope.row.imgs" :src="item" :key="item" width="40" height="40"/>
+        <template slot-scope="scope">
+          <el-image
+            style="width: 100px; height: 100px"
+            v-for="item in scope.row.content.imgs"
+            :src="item"
+            :key="item"
+            width="40"
+            height="40"
+            :preview-src-list="scope.row.content.imgs">
+          </el-image>
+<!--          <img v-for="item in scope.row.content.imgs" :src="item" :key="item" width="40" height="40"/>-->
         </template>
-<!--        <div-->
-<!--          class="demo-image__preview"-->
-<!--          v-for="img in imgs"-->
-<!--          :key="img.id"-->
-<!--        >-->
-<!--          <el-image-->
-<!--            style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"-->
-<!--            :src="img"-->
-<!--            :preview-src-list="imgs"-->
-<!--            z-index="99999999999"-->
-<!--          >-->
-<!--          </el-image>-->
-<!--        </div>-->
+        <!--        <div-->
+        <!--          class="demo-image__preview"-->
+        <!--          v-for="img in imgs"-->
+        <!--          :key="img.id"-->
+        <!--        >-->
+        <!--          <el-image-->
+        <!--            style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"-->
+        <!--            :src="img"-->
+        <!--            :preview-src-list="imgs"-->
+        <!--            z-index="99999999999"-->
+        <!--          >-->
+        <!--          </el-image>-->
+        <!--        </div>-->
       </el-table-column>
       <el-table-column fixed="right" label="线索" width="180" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row)"
-            >完整内容</el-button
+          >完整内容
+          </el-button
           >
         </template>
       </el-table-column>
@@ -154,17 +164,17 @@ export default {
         console.log(res.data);
         if (res.data.code === 200) {
           var _this = this;
-          this.tableData = res.data.data;
+          this.tableData = []
           this.page.total = res.data.total;
-          this.tableData.imgs = []
-          this.tableData.forEach((ele) => {
+          const tmp = res.data.data;
+          tmp.forEach((ele) => {
+            _this.tmp = []
             ele.content.imgs.forEach((e) => {
-              _this.tmp = []
               _this.tmp.push(devServer.proxy["/"].target + e)
             })
-            _this.tableData.imgs.push(_this.tmp)
-            })
-          // console.log(this.tableData.imgs)
+            ele.content.imgs = _this.tmp
+            this.tableData.push(ele)
+          })
         } else {
           this.$message("数据获取失败");
         }
@@ -183,7 +193,8 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => {
+        });
     },
   },
   created() {
@@ -192,12 +203,14 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.clue_container{
+.clue_container {
   padding: 15px;
 }
+
 .el-pagination {
   padding-top: 15px;
 }
+
 .input-with-select {
   width: 40%;
 }

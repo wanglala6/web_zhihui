@@ -377,8 +377,12 @@ export default {
 </script>
 
 <style scoped>
+.container_box{
+  padding-left: 50px;
+  margin-right: 100px;
+}
 .block {
-  margin-top: 20px;
+  /*margin-top: 10px;*/
 }
 
 .block-noData {
@@ -408,8 +412,8 @@ export default {
 }
 
 .down_menu {
-  padding:15px;
-  margin-left: 80%;
+  padding-top: 15px;
+  margin-left: 90%;
 }
 
 .el-dropdown-link {

@@ -27,7 +27,7 @@
         label="装备">
       </el-table-column>
     </el-table>
-    <h1>志愿者当前位置</h1>
+    <h1>志愿者报备位置</h1>
     <div class="position_map">
       <VolPositionMap></VolPositionMap>
       </div>
@@ -276,7 +276,7 @@ export default {
 <style lang="less" scoped>
 .position_map {
   height:350px;
-  width: 900px;
+  width: 100%;
   border: 1px solid;
   border-radius: 5px;
 }
