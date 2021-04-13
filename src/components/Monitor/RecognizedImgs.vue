@@ -1,34 +1,25 @@
 <template>
-<!--  <div>-->
-    <!--    <el-row>-->
-    <!--      <el-card :body-style="{ padding: '13px' }">-->
-    <!--      <el-col :span="3" v-for="i in 8" :key="i" style="background-color:red;opacity:0.8;">-->
-    <!--          <span style="font-size:4px;">相似度：20%</span>-->
-    <!--          <img src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true" class="image">-->
-    <!--&lt;!&ndash;          <div style="padding: 0px;">&ndash;&gt;-->
-    <!--&lt;!&ndash;            <div class="bottom clearfix">&ndash;&gt;-->
-    <!--&lt;!&ndash;              <time class="time">2021-4-9 16：29</time>&ndash;&gt;-->
-    <!--&lt;!&ndash;            </div>&ndash;&gt;-->
-    <!--&lt;!&ndash;          </div>&ndash;&gt;-->
-    <!--      </el-col>-->
-    <!--      </el-card>-->
-    <!--    </el-row>-->
-    <div class="imgList">
-      <div class="imgList-item imgList-item-active" v-for="i in 8" :key="i">
-        <span style="font-size:4px;">相似度：20%</span>
-        <img
-          src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true"
-          class="imgList-item-image">
-      </div>
-      <div class="PageTurner">
-        <i class="el-icon-arrow-up" @click="turn_up"></i>
-        <div style="height:65px;">
-          <p style="line-height:65px;font-size:9px;">1/6</p>
-        </div>
-        <i class="el-icon-arrow-down" @click="turn_down"></i>
-      </div>
+  <div class="imgList">
+    <div
+      class="imgList-item imgList-item-active"
+      v-infinite-scroll="load"
+      v-for="i in 4"
+      :key="i"
+    >
+      <span style="font-size: 4px">相似度：20%</span>
+      <img
+        src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true"
+        class="imgList-item-image"
+      />
     </div>
-<!--  </div>-->
+    <el-pagination class="PageTurner" small layout="prev, pager, next" :total="50">
+    </el-pagination>
+    <!-- <div class="PageTurner">
+      <i class="el-icon-arrow-left" @click="turn_up"></i>
+      1 / 6
+      <i class="el-icon-arrow-right" @click="turn_down"></i>
+    </div> -->
+  </div>
 </template>
 
 <script>
@@ -36,22 +27,20 @@ export default {
   name: "RecognizedImgs",
   data() {
     return {
-      currentDate: new Date()
+      currentDate: new Date(),
     };
   },
   methods: {
-    turn_up: {
-    },
-    turn_down: {
-    },
-  }
-}
+    turn_up: {},
+    turn_down: {},
+  },
+};
 </script>
 
 <style scoped>
-.PageTurner{
-  margin-left: 4px;
+.PageTurner {
   text-align: center;
+  width: 100%;
 }
 .image {
   height: 120px;
@@ -79,13 +68,14 @@ export default {
 }
 
 .clearfix:after {
-  clear: both
+  clear: both;
 }
 
 .imgList {
   display: flex;
   flex-direction: row;
-  width:100%;
+  width: 100%;
+  flex-wrap: wrap;
   margin-left: 5px;
 }
 
