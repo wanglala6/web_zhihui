@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="clue_container">
     <div style="margin: 15px 0; width: 100%">
       <el-input
         placeholder="请输入内容"
@@ -153,6 +153,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.clue_container{
+  padding: 15px;
+}
 .el-pagination {
   padding-top: 15px;
 }

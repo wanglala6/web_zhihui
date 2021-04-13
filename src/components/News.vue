@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container_box">
     <!-- 类型选择框 -->
     <div class="down_menu">
       <el-dropdown @command="handleCommand">
@@ -14,6 +14,13 @@
           <el-dropdown-item command="identify">甄别记录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+<!--      <el-tabs v-model="type" type="card" @tab-click="handleCommand">-->
+<!--        <el-tab-pane label="通知" command="notice" name="notice">通知</el-tab-pane>-->
+<!--        <el-tab-pane label="线索" command="clue" name="clue">线索</el-tab-pane>-->
+<!--        <el-tab-pane label="消息" command="random_report" name="random_report">消息</el-tab-pane>-->
+<!--        <el-tab-pane label="出发报备" command="start_report" name="start_report">出发报备</el-tab-pane>-->
+<!--        <el-tab-pane label="甄别记录" command="identify" name="fourth">甄别记录</el-tab-pane>-->
+<!--      </el-tabs>-->
     </div>
     <!-- 消息卡片 -->
     <div class="block">
@@ -52,41 +59,39 @@
       </div>
       <p></p>
     </el-dialog>
-    <el-dialog
-      title="线索详情"
-      :visible.sync="see_clue"
-      width="700px"
-    >
-      <p>{{this.clue_msg.msg}}</p>
+    <el-dialog title="线索详情" :visible.sync="see_clue" width="700px">
+      <p>{{ this.clue_msg.msg }}</p>
       <p></p>
-      <div class="demo-image__preview" v-for="img in clue_msg.imgs" :key="img.id">
-        <el-image
-          style="width: 100px; height: 100px"
-          :src="img"
-          :preview-src-list="clue_msg.imgs"
-          z-index = "99999999999"
+      <div class="clue-img-list">
+        <div
+          class="demo-image__preview"
+          v-for="img in clue_msg.imgs"
+          :key="img.id"
         >
-        </el-image>
-      </div>
-      <div style="position:absolute;right:10px;">
-        <p>{{this.clue_msg.time}}</p>
-      </div>
-      <p> </p>
-    </el-dialog>
-    <el-dialog
-      title="人脸识别详情"
-      :visible.sync="see_identify"
-      width="700px"
-    >
-      <p class="pen">{{identify_msg.volunteerName}}：</p>
-      <p class="default">{{identify_msg.msg}}</p>
-      <p>提交的用于识别的图片：</p>
-      <div class="demo-image__preview" @click="not_see_identify"
+          <el-image
+            style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"
+            :src="img"
+            :preview-src-list="clue_msg.imgs"
+            z-index="99999999999"
           >
+          </el-image>
+        </div>
+      </div>
+      <div style="position: absolute; right: 10px">
+        <p>{{ this.clue_msg.time }}</p>
+      </div>
+      <p></p>
+    </el-dialog>
+    <el-dialog title="人脸识别详情" :visible.sync="see_identify" width="700px">
+      <p class="pen">{{ identify_msg.volunteerName }}：</p>
+      <p class="default">{{ identify_msg.msg }}</p>
+      <p>提交的用于识别的图片：</p>
+      <div class="demo-image__preview" @click="not_see_identify">
         <el-image
           style="width: 100px; height: 100px"
           :src="identify_msg.url"
-          :preview-src-list="identify_msg.srcList">
+          :preview-src-list="identify_msg.srcList"
+        >
         </el-image>
       </div>
     </el-dialog>
@@ -95,36 +100,45 @@
       :visible.sync="see_random_report"
       width="700px"
     >
-      <span>{{random_report_msg}}</span>
-    </el-dialog>
-    <el-dialog
-      title="开始报备"
-      :visible.sync="see_start_report"
-      width="700px"
-    >
-    <div>
-      <span>姓名： {{start_report_msg.name}}</span>
-      <el-divider></el-divider>
-      <span>手机： {{start_report_msg.telephone}}</span>
-      <el-divider></el-divider>
-      <span>装备： {{start_report_msg.equipment}}</span>
-      <el-divider></el-divider>
-      <span>交通工具： {{start_report_msg.transport}}</span>
-      <el-divider></el-divider>
-      <div style="position:absolute;right:10px;">
-        <p>{{this.start_report_msg.time}}</p>
+      <span>{{random_report_msg.msg}}</span>
+      <div class="demo-image__preview" v-for="img in random_report_msg.imgs" :key="img.id">
+        <el-image
+          style="width: 100px; height: 100px"
+          :src="img"
+          :preview-src-list="random_report_msg.imgs"
+          z-index = "99999999999"
+        >
+        </el-image>
       </div>
-    </div>
+      <div style="position:absolute;right:10px;">
+        <p>{{this.random_report_msg.time}}</p>
+      </div>
+    </el-dialog>
+    <el-dialog title="开始报备" :visible.sync="see_start_report" width="700px">
+      <div>
+        <span>姓名： {{ start_report_msg.name }}</span>
+        <el-divider></el-divider>
+        <span>手机： {{ start_report_msg.telephone }}</span>
+        <el-divider></el-divider>
+        <span>装备： {{ start_report_msg.equipment }}</span>
+        <el-divider></el-divider>
+        <span>交通工具： {{ start_report_msg.transport }}</span>
+        <el-divider></el-divider>
+        <div style="position: absolute; right: 10px">
+          <p>{{ this.start_report_msg.time }}</p>
+        </div>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { devServer } from "../../vue.config"
+import { devServer } from "../../vue.config";
 
 export default {
   data() {
     return {
+      activeName: 'first',
       type: "甄别记录",
       message: [],
       notice_list: [],
@@ -142,6 +156,9 @@ export default {
     };
   },
   methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+    },
     not_see_identify() {
       this.see_identify = false;
     },
@@ -157,21 +174,21 @@ export default {
       } else if (this.type === "出发报备") {
         this.see_start_report_detail(item);
       }
-  },
-  see_notice_detail(item) {
-    this.see_notice = true
-    this.notice_msg.msg = item.msg
-    this.notice_msg.time = item.createTime
-    console.log(this.notice_msg.msg)
-    console.log(this.notice_msg.time = item.createTime)
-    console.log(item)
-  },
-  see_clue_detail(item) {
-      this.see_clue = true
-      this.clue_msg.msg = item.content.content
-      this.clue_msg.time = item.createTime
-      this.clue_msg.imgs = []
-      var _this = this
+    },
+    see_notice_detail(item) {
+      this.see_notice = true;
+      this.notice_msg.msg = item.msg;
+      this.notice_msg.time = item.createTime;
+      console.log(this.notice_msg.msg);
+      console.log((this.notice_msg.time = item.createTime));
+      console.log(item);
+    },
+    see_clue_detail(item) {
+      this.see_clue = true;
+      this.clue_msg.msg = item.content.content;
+      this.clue_msg.time = item.createTime;
+      this.clue_msg.imgs = [];
+      var _this = this;
       item.content.imgs.forEach((element) => {
         _this.clue_msg.imgs.push(devServer.proxy["/"].target + element)
       })
@@ -188,10 +205,13 @@ export default {
   },
   see_random_report_detail(item) {
     this.see_random_report = true
-    this.random_report_msg = item.content.content
-    this.random_report_imgs = item.content.imgs
-    console.log(item)
-    console.log(this.random_report_msg)
+    this.random_report_msg.msg = item.content.content
+    this.random_report_msg.time = item.createTime
+    this.random_report_msg.imgs = []
+    var _this = this
+    item.content.imgs.forEach((element) => {
+      _this.random_report_msg.imgs.push(devServer.proxy["/"].target + element)
+    })
   },
   see_start_report_detail(item) {
     this.see_start_report = true
@@ -347,6 +367,9 @@ export default {
 },
   created() {
     this.actionId = this.$route.query.actionId;
+    if (this.$route.query.type !== undefined) {
+      this.type = this.$route.query.type;
+    }
     this.getIdentifyData();
   }
   }
@@ -386,8 +409,7 @@ export default {
 
 .down_menu {
   position: absolute;
-  right: 3%;
-  top: 10%;
+  padding:15px;
 }
 
 .el-dropdown-link {
@@ -403,12 +425,16 @@ export default {
   position: absolute;
   right: 20px;
 }
-.pen{
-  color:#99a9bf;
-  font-size:10px;
+.pen {
+  color: #99a9bf;
+  font-size: 10px;
 }
-.default{
-  color:black;
-  font-size:18px;
+.default {
+  color: black;
+  font-size: 18px;
+}
+
+.clue-img-list {
+  display: flex;
 }
 </style>

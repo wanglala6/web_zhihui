@@ -39,14 +39,26 @@
         <i class="el-icon-s-custom"></i>
         指挥员: {{ action.commander.name }}
       </div>
-      <div class="flex action_head_time">
-        <div>
-          <i class="el-icon-time"></i>
+      <div class="action_head">
+        <div class="action_head_name">{{ action.name }}</div>
+        <div class="action_head_lost">
+          <i class="el-icon-user-solid"></i>
+          <span style="font-weight: bold; margin-left: 3px"
+            >走失者: {{ action.lost.name }}</span
+          >
         </div>
-        <div style="margin-left: 3px">{{ action.createTime }}</div>
+        <div class="action_head_commaner">
+          <i class="el-icon-s-custom"></i>
+          指挥员: {{ action.commander.name }}
+        </div>
+        <div class="flex action_head_time">
+          <div>
+            <i class="el-icon-time"></i>
+          </div>
+          <div style="margin-left: 3px">{{ action.createTime }}</div>
+        </div>
       </div>
     </div>
-
     <!-- 修改名字 -->
     <el-dialog :visible.sync="diaedit" width="30%">
       <el-form :model="form" label-width="80px">

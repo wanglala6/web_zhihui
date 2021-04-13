@@ -1,8 +1,13 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="24">
-        <ActionCard v-for="item in actionList" v-bind:key="item.id" v-bind:action="item"></ActionCard>
+      <el-col :span="24" class="action-list">
+        <ActionCard
+          v-for="item in actionList"
+          v-bind:key="item.id"
+          v-bind:action="item"
+          v-on:flush="getActionList"
+        ></ActionCard>
       </el-col>
     </el-row>
   </div>
@@ -39,19 +44,6 @@ export default {
       if (res.code === 200) this.actionList = res.data;
       console.log(res.data);
     },
-    jump(item) {
-      console.log(this.$route.query.commanderId);
-
-      console.log("mmm", item.lostId);
-      this.$router.push({
-        path: "/elderMsg",
-        query: {
-          lostId: item.lostId,
-          commanderId: this.$route.query.commanderId,
-          id: item.id,
-        },
-      });
-    },
   },
   created() {
     console.log(this.$route.query.commanderId);
@@ -61,4 +53,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.action-list {
+  display: flex;
+}
 </style>

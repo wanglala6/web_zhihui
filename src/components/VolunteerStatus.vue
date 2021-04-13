@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vol_status_container">
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="name" label="志愿者" width="200" align="center">
       </el-table-column>
@@ -109,6 +109,9 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.vol_status_container{
+  padding: 15px;
+}
 .el-pagination {
   padding-top: 15px;
 }

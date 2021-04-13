@@ -4,11 +4,11 @@ import Login from '../components/Login.vue'
 import Home from '../components/Home.vue'
 import Welcome from '../components/Welcome.vue'
 import ElderMsg from "@/components/ElderMsg"
-// import Map from "@/components/Map.vue";
+import Map from "@/components/Map.vue";
 import MapComponent from "@/components/MapComponent.vue";
 import Clue from '@/components/Clue.vue'
 import Post from '@/components/Post.vue'
-
+import ActionManage from "@/components/ActionManage";
 import NewsEdit from "../components/NewsEdit"
 import News from "../components/News"
 import StartNewsDetail from "@/components/StartNewsDetail";
@@ -18,10 +18,23 @@ import Weather from "@/components/Weather";
 import ValSearch from "@/components/ValSearch";
 import Volunteer from "@/components/Volunteer"
 import Monitor from "@/components/Monitor"
+import MainMonitor from "@/components/Monitor/MainMonitor";
+import VolunteerTrack from "@/components/Monitor/VolunteerTrack";
+import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
+import CountTable from "@/components/Monitor/CountTable";
+import VolStatusTb from "@/components/Monitor/VolStatusTb";
+import MsgBox from "@/components/Monitor/MsgBox";
+import DonutChart from "@/components/Monitor/DonutChart";
+import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
+import ClueNewest from "@/components/Monitor/ClueNewest";
+import StatisticsCard from "@/components/Monitor/StatisticsCard";
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
 import Statistics from "@/components/Statistics"
 import Location from "@/components/Location";
+import NotFound from "@/components/NotFound"
+import VolManage from "@/components/VolManage";
+
 Vue.use(VueRouter)
 
 const routes = [{
@@ -41,9 +54,13 @@ const routes = [{
         component: MapComponent
     },
     {
+      path: '/notFound',
+      component: NotFound
+    },
+    {
         path: '/welcome',
         component: Welcome,
-        redirect: '/action',
+        redirect: '/inAction',
         children: [
             {
                 path: '/action',
@@ -79,6 +96,57 @@ const routes = [{
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/volManage',
+            component: VolManage,
+          },
+          {
+            path: '/actionManage',
+            component: ActionManage,
+            name: 'actionManage'
+          },
+          {
+            path: '/mainMonitor',
+            component: MainMonitor,
+            children: [
+              {
+                path: '/volTrack',
+                component: VolunteerTrack,
+              },
+              {
+                path: '/recognizedImgs',
+                component: RecognizedImgs,
+              },
+              {
+                path: '/countTable',
+                component: CountTable,
+              },
+              {
+                path: '/volStatusGTb',
+                component: VolStatusTb,
+              },
+              {
+                path: '/msgBox',
+                component: MsgBox
+              },
+              {
+                path: '/donutChart',
+                component: DonutChart
+              },
+              {
+                path: '/varyMsgTabs',
+                component: VaryMsgTabs
+              },
+              {
+                path: 'clueNewest',
+                component: ClueNewest
+              },
+              {
+                path: 'statisticsCard',
+                component: StatisticsCard
+              }
+            ]
+          },
           {
             path: '/monitor',
             component: Monitor
@@ -119,9 +187,17 @@ const routes = [{
             {
               path: '/valSearch',
               component: ValSearch
+            },
+            {
+              path: '/mapMsg',
+              component: Map
             }
     ]
-  }
+  },
+    {
+      path: '*',
+      redirect: '/notFound',
+    }
 ]
 
 const router = new VueRouter({

@@ -1,40 +1,50 @@
 <template>
-  <div>
-    <el-input
-      type="textarea"
-      autosize
-      placeholder="请输入标题"
-      v-model="title">
-    </el-input>
-    <el-select v-model="type" placeholder="请选择">
-      <el-option
-        v-for="item in type_options"
-        :key="item.value"
-        :label="item.label"
-        :value="item.value">
-      </el-option>
-    </el-select>
-    <div style="margin: 10px 0;"></div>
-    <el-input
-      type="textarea"
-      :autosize="{ minRows: 5, maxRows: 10}"
-      placeholder="请输入内容"
-      v-model="content">
-    </el-input>
-    <div class="block" style="margin-top: 10px">
-      <!--      <span class="demonstration" style="font-size: 12px">发送人</span>-->
-      <el-cascader
-        placeholder="请选择发送人，可搜索人名"
-        v-model="receiveId"
-        :options="options"
-        :props="props"
-        size="medium"
-        clearable
-        @change="changeProblemType"
-        filterable>
-      </el-cascader>
-    </div>
-    <el-button type="primary" style="display:block; margin:20px auto;" @click = "send_notice">提交</el-button>
+  <div class="newsEdit_container">
+    <el-row>
+      <!--    <el-col :span="5"></el-col>-->
+      <el-col :span="20" :offset="2" class="edit_content">
+        <el-row>
+          <el-col :span="12"><h1>发送通知</h1></el-col>
+          <el-col :span="12"><p class="goto_notice_label" @click="goto_history">已发通知</p></el-col>
+        </el-row>
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入标题"
+          v-model="title">
+        </el-input>
+        <el-select v-model="type" placeholder="请选择通知类型" class="select_box">
+          <el-option
+            v-for="item in type_options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <div style="margin: 10px 0;"></div>
+        <el-input
+          type="textarea"
+          :autosize="{ minRows: 5, maxRows: 10}"
+          placeholder="请输入内容"
+          v-model="content">
+        </el-input>
+        <div class="block" style="margin-top: 10px">
+          <!--      <span class="demonstration" style="font-size: 12px">发送人</span>-->
+          <el-cascader
+            placeholder="请选择发送人，可搜索人名"
+            v-model="receiveId"
+            :options="options"
+            :props="props"
+            size="medium"
+            clearable
+            @change="changeProblemType"
+            filterable>
+          </el-cascader>
+        </div>
+        <el-button type="primary" style="display:block; margin:20px auto;" @click="send_notice">提交</el-button>
+      </el-col>
+      <el-col :span="2"></el-col>
+    </el-row>
   </div>
 </template>
 
@@ -44,6 +54,7 @@ export default {
   data() {
     return {
       title: '',
+      actionId: '',
       content: '',
       receiveId: [],
       areaOptions: [], // 显示的数据
@@ -58,10 +69,17 @@ export default {
     }
   },
   methods: {
+    goto_history() {
+      var id = this.actionId
+      this.$router.push({
+        path: "/news",
+        query: { actionId: id, type: "通知" }
+      });
+    },
     async getTypeList() {
       const { data: res } = await this.$http.get("/command/notice/types")
       var that = this
-      Object.keys(res.data[0]).forEach(function(element) {
+      Object.keys(res.data[0]).forEach(function (element) {
         that.type_options.push({
           label: res.data[0][element],
           value: element
@@ -71,7 +89,7 @@ export default {
     async getVolunteer() {
       const { data: res } = await this.$http.get("/command/action/list-volunteers/" + this.actionId)
       const that = this;
-      res.data.forEach(function(element) {
+      res.data.forEach(function (element) {
         that.options.push({
           label: element.name,
           value: element.id
@@ -163,7 +181,26 @@ export default {
 </script>
 
 <style scoped>
-.el-select{
-  margin-top:10px;
+.goto_notice_label{
+  /*display: flex;*/
+  color:#409eff;
+  text-align: right;
+}
+.select_box{
+  /*font-family: cursive !important;*/
+}
+.edit_content{
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 1px 1px 2px #ededed;
+  background-color: #fff;
+  height: 100%;
+}
+.newsEdit_container {
+  padding: 15px;
+  margin-top: 5%;
+}
+.el-select {
+  margin-top: 10px;
 }
 </style>

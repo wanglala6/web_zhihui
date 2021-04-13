@@ -30,7 +30,7 @@
           </el-col>
           <el-col :span="2">
             <div class="head-avatar">
-              <el-dropdown>
+              <el-dropdown @command="handleCommand">
                 <span class="el-dropdown-link">
                   <el-avatar> {{ username }} </el-avatar>
                 </span>
@@ -38,7 +38,7 @@
                   class="el-icon-caret-bottom el-icon--right head-avatar-arrow"
                 ></i>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item>安全退出</el-dropdown-item>
+                  <el-dropdown-item command="logout">安全退出</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
             </div>
@@ -410,6 +410,11 @@ export default {
     cancel: function () {
       this.showMapComponent = false;
       this.$emit("cancel", this.showMapComponent);
+    },
+    handleCommand(command) {
+      if (command === "logout") {
+        this.logout();
+      }
     },
   },
 
