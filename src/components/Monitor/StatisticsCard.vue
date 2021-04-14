@@ -41,6 +41,7 @@ export default {
           } else if (data.status === "3") {
             this.status_val[0].value = "已找到";
           }
+          // 设置时间
           this.status_val[2].value = this.get_time_diff(
             new Date(data.createTime)
           );

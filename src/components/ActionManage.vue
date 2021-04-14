@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="action-status">
-      <el-steps :active="2" align-center>
+      <el-steps :active="action.process" align-center>
         <el-step
           title="提交老人信息"
           description="走失者家属上传信息"
@@ -24,15 +24,15 @@
     <el-row class="action-info-wrapper">
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动名称</div>
-        <div class="action-info-value">归家行动1</div>
+        <div class="action-info-value">{{ action.name }}</div>
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">参与人数</div>
-        <div class="action-info-value">18</div>
+        <div class="action-info-value">{{ action.volunteerCount }}</div>
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动时长</div>
-        <div class="action-info-value">120小时</div>
+        <div class="action-info-value">{{action.time}}</div>
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动状态</div>
@@ -118,7 +118,68 @@ export default {
       form: {},
       findLostDialogFormVisible: false,
       archiveActionDialogFormVisible: false,
+      action: {},
     };
+  },
+  methods: {
+    getActionStatus() {
+      this.$http.get("/command/action/" + this.$route.query.id).then((res) => {
+        console.log(res);
+        var data = res.data.data;
+        this.action = data;
+        // 设置行动状态
+        if (data.status === "1") {
+          this.action.status = "进行中";
+          this.action.process = 3;
+        } else if (data.status === "2") {
+          this.action.status = "被遗留";
+          this.action.process = 4;
+        } else if (data.status === "3") {
+          this.action.status = "已找到";
+          this.action.process = 4;
+        }
+        // 设置时间
+        this.action.time = this.get_time_diff(
+          new Date(data.createTime)
+        );
+        // 设置志愿者人数
+        this.$http
+          .get("/command/action/list-volunteers/" + this.$route.query.id)
+          .then((res) => {
+            console.log(res);
+            this.action.volunteerCount = res.data.data.length;
+          });
+      });
+    },
+    // 获取时间差
+    get_time_diff(dateBegin) {
+      var dateEnd = new Date();
+      var dateDiff = dateEnd.getTime() - dateBegin.getTime();
+      var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
+      var leave1 = dateDiff % (24 * 3600 * 1000);
+      var hours = Math.floor(leave1 / (3600 * 1000));
+      var leave2 = leave1 % (3600 * 1000);
+      var minutes = Math.floor(leave2 / (60 * 1000));
+      var leave3 = leave2 % (60 * 1000);
+      var seconds = Math.round(leave3 / 1000);
+      console.log(
+        " 相差 " +
+          dayDiff +
+          "天 " +
+          hours +
+          "小时 " +
+          minutes +
+          " 分钟" +
+          seconds +
+          " 秒"
+      );
+      return (
+        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒"
+      );
+    },
+  },
+  created() {
+    this.getActionStatus();
   },
 };
 </script>
