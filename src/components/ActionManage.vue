@@ -69,7 +69,7 @@
         <el-col :span="24">
           <div class="action-fail">
             <i class="el-icon-chat-dot-round"></i>
-            >没关系！已经尽力了，下次一定可以的！
+            没关系！已经尽力了，下次一定可以的！
           </div>
         </el-col>
       </el-row>
@@ -116,11 +116,7 @@
         <el-button @click="archiveActionDialogFormVisible = false"
           >取 消</el-button
         >
-        <el-button
-          type="primary"
-          @click="archiveActionDialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="sureAchiveAction">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -223,6 +219,28 @@ export default {
         });
       // 关闭dialog
       this.findLostDialogFormVisible = false;
+    },
+    sureAchiveAction: function () {
+      var _this = this;
+      // 发送请求
+      this.$http({
+        url: "/command/action/remain/" + this.$route.query.id,
+        method: "PUT",
+        data: {
+          msg: _this.form.msg,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.$message.success("已遗留行动");
+          this.getActionStatus();
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message.fail("出错了！");
+        });
+      // 关闭dialog
+      this.archiveActionDialogFormVisible = false;
     },
   },
   beforeDestroy() {
