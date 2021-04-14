@@ -72,7 +72,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/actionManage"
-                :route="{ path: '/actionManage', query: { id: id } }"
+                :route="{ path: '/actionManage', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -83,7 +83,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/volManage"
-                :route="{ path: '/volManage', query: { id: id } }"
+                :route="{ path: '/volManage', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -105,7 +105,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/elderMsg"
-                :route="{ path: '/elderMsg', query: { lostId: lostId } }"
+                :route="{ path: '/elderMsg', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -116,7 +116,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/valSearch"
-                :route="{ path: '/valSearch', query: { id: id } }"
+                :route="{ path: '/valSearch', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -125,7 +125,7 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg' }">
+              <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg', query: { id: id, lostId: lostId } }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-map-location"></i>
@@ -162,7 +162,7 @@
 
               <el-menu-item
                 index="/post"
-                :route="{ path: '/post', query: { id: id } }"
+                :route="{ path: '/post', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -174,7 +174,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/clue"
-                :route="{ path: '/clue', query: { id: id } }"
+                :route="{ path: '/clue', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -185,7 +185,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { actionId: id } }"
+                :route="{ path: '/identifyRecord', query: { actionId: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -208,7 +208,7 @@
 
               <el-menu-item
                 index="/newsEdit"
-                :route="{ path: '/newsEdit', query: { actionId: this.id } }"
+                :route="{ path: '/newsEdit', query: { actionId: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -221,7 +221,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/news"
-                :route="{ path: '/news', query: { actionId: this.id } }"
+                :route="{ path: '/news', query: { actionId: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
