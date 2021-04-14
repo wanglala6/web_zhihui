@@ -16,6 +16,7 @@ export default {
   name: "StatisticsCard",
   data() {
     return {
+      timer: "",
       status_val: [
         { title: "行动状态", value: "查询中" },
         { title: "参与人数", value: "查询中" },
@@ -42,9 +43,14 @@ export default {
             this.status_val[0].value = "已找到";
           }
           // 设置时间
-          this.status_val[2].value = this.get_time_diff(
-            new Date(data.createTime)
-          );
+          // this.status_val[2].value = this.get_time_diff(
+          //   new Date(data.createTime)
+          // );
+          var _this = this;
+          this.beginTime = data.createTime;
+          this.timer = setInterval(() => {
+            _this.get_time_diff(new Date(this.beginTime));
+          }, 1000);
         })
         .catch((err) => {
           console.log(err);
@@ -57,13 +63,12 @@ export default {
           this.status_val[1].value = res.data.data.length;
         });
       // 设置统计数据
-      this.$http
-        .get("/record/" + this.$route.query.id).then(res => {
-          console.log(res)
-          this.status_val[3].value = res.data.data.clue.length;
-          this.status_val[4].value = res.data.data.startReport.length;
-          this.status_val[5].value = res.data.data.identify.length;
-        })
+      this.$http.get("/record/" + this.$route.query.id).then((res) => {
+        console.log(res);
+        this.status_val[3].value = res.data.data.clue.length;
+        this.status_val[4].value = res.data.data.startReport.length;
+        this.status_val[5].value = res.data.data.identify.length;
+      });
     },
     // 获取时间差
     get_time_diff(dateBegin) {
@@ -76,25 +81,29 @@ export default {
       var minutes = Math.floor(leave2 / (60 * 1000));
       var leave3 = leave2 % (60 * 1000);
       var seconds = Math.round(leave3 / 1000);
-      console.log(
-        " 相差 " +
-          dayDiff +
-          "天 " +
-          hours +
-          "小时 " +
-          minutes +
-          " 分钟" +
-          seconds +
-          " 秒"
-      );
-      return (
-        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒"
-      );
+      // console.log(
+      //   " 相差 " +
+      //     dayDiff +
+      //     "天 " +
+      //     hours +
+      //     "小时 " +
+      //     minutes +
+      //     " 分钟" +
+      //     seconds +
+      //     " 秒"
+      // );
+      this.status_val[2].value =
+        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
     },
   },
   mounted() {
     console.log("挂载");
     this.getStatistics();
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   },
 };
 </script>
