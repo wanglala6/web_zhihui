@@ -73,7 +73,7 @@ export default {
       var id = this.actionId
       this.$router.push({
         path: "/news",
-        query: { actionId: id, type: "通知" }
+        query: { actionId: id, type: "通知", command: "notice" }
       });
     },
     async getTypeList() {

@@ -2,12 +2,13 @@
   <div class="identify_container">
     <h1>志愿者上传照片集</h1>
     <el-row>
-      <el-col :span="4" v-for="item in result" :key="item">
+      <el-col :span="4" v-for="(item,index) in result" :key="index">
         <div class="img_card">
             <el-image
               :src="item.img"
               :fit="fit"
-              style="height: 150px;">
+              style="height: 150px;"
+              :preview-src-list="imgList">
             </el-image>
           <p>相似度：{{item.similarity}}</p>
           <p>上传者：{{item.name}}</p>
@@ -37,7 +38,9 @@ name: "IdentifyRecord",
     url: "http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true",
     url2: "https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png",
     actionId: "",
-    result: []
+    result: [],
+    imgList: [],
+    fit: 'fill'
   }
   },
   methods: {
@@ -51,6 +54,7 @@ name: "IdentifyRecord",
       var list = {};
       res.data.forEach((element) => {
         console.log(element)
+        _this.imgList.push(devServer.proxy["/"].target + "/files/download?filename=" + element.imgUrl)
         list = {}
         list = {
           img: (devServer.proxy["/"].target + "/files/download?filename=" + element.imgUrl),

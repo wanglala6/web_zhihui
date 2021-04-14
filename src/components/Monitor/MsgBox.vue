@@ -44,6 +44,11 @@
 <script>
 export default {
   name: "Msg",
+  methods: {
+  },
+  created () {
+    console.log(this.$route.query.lostId);
+  }
 };
 </script>
 
