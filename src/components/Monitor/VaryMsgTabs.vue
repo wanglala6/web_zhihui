@@ -18,6 +18,10 @@ import ClueNewest from "@/components/Monitor/ClueNewest";
 export default {
   name: "VaryMsgTabs",
   components: { ClueNewest, VolStatus },
+  data() {
+    return {};
+  },
+  methods: {},
 };
 </script>
 

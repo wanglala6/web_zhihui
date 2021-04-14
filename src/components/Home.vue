@@ -140,7 +140,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/mainMonitor"
-                :route="{ path: '/mainMonitor', query: { id: id } }"
+                :route="{ path: '/mainMonitor', query: { id: id , lostId: lostId} }"
               >
                 <template slot="title">
                   <!-- 图标 -->
