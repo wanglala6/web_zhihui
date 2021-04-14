@@ -301,7 +301,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/command/volunteer/" + this.news.volunteerId
       );
-      print(this.type);
+      console.log(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
