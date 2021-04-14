@@ -6,20 +6,20 @@
         <div :body-style="{ padding: '1px' }" class="img">
           <img
             style="width: 80px; height: 80px; border-radius: 50%"
-            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            :src="older.avatar"
             class="image"
           />
         </div>
       </el-col>
       <el-col :span="6" class="header-tag">
-        <el-tag type="danger" size="small">一级</el-tag>
+        <el-tag type="danger" size="small">{{older.lostLevel}}</el-tag>
       </el-col>
     </el-row>
     <!-- 特征 -->
     <el-row>
       <el-col :span="24">
         <div class="msg">
-          灰色帽子，黑色上衣,平常看起来呆呆的，走路有点跛脚。
+          {{older.feature}}
         </div>
       </el-col>
     </el-row>
@@ -27,15 +27,15 @@
     <el-row class="bottom">
       <div class="bottom-name">
         <span class="el-icon-user-solid bottom-name-icon"></span>
-        <div class="bottom-name-value">香菱</div>
+        <div class="bottom-name-value">{{older.name}}</div>
       </div>
-      <div  class="bottom-name">
+      <div class="bottom-name">
         <span class="el-icon-date bottom-name-icon"></span>
-        <div class="bottom-name-value">78岁</div>
+        <div class="bottom-name-value">{{older.age}}岁</div>
       </div>
       <div class="bottom-name">
         <span class="el-icon-phone bottom-name-icon"></span>
-        <div class="bottom-name-value">17762474097</div>
+        <div class="bottom-name-value">{{older.familyTelephone}}</div>
       </div>
     </el-row>
   </div>
@@ -44,11 +44,32 @@
 <script>
 export default {
   name: "Msg",
-  methods: {
+  data() {
+    return {
+      older: {}
+    }
   },
-  created () {
-    console.log(this.$route.query.lostId);
-  }
+  methods: {
+    // 老人信息
+    async getold() {
+      console.log("获取老人信息");
+      this.lostId = this.$route.query.lostId;
+      const res = await this.$http.get("/command/lost/" + this.lostId);
+      console.log(res.data.data);
+      this.older = res.data.data;
+      var level = parseInt(this.older.lostLevel / 3)
+      if (level === 0) {
+        this.older.lostLevel = "低危"
+      } else if (level === 1) {
+        this.older.lostLevel = "中危"
+      } else if (level === 2 || level === 3) {
+        this.older.lostLevel = "高危"
+      }
+    },
+  },
+  created() {
+    this.getold();
+  },
 };
 </script>
 
@@ -76,9 +97,7 @@ export default {
 }
 
 .bottom {
-  margin-top: 20px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin: 20px;
   border-radius: 26px;
   background-color: rgba(131, 169, 164, 0.1);
   display: flex;
