@@ -36,12 +36,12 @@
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动状态</div>
-        <div class="action-info-value">进行中</div>
+        <div class="action-info-value">{{ action.statusText }}</div>
       </el-col>
     </el-row>
 
     <div class="action-change-wrapper">
-      <el-row class="action-change">
+      <el-row class="action-change" v-if="action.process != 4">
         <el-col :span="12">
           <el-button type="success" @click="findLostDialogFormVisible = true"
             >确认找到老人</el-button
@@ -53,6 +53,24 @@
             @click="archiveActionDialogFormVisible = true"
             >确认遗留行动</el-button
           >
+        </el-col>
+      </el-row>
+      <!-- 找到老人的情况 -->
+      <el-row class="action-change" v-if="action.status == '3'">
+        <el-col :span="24">
+          <div class="action-success">
+            <i class="el-icon-success"></i>
+            恭喜！成功找到走失者，感谢你付出！一切都是值得的！
+          </div>
+        </el-col>
+      </el-row>
+      <!-- 找不到老人的情况 -->
+      <el-row class="action-change" v-if="action.status == '2'">
+        <el-col :span="24">
+          <div class="action-fail">
+            <i class="el-icon-chat-dot-round"></i>
+            >没关系！已经尽力了，下次一定可以的！
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -67,7 +85,7 @@
       <el-form :model="form">
         <el-form-item label="信息记录">
           <el-input
-            v-model="form.name"
+            v-model="form.msg"
             type="textarea"
             placeholder="记录在何时何地找到了走失者"
           ></el-input>
@@ -75,9 +93,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="findLostDialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="findLostDialogFormVisible = false"
-          >确 定</el-button
-        >
+        <el-button type="primary" @click="sureFindLost">确 定</el-button>
       </div>
     </el-dialog>
 
@@ -90,7 +106,7 @@
       <el-form :model="form">
         <el-form-item label="信息记录">
           <el-input
-            v-model="form.name"
+            v-model="form.msg"
             type="textarea"
             placeholder="记录行动遗留原因"
           ></el-input>
@@ -115,7 +131,9 @@ export default {
   name: "ActionManage",
   data() {
     return {
-      form: {},
+      form: {
+        msg: "",
+      },
       findLostDialogFormVisible: false,
       archiveActionDialogFormVisible: false,
       action: {},
@@ -131,16 +149,16 @@ export default {
         this.action = data;
         // 设置行动状态
         if (data.status === "1") {
-          this.action.status = "进行中";
+          this.action.statusText = "进行中";
           this.action.process = 3;
         } else if (data.status === "2") {
-          this.action.status = "被遗留";
+          this.action.statusText = "被遗留";
           this.action.process = 4;
         } else if (data.status === "3") {
-          this.action.status = "已找到";
+          this.action.statusText = "已找到";
           this.action.process = 4;
         }
-     //   console.log(data.createTime, "time");
+        //   console.log(data.createTime, "time");
         // 设置时间
         this.beginTime = new Date(data.createTime);
         //  this.get_time_diff(new Date(data.createTime)),
@@ -183,6 +201,28 @@ export default {
       this.action.time =
         dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
       this.$forceUpdate();
+    },
+    sureFindLost() {
+      var _this = this;
+      // 发送请求
+      this.$http({
+        url: "/command/action/found/" + this.$route.query.id,
+        method: "PUT",
+        data: {
+          msg: _this.form.msg,
+        },
+      })
+        .then((res) => {
+          console.log(res);
+          this.$message.success("成功找到老人！已通知所有队员。");
+          this.getActionStatus();
+        })
+        .catch((err) => {
+          console.log(err);
+          this.$message.fail("出错了！");
+        });
+      // 关闭dialog
+      this.findLostDialogFormVisible = false;
     },
   },
   beforeDestroy() {
@@ -230,5 +270,17 @@ export default {
   width: 50%;
   margin: 30px auto;
   text-align: center;
+}
+
+.action-success {
+  text-align: center;
+  color: #67c23a;
+  font-size: 22px;
+}
+
+.action-fail {
+  text-align: center;
+  color: red;
+  font-size: 22px;
 }
 </style>
