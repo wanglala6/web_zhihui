@@ -91,27 +91,27 @@
       </el-form>
     </el-dialog>
     <!-- 添加志愿者 -->
-    <el-dialog :visible.sync="diaadd" width="40%">
+    <el-dialog :visible.sync="diaadd" width="30%">
       <el-form
-        :v-model="newvol"
-        label-width="80px"
+        :model="newvol"
+        label-width="100px"
         ref="addref"
         :rules="addrules"
       >
-        <el-form-item label="姓名" prop="name">
-          <el-input v-model="newvol.name"></el-input>
+        <el-form-item label="姓名" prop="name" >
+          <el-input v-model="newvol.name" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="账户" prop="account">
-          <el-input v-model="newvol.account"></el-input>
+          <el-input v-model="newvol.account" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="newvol.password"></el-input>
+          <el-input type="password" v-model="newvol.password" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="QQ" prop="qq">
-          <el-input v-model="newvol.qq"></el-input>
+          <el-input v-model="newvol.qq" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="电话" prop="telephone">
-          <el-input v-model="newvol.telephone"></el-input>
+          <el-input v-model="newvol.telephone" class="wid"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button @click="addaffirm">添加</el-button>
@@ -148,9 +148,9 @@ export default {
       diaedit: false,
       addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        account: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        qq: [{ required: true, message: "请输入姓名", trigger: "blur" }],
-        telephone: [{ required: true, message: "请输入姓名", trigger: "blur" }],
+        account: [{ required: true, message: "请输入账号", trigger: "blur" }],
+        qq: [{ required: true, message: "请输入qq", trigger: "blur" }],
+        telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
       },
       pubishdialogVisible: false, // 发布线索
       dialogVisible: false,
@@ -174,7 +174,7 @@ export default {
     addaffirm() {
       this.$refs.addref.validate((valid) => {
         if (!valid) return;
-        alert("ni");
+
         this.$http({
           method: "post",
           url: "/command/volunteer/",
@@ -313,5 +313,8 @@ export default {
 }
 .input-with-select {
   width: 40%;
+}
+.wid{
+  width: 75%;
 }
 </style>

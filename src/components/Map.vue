@@ -25,13 +25,9 @@ export default {
       map.setCurrentCity("天津"); // 设置地图显示的城市 此项是必须设置的
       map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
       //  设置地图显示元素
-      map.setDisplayOptions({
-        //  是否显示POI信息
-        poi: true,
-      })
-      var icon = new window.BMap.Icon("../assets/avatar.png", new window.BMap.Size(100, 100));
+      // var icon = new window.BMap.Icon("/src/assets/logo.jpg", new window.BMap.Size(200, 200));
       //  设置标注的经纬度
-      var marker = new window.BMap.Marker(new window.BMap.Point(106.94, 30.85), { icon: icon });
+      var marker = new window.BMap.Marker(new window.BMap.Point(117.20, 39.12));
       //  把标注添加到地图上
       map.addOverlay(marker);
       // var point = new window.BMap.Point(106.94, 30.85);
