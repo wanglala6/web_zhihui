@@ -5,7 +5,7 @@
         <el-tabs v-model="tab_active_value" @tab-click="handleClick">
           <el-tab-pane label="正在进行" name="inAction"></el-tab-pane>
           <el-tab-pane label="尚未开始" name="unAction"></el-tab-pane>
-          <el-tab-pane label="已遗留" name="leaveAction"></el-tab-pane>
+          <el-tab-pane label="已遗留" name="achivedAction"></el-tab-pane>
           <el-tab-pane label="已完成" name="finishAction"></el-tab-pane>
         </el-tabs>
       </el-col>
@@ -93,6 +93,20 @@ export default {
             commanderId: this.$route.query.commanderId,
           },
         });
+      } else if (e.name === "achivedAction") {
+        this.$router.push({
+          path: "/achivedAction",
+          query: {
+            commanderId: this.$route.query.commanderId,
+          },
+        });
+      } else if (e.name === "finishAction") {
+        this.$router.push({
+          path: "/finishAction",
+          query: {
+            commanderId: this.$route.query.commanderId,
+          },
+        });
       }
     },
     dialog() {
@@ -148,6 +162,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.inaction_container{
+.inaction_container {
 }
 </style>

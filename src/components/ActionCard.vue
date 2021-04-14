@@ -305,7 +305,11 @@ export default {
     },
     jump(item) {
       // 如果是正在进行的行动就跳转
-      if (this.action.status === "1") {
+      if (
+        this.action.status === "1" ||
+        this.action.status === "2" ||
+        this.action.status === "3"
+      ) {
         console.log(this.$route.query.commanderId);
 
         console.log("mmm", item.lostId);

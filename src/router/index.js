@@ -36,6 +36,8 @@ import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
 import VolPositionMap from "@/components/VolPositionMap";
 import IdentifyRecord from "@/components/IdentifyRecord";
+import AchivedAction from "@/components/AchivedAction"
+import FinishAction from "@/components/FinishAction"
 
 Vue.use(VueRouter)
 
@@ -83,6 +85,16 @@ const routes = [
                     path: '/unAction',
                     component: UnAction,
                     name: '/unAction'
+                  },
+                  {
+                    path: '/achivedAction',
+                    component: AchivedAction,
+                    name: '/achivedAction'
+                  },
+                  {
+                    path: "/finishAction",
+                    component: FinishAction,
+                    name: "/finishAction"
                   }
                 ]
             },
