@@ -16,7 +16,11 @@
             <el-badge :value="1" class="notify-icon">
               <div class="el-icon-message-solid"></div>
             </el-badge>
-            <el-dropdown-menu slot="dropdown" class="notify-dropdown" placement="bottom-start">
+            <el-dropdown-menu
+              slot="dropdown"
+              class="notify-dropdown"
+              placement="bottom-start"
+            >
               <el-dropdown-item class="notify-title">我的消息</el-dropdown-item>
               <el-dropdown-item
                 class="notify-item"
@@ -32,7 +36,7 @@
                   <div class="notify-item-name">
                     {{ notice.volunteer.name }}
                   </div>
-                  <div class="notify-item-msg">{{notice.msg}}</div>
+                  <div class="notify-item-msg">{{ notice.msg }}</div>
                 </div>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -65,7 +69,10 @@
                 <span>行动管理</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item index="/actionManage">
+              <el-menu-item
+                index="/actionManage"
+                :route="{ path: '/actionManage', query: { id: id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-coordinate"></i>
@@ -253,13 +260,15 @@ export default {
       Msg: {},
       type: "",
       // 头部消息图标使用
-      notices: [{
-        index: 0,
-        msg: "加载中",
-        volunteer: {
-          name: "加载中",
-        }
-      }],
+      notices: [
+        {
+          index: 0,
+          msg: "加载中",
+          volunteer: {
+            name: "加载中",
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -364,14 +373,15 @@ export default {
           data.clue.forEach((element) => {
             element.msgType = "clue";
             element.index = notice.length;
-            element.msg = "发现了一条线索"
+            element.msg = "发现了一条线索";
             notice.push(element);
           });
           // 处理识别记录
           data.identify.forEach((element) => {
             element.msgType = "identify";
             element.index = notice.length;
-            element.msg = "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
+            element.msg =
+              "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
             notice.push(element);
           });
           // 处理随机报备
@@ -379,7 +389,7 @@ export default {
             if (element.type !== 1) {
               element.msgType = "randomReport";
               element.index = notice.length;
-              element.msg = "提交了一条报备信息"
+              element.msg = "提交了一条报备信息";
               notice.push(element);
             }
           });
@@ -387,7 +397,7 @@ export default {
           data.startReport.forEach((element) => {
             element.msgType = "startReport";
             element.index = notice.length;
-            element.msg = "确定出发,并填写了出发报备表单"
+            element.msg = "确定出发,并填写了出发报备表单";
             notice.push(element);
           });
 
