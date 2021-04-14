@@ -14,10 +14,10 @@
         ></el-button>
       </el-input>
       <div style="height: 0px; margin-top: 10px; margin-bottom: 10px"></div>
-      <el-table :data="result" style="width: 100%">
-        <el-table-column prop="name" label="姓名" width="180">
+      <el-table :data="result" fit style="width: 100%">
+        <el-table-column prop="name" label="姓名">
         </el-table-column>
-        <el-table-column prop="tel" label="电话" width="180"> </el-table-column>
+        <el-table-column prop="tel" label="电话"> </el-table-column>
         <el-table-column prop="addr" label="地址"> </el-table-column>
         <el-table-column prop="createTime" label="创建时间"> </el-table-column>
         <el-table-column prop="status" label="志愿者状态"> </el-table-column>
@@ -25,9 +25,10 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.value"
-              placeholder="请选择类型"
+              placeholder="选择队伍"
               filterable
               default-first-option
+              @change="chooseTeam(scope.row)"
             >
               <el-option
                 v-for="item in options"
@@ -39,12 +40,11 @@
             </el-select>
           </template>
         </el-table-column>
-
-        <el-table-column align="right">
-          <template slot="header">
-            <el-switch v-model="isTeamUp" active-text="组队模式"> </el-switch>
-          </template>
-        </el-table-column>
+<!--        <el-table-column align="right">-->
+<!--          <template slot="header" >-->
+<!--            <el-switch v-model="isTeamUp" active-text="组队模式" class="team_font"> </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
       <el-pagination
         background
@@ -56,13 +56,17 @@
     </div>
 
     <!-- 队伍表 -->
-    <div>
-      <el-card class="box-card">
+    <div class="flex">
+      <el-card
+        class="box-card"
+        v-for="(volunteers, team, index) in teams"
+        v-bind:key="index"
+      >
         <div slot="header" class="clearfix">
-          <span>队伍一</span>
+          <span>队伍{{ team }}</span>
         </div>
-        <div v-for="o in 2" :key="o" class="text item">
-          {{ "列表内容 " + o }}
+        <div v-for="volunteer in volunteers" :key="volunteer" class="text item">
+          {{ volunteer }}
         </div>
       </el-card>
     </div>
@@ -82,6 +86,7 @@ export default {
       value: [],
       // 是否开启组队模式
       isTeamUp: false,
+      teams: {},
     };
   },
   methods: {
@@ -133,6 +138,30 @@ export default {
           });
         });
     },
+    chooseTeam(e) {
+      // 判断志愿者是否已经在其他队伍中，如果在则移除
+      for (var team in this.teams) {
+        console.log(team);
+        if (this.teams[team].indexOf(e.name) !== -1) {
+          console.log("在里面");
+          console.log(this.teams);
+          const index = this.teams[team].indexOf(e.name);
+          this.teams[team].splice(index, 1);
+          console.log("修改后");
+          console.log(this.teams);
+          break;
+        }
+      }
+      // 将志愿者添加到队伍
+      if (e.value in this.teams) {
+        this.teams[e.value].push(e.name);
+      } else {
+        this.teams[e.value] = [e.name];
+      }
+
+      this.$forceUpdate();
+      console.log(this.teams);
+    },
   },
   created() {
     this.actionId = this.$route.query.id;
@@ -143,6 +172,9 @@ export default {
 </script>
 
 <style scoped>
+.team_font{
+  font-size: 10px;
+}
 .container {
   background-color: #ffffff;
   width: 90%;
@@ -157,8 +189,13 @@ export default {
 }
 
 .box-card {
-    width: 150px;
-    height: 150px;
-    margin-top: 20px;
-  }
+  width: 150px;
+  height: 150px;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+.flex {
+  display: flex;
+}
 </style>

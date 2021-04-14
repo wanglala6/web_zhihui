@@ -3,30 +3,40 @@
     <el-container class="home_container">
       <!-- 头部区 -->
       <el-header>
-        <div style="width: 70px; height: 70px; border-radius: 50%">
+        <div style="width: 55px; height: 55px; border-radius: 50%">
           <img
             src="../assets/logo.jpg"
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-        <!-- <span>指挥端</span> -->
+         <div class="font">救援队指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
-          <el-dropdown class="notify">
+          <el-dropdown class="notify" @mouseenter.native="pullMsg">
             <el-badge :value="1" class="notify-icon">
               <div class="el-icon-message-solid"></div>
             </el-badge>
-            <el-dropdown-menu slot="dropdown">
+            <el-dropdown-menu
+              slot="dropdown"
+              class="notify-dropdown"
+              placement="bottom-start"
+            >
               <el-dropdown-item class="notify-title">我的消息</el-dropdown-item>
-              <el-dropdown-item class="notify-item">
+              <el-dropdown-item
+                class="notify-item"
+                v-for="notice in notices"
+                :key="notice.index"
+              >
                 <el-avatar
                   shape="square"
                   :size="50"
-                  src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+                  :src="notice.volunteer.avatar"
                 ></el-avatar>
                 <div class="notify-item-body">
-                  <div class="notify-item-name">黄希希</div>
-                  <div class="notify-item-msg">发现了一条线索</div>
+                  <div class="notify-item-name">
+                    {{ notice.volunteer.name }}
+                  </div>
+                  <div class="notify-item-msg">{{ notice.msg }}</div>
                 </div>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -40,13 +50,14 @@
         <el-aside :width="iscollapse ? '64px' : '200px'">
           <div class="toggle_button" @click="togglecollapse">|||</div>
 
-<!--          &lt;!&ndash; 侧边栏菜单区 &ndash;&gt; //#333744-->
+          <!--          &lt;!&ndash; 侧边栏菜单区 &ndash;&gt; //#333744-->
           <el-menu
             background-color="#ececec"
             text-color="#000"
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
+            unique-opened="true"
             :router="true"
             default-active="/elderMsg"
           >
@@ -59,7 +70,10 @@
                 <span>行动管理</span>
               </template>
               <!-- 二级菜单 -->
-              <el-menu-item index="/actionManage">
+              <el-menu-item
+                index="/actionManage"
+                :route="{ path: '/actionManage', query: { id: id } }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-coordinate"></i>
@@ -111,14 +125,6 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-<!--              <el-menu-item index="/weather" :route="{ path: '/weather' }">-->
-<!--                <template slot="title">-->
-<!--                  &lt;!&ndash; 图标 &ndash;&gt;-->
-<!--                  <i class="el-icon-sunny"></i>-->
-<!--                  &lt;!&ndash; 文本 &ndash;&gt;-->
-<!--                  <span>天气查询</span>-->
-<!--                </template>-->
-<!--              </el-menu-item>-->
               <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg' }">
                 <template slot="title">
                   <!-- 图标 -->
@@ -140,7 +146,10 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/mainMonitor"
-                :route="{ path: '/mainMonitor', query: { id: id } }"
+                :route="{
+                  path: '/mainMonitor',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -176,7 +185,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { id: id } }"
+                :route="{ path: '/identifyRecord', query: { actionId: id } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -251,6 +260,16 @@ export default {
       news: {},
       Msg: {},
       type: "",
+      // 头部消息图标使用
+      notices: [
+        {
+          index: 0,
+          msg: "加载中",
+          volunteer: {
+            name: "加载中",
+          },
+        },
+      ],
     };
   },
   methods: {
@@ -301,7 +320,7 @@ export default {
       const { data: res } = await this.$http.get(
         "/command/volunteer/" + this.news.volunteerId
       );
-      print(this.type);
+      console.log(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
@@ -340,6 +359,63 @@ export default {
         // additional header
       };
       this.client.connect(headers, this.onConnected, this.onFailed);
+    },
+    // 抓取所有消息
+    pullMsg: function (e) {
+      console.log(e);
+      var _this = this;
+      this.$http
+        .get("/record/" + this.id)
+        .then((res) => {
+          console.log(res);
+          var data = res.data.data;
+          var notice = [];
+          // 处理线索
+          data.clue.forEach((element) => {
+            element.msgType = "clue";
+            element.index = notice.length;
+            element.msg = "发现了一条线索";
+            notice.push(element);
+          });
+          // 处理识别记录
+          data.identify.forEach((element) => {
+            element.msgType = "identify";
+            element.index = notice.length;
+            element.msg =
+              "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
+            notice.push(element);
+          });
+          // 处理随机报备
+          data.randomReport.forEach((element) => {
+            if (element.type !== 1) {
+              element.msgType = "randomReport";
+              element.index = notice.length;
+              element.msg = "提交了一条报备信息";
+              notice.push(element);
+            }
+          });
+          // 处理出发报备记录
+          data.startReport.forEach((element) => {
+            element.msgType = "startReport";
+            element.index = notice.length;
+            element.msg = "确定出发,并填写了出发报备表单";
+            notice.push(element);
+          });
+
+          notice.sort(this.compare("createTime"));
+          _this.notices = notice;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    // 工具函数，用于排序
+    compare: function (property) {
+      return function (a, b) {
+        var value1 = a[property];
+        var value2 = b[property];
+        return value1 - value2;
+      };
     },
   },
   created() {
@@ -381,10 +457,15 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.weather{
+.font{
+  position: absolute;
+  margin-left: 70px;
+  font-size:20px;
+}
+.weather {
   z-index: 99999999;
 }
-.el-menu-item{
+.el-menu-item {
   //border-bottom: 0.5px solid #dedede;
 }
 .el-header {
@@ -454,6 +535,22 @@ export default {
   border-bottom: 1px solid #ebebeb;
 }
 
+.notify-dropdown {
+  height: 300px;
+  overflow: auto;
+}
+
+.notify-dropdown::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  background-color: #f5f5f5;
+}
+
+.notify-dropdown::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
+
 .notify-item {
   width: 300px;
   height: 44px;
@@ -475,6 +572,6 @@ export default {
 
 .notify-item-msg {
   color: #8f99ad;
-  font-size: 14px
+  font-size: 14px;
 }
 </style>
