@@ -118,7 +118,7 @@ export default {
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commanderId: this.commanderId,
+              commandId: this.commanderId,
             }),
             {
               headers: {

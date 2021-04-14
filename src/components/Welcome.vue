@@ -3,7 +3,7 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :offset="3" :span="4" class="head_col">
+          <el-col :offset="2" :span="5" class="head_col">
             <span class="head" style="text-align: center; color: #ffffff"
               >蓝天救援队指挥中心</span
             >
