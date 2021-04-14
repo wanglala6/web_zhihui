@@ -14,7 +14,7 @@ export default {
   methods: {
     map() {
       const map = new window.BMap.Map(this.$refs.allmap); // 创建Map实例
-      map.centerAndZoom(new window.BMap.Point(117.20, 39.12), 15); // 初始化地图,设置中心点坐标和地图级别
+      map.centerAndZoom(new window.BMap.Point(114.042, 30.5557), 15); // 初始化地图,设置中心点坐标和地图级别
       map.addControl(
         new window.BMap.MapTypeControl({
           // 添加地图类型控件

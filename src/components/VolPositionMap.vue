@@ -1,6 +1,6 @@
 <template>
   <div class='amount'>
-    <baidu-map class="map" :center="{lng: 114.331, lat: 30.5776}" :zoom="15">
+    <baidu-map class="map" :center="elderPosition" :zoom="11">
       <bml-heatmap :data="positionList" :max="100" :radius="20">
       </bml-heatmap>
     </baidu-map>
@@ -12,7 +12,8 @@ import { BmlHeatmap } from 'vue-baidu-map'
   name: "VolPositionMap",
   data () {
     return {
-      positionList: []
+      positionList: [],
+      elderPosition: {}
     }
   },
   components: {
@@ -42,9 +43,23 @@ import { BmlHeatmap } from 'vue-baidu-map'
           console.log(err);
         });
     },
+    async getOld() {
+      console.log("获取老人信息");
+      var _this = this
+      await this.$http.get("/command/lost/" + this.$route.query.lostId).then((res) => {
+        console.log(res.data.data.longitude)
+        _this.elderPosition = {
+          lng: res.data.data.longitude, lat: res.data.data.latitude
+        }
+      }).catch((err) => {
+        console.log("获取老人位置失败!");
+        console.log(err);
+      });
+    },
   },
     created () {
-    this.getPosition()
+      this.getPosition()
+      this.getOld()
     }
 }
 </script>
