@@ -456,6 +456,7 @@ export default {
         console.log(err)
         this.$message("取消修改")
       });
+      this.isEdit = false;
     },
   },
   mounted() {

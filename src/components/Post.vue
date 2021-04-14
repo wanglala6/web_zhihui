@@ -275,9 +275,9 @@ export default {
 </script>
 <style lang="less" scoped>
 .position_map {
-  height:350px;
+  height:50%;
   width: 100%;
-  border: 1px solid;
+  border: 1px solid #dedede;
   border-radius: 5px;
 }
 //.name_box {
