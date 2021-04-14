@@ -6,7 +6,7 @@
           <el-image
             style="width: 100%;border-radius: 5px"
             :src="older.avatar"
-            :fit="fit"></el-image>
+            fit="fit"></el-image>
     </el-col>
     <el-col :span="18" :offset="1" style="padding-right: 40px">
       <div class="lost-name flex">
