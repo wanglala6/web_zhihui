@@ -32,7 +32,7 @@
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动时长</div>
-        <div class="action-info-value">{{action.time}}</div>
+        <div class="action-info-value">{{ action.time }}</div>
       </el-col>
       <el-col :span="6" class="action-info">
         <div class="action-info-label">行动状态</div>
@@ -119,6 +119,8 @@ export default {
       findLostDialogFormVisible: false,
       archiveActionDialogFormVisible: false,
       action: {},
+      timer: "", // 定时器
+      beginTime: "",
     };
   },
   methods: {
@@ -138,10 +140,15 @@ export default {
           this.action.status = "已找到";
           this.action.process = 4;
         }
+     //   console.log(data.createTime, "time");
         // 设置时间
-        this.action.time = this.get_time_diff(
-          new Date(data.createTime)
-        );
+        this.beginTime = new Date(data.createTime);
+        //  this.get_time_diff(new Date(data.createTime)),
+        var _this = this;
+
+        this.timer = setInterval(() => {
+          _this.get_time_diff(new Date(this.beginTime));
+        }, 1000);
         // 设置志愿者人数
         this.$http
           .get("/command/action/list-volunteers/" + this.$route.query.id)
@@ -162,23 +169,29 @@ export default {
       var minutes = Math.floor(leave2 / (60 * 1000));
       var leave3 = leave2 % (60 * 1000);
       var seconds = Math.round(leave3 / 1000);
-      console.log(
-        " 相差 " +
-          dayDiff +
-          "天 " +
-          hours +
-          "小时 " +
-          minutes +
-          " 分钟" +
-          seconds +
-          " 秒"
-      );
-      return (
-        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒"
-      );
+      // console.log(
+      //   " 相差 " +
+      //     dayDiff +
+      //     "天 " +
+      //     hours +
+      //     "小时 " +
+      //     minutes +
+      //     " 分钟" +
+      //     seconds +
+      //     " 秒"
+      // );
+      this.action.time =
+        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
+      this.$forceUpdate();
     },
   },
-  created() {
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
+  },
+  created() {},
+  mounted() {
     this.getActionStatus();
   },
 };
