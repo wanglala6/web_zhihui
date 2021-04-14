@@ -1,38 +1,62 @@
 <template>
   <div class="imgList">
-    <div
-      class="imgList-item imgList-item-active"
-      v-for="i in 4"
-      :key="i"
-    >
-      <span style="font-size: 4px">相似度：20%</span>
+    <div class="imgList-item" :class="{'imgList-item-active': record.similarity>80}" v-for="record in result" :key="record.id">
+      <span style="font-size: 4px">相似度：{{record.similarity}}%</span>
       <img
-        src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true"
+        :src="record.img"
         class="imgList-item-image"
       />
     </div>
-    <el-pagination class="PageTurner" small layout="prev, pager, next" :total="50">
+    <el-pagination
+      class="PageTurner"
+      small
+      layout="prev, pager, next"
+      :total="50"
+    >
     </el-pagination>
-    <!-- <div class="PageTurner">
-      <i class="el-icon-arrow-left" @click="turn_up"></i>
-      1 / 6
-      <i class="el-icon-arrow-right" @click="turn_down"></i>
-    </div> -->
   </div>
 </template>
 
 <script>
+import { devServer } from "../../../vue.config";
+
 export default {
   name: "RecognizedImgs",
   data() {
     return {
       currentDate: new Date(),
+      result: [],
     };
   },
   methods: {
-    turn_up: {},
-    turn_down: {},
+    getIdentifyImgs() {
+      var _this = this;
+
+      this.$http
+        .get("/phone/identify/by-action/" + this.$route.query.id)
+        .then((res) => {
+          console.log("获取人脸识别记录成功!");
+          console.log(res);
+          var list = {};
+          res.data.data.forEach((element) => {
+            console.log(element);
+            list = {};
+            list = {
+              img:
+                devServer.proxy["/"].target +
+                "/files/download?filename=" +
+                element.imgUrl,
+              name: element.volunteer.name,
+              similarity: Math.ceil(element.similarity),
+            };
+            _this.result.push(list);
+          });
+        });
+    },
   },
+  created() {
+    this.getIdentifyImgs()
+  }
 };
 </script>
 
@@ -85,10 +109,11 @@ export default {
   margin: 3px;
   color: white;
   border-radius: 2px;
+  background-color: red;
 }
 
 .imgList-item-active {
-  background-color: #5f73c1;
+  background-color: #67c23a;
 }
 
 .imgList-item-image {
