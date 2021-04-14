@@ -74,7 +74,7 @@ import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
 // import VolStatusTb from "@/components/Monitor/VolStatusTb"
 // import CountTable from "@/components/Monitor/CountTable"
 import MsgBox from "@/components/Monitor/MsgBox";
-// import DonutChart from "@/components/Monitor/DonutChart";
+import DonutChart from "@/components/Monitor/DonutChart";
 import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
 import MapBtn from "@/components/Monitor/MapBtn";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
@@ -82,7 +82,7 @@ export default {
   name: "MainMonitor",
   components: {
     VaryMsgTabs,
-    // DonutChart,
+    DonutChart,
     RecognizedImgs,
     Map,
     MsgBox,
