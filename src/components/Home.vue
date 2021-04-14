@@ -57,6 +57,7 @@
             active-text-color="#409EFF"
             :collapse="iscollapse"
             :collapse-transition="false"
+            unique-opened="true"
             :router="true"
             default-active="/elderMsg"
           >

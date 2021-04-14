@@ -14,10 +14,10 @@
         ></el-button>
       </el-input>
       <div style="height: 0px; margin-top: 10px; margin-bottom: 10px"></div>
-      <el-table :data="result" style="width: 100%">
-        <el-table-column prop="name" label="姓名" width="180">
+      <el-table :data="result" fit style="width: 100%">
+        <el-table-column prop="name" label="姓名">
         </el-table-column>
-        <el-table-column prop="tel" label="电话" width="180"> </el-table-column>
+        <el-table-column prop="tel" label="电话"> </el-table-column>
         <el-table-column prop="addr" label="地址"> </el-table-column>
         <el-table-column prop="createTime" label="创建时间"> </el-table-column>
         <el-table-column prop="status" label="志愿者状态"> </el-table-column>
@@ -25,7 +25,7 @@
           <template slot-scope="scope">
             <el-select
               v-model="scope.row.value"
-              placeholder="请选择类型"
+              placeholder="选择队伍"
               filterable
               default-first-option
               @change="chooseTeam(scope.row)"
@@ -40,12 +40,11 @@
             </el-select>
           </template>
         </el-table-column>
-
-        <el-table-column align="right">
-          <template slot="header" >
-            <el-switch v-model="isTeamUp" active-text="组队模式" class="team_font"> </el-switch>
-          </template>
-        </el-table-column>
+<!--        <el-table-column align="right">-->
+<!--          <template slot="header" >-->
+<!--            <el-switch v-model="isTeamUp" active-text="组队模式" class="team_font"> </el-switch>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
       </el-table>
       <el-pagination
         background

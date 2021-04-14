@@ -22,7 +22,7 @@ export default {
         })
       );
       // map.setMapStyle({ style: 'grayscale' });
-      map.setCurrentCity("渠县"); // 设置地图显示的城市 此项是必须设置的
+      map.setCurrentCity("天津"); // 设置地图显示的城市 此项是必须设置的
       map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
       //  设置地图显示元素
       map.setDisplayOptions({
