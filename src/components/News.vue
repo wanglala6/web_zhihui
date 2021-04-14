@@ -72,7 +72,7 @@
             style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"
             :src="img"
             :preview-src-list="clue_msg.imgs"
-            z-index="99999999999"
+            z-index="9999"
           >
           </el-image>
         </div>
@@ -106,7 +106,7 @@
           style="width: 100px; height: 100px"
           :src="img"
           :preview-src-list="random_report_msg.imgs"
-          z-index = "99999999999"
+          z-index = "9999"
         >
         </el-image>
       </div>
@@ -314,6 +314,7 @@ export default {
           list.push(tmp);
         });
         _this.notice_list = list;
+        _this.notice_list.reverse()
       })
       .catch((err) => {
         console.log("获取线索失败!");
@@ -369,8 +370,10 @@ export default {
     this.actionId = this.$route.query.actionId;
     if (this.$route.query.type !== undefined) {
       this.type = this.$route.query.type;
-    }
-    this.getIdentifyData();
+      this.handleCommand(this.$route.query.command)
+    } else {
+      this.getIdentifyData();
+      }
   }
   }
 
@@ -431,7 +434,7 @@ export default {
 }
 .pen {
   color: #99a9bf;
-  font-size: 10px;
+  font-size: 15px;
 }
 .default {
   color: black;

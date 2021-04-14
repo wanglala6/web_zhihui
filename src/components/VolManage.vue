@@ -42,8 +42,8 @@
         </el-table-column>
 
         <el-table-column align="right">
-          <template slot="header">
-            <el-switch v-model="isTeamUp" active-text="组队模式"> </el-switch>
+          <template slot="header" >
+            <el-switch v-model="isTeamUp" active-text="组队模式" class="team_font"> </el-switch>
           </template>
         </el-table-column>
       </el-table>
@@ -173,6 +173,9 @@ export default {
 </script>
 
 <style scoped>
+.team_font{
+  font-size: 10px;
+}
 .container {
   background-color: #ffffff;
   width: 90%;
