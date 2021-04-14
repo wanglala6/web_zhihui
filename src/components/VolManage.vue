@@ -14,7 +14,7 @@
         ></el-button>
       </el-input>
       <div style="height: 0px; margin-top: 10px; margin-bottom: 10px"></div>
-      <el-table :data="result" fit style="width: 100%">
+      <el-table :data="result" fit style="width: 100%" height="326">
         <el-table-column prop="name" label="姓名">
         </el-table-column>
         <el-table-column prop="tel" label="电话"> </el-table-column>
@@ -46,13 +46,14 @@
 <!--          </template>-->
 <!--        </el-table-column>-->
       </el-table>
-      <el-pagination
+      <!-- <el-pagination
         background
         layout="prev, pager, next"
         :total="1000"
+        current-change="handleCurrentChange"
         class="pagination"
       >
-      </el-pagination>
+      </el-pagination> -->
     </div>
 
     <!-- 队伍表 -->
@@ -162,6 +163,7 @@ export default {
       this.$forceUpdate();
       console.log(this.teams);
     },
+    handleCurrentChange: function() {}
   },
   created() {
     this.actionId = this.$route.query.id;
