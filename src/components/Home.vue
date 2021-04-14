@@ -3,13 +3,13 @@
     <el-container class="home_container">
       <!-- 头部区 -->
       <el-header>
-        <div style="width: 70px; height: 70px; border-radius: 50%">
+        <div style="width: 55px; height: 55px; border-radius: 50%">
           <img
             src="../assets/logo.jpg"
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-        <!-- <span>指挥端</span> -->
+         <div class="font">救援队指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
           <el-dropdown class="notify" @mouseenter.native="pullMsg">
@@ -446,6 +446,11 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.font{
+  position: absolute;
+  margin-left: 70px;
+  font-size:20px;
+}
 .weather {
   z-index: 99999999;
 }
