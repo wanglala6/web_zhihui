@@ -13,7 +13,7 @@
         <div>
           <div id="he-plugin-simple" class="weather"></div>
           <el-dropdown class="notify" @mouseenter.native="pullMsg">
-            <el-badge :value="1" class="notify-icon">
+            <el-badge :value="icon_value" class="notify-icon" :hidden="isHidden">
               <div class="el-icon-message-solid"></div>
             </el-badge>
             <el-dropdown-menu
@@ -168,7 +168,7 @@
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
-                  <span>队员报备</span>
+                  <span>出发报备</span>
                 </template>
               </el-menu-item>
               <!-- 二级菜单 -->
@@ -192,6 +192,17 @@
                   <i class="el-icon-user"></i>
                   <!-- 文本 -->
                   <span>甄别记录</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item
+                index="/randomReport"
+                :route="{ path: '/randomReport', query: { actionId: id, lostId: lostId } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-user"></i>
+                  <!-- 文本 -->
+                  <span>报备记录</span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -258,6 +269,8 @@ import {
 export default {
   data() {
     return {
+      isHidden: true,
+      icon_value: 0,
       alarmVisible: "false",
       lostId: "",
       id: "",
@@ -329,6 +342,7 @@ export default {
       );
       console.log(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
+      this.Msg.name = res.data.name
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
       } else if (this.type === "START_REPORT") {
@@ -336,6 +350,7 @@ export default {
       } else if (this.type === "RANDOM_REPORT") {
         this.Msg.abstract = "平时报备";
       }
+      // this.notices.push(this.Msg)
       this.notify();
     },
     // jq：stomp监听消息队列相关函数
@@ -348,6 +363,11 @@ export default {
       console.log("Failed: " + frame);
     },
     responseCallback: function (frame) {
+      console.log("测试")
+      console.log(this.icon_value)
+      this.icon_value = this.icon_value + 1
+      console.log(this.icon_value)
+      this.isHidden = false
       this.news = JSON.parse(
         this.evil(decodeURI(frame.body)).replace("/\\", "")
       ).data;
@@ -408,9 +428,19 @@ export default {
             element.msg = "确定出发,并填写了出发报备表单";
             notice.push(element);
           });
-
-          notice.sort(this.compare("createTime"));
-          _this.notices = notice;
+          // notice.forEach((ele) => {
+          //   console.log(ele.createTime)
+          // })
+          // notice.sort(this.compare("createTime")).reverse();
+          // _this.notices = notice;
+          notice.sort(function(a, b) {
+            return a.createTime < b.createTime ? 1 : -1
+          });
+          console.log(_this.notices)
+          console.log("测试")
+          this.icon_value = 0
+          console.log(this.icon_value)
+          this.isHidden = true
         })
         .catch((err) => {
           console.log(err);
@@ -421,7 +451,9 @@ export default {
       return function (a, b) {
         var value1 = a[property];
         var value2 = b[property];
-        return value1 - value2;
+        var t1 = new Date(Date.parse(value1.replace(/-/g, "/")))
+        var t2 = new Date(Date.parse(value2.replace(/-/g, "/")))
+        return t2.getTime() - t1.getTime()
       };
     },
   },
