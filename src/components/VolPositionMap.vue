@@ -22,7 +22,7 @@
 <script>
 import BmMarker from "vue-baidu-map/components/overlays/Marker";
 import BmInfoWindow from "vue-baidu-map/components/overlays/InfoWindow";
-import { devServer } from "../../vue.config";
+// import { devServer } from "../../vue.config";
 
 export default {
   name: "VolPositionMap",

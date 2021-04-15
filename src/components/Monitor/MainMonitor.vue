@@ -42,11 +42,11 @@
 
           <el-popover
             placement="left"
-            width="230"
+            width="250"
             trigger="click"
             :offset="-50"
           >
-            <RecognizedImgs></RecognizedImgs>
+            <RecognizedImgs class="imgs"></RecognizedImgs>
             <MapBtn
               value="人脸识别记录"
               iconClass="el-icon-camera"
@@ -209,5 +209,8 @@ export default {
 }
 .left_bottom {
   height: 40%;
+}
+.imgs{
+
 }
 </style>

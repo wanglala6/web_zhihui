@@ -7,13 +7,6 @@
         class="imgList-item-image"
       />
     </div>
-    <el-pagination
-      class="PageTurner"
-      small
-      layout="prev, pager, next"
-      :total="50"
-    >
-    </el-pagination>
   </div>
 </template>
 
@@ -100,13 +93,15 @@ export default {
   width: 100%;
   flex-wrap: wrap;
   margin-left: 5px;
+  height: 300px;
+  overflow: auto;
 }
 
 .imgList-item {
   width: 106px;
   height: 120px;
   text-align: center;
-  margin: 3px;
+  /* margin: 3px; */
   color: white;
   border-radius: 2px;
   background-color: red;
