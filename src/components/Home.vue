@@ -432,10 +432,10 @@ export default {
           //   console.log(ele.createTime)
           // })
           // notice.sort(this.compare("createTime")).reverse();
-          // _this.notices = notice;
           notice.sort(function(a, b) {
             return a.createTime < b.createTime ? 1 : -1
           });
+          _this.notices = notice;
           console.log(_this.notices)
           console.log("测试")
           this.icon_value = 0

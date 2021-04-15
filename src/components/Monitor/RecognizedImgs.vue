@@ -96,19 +96,29 @@ export default {
   height: 300px;
   overflow: auto;
 }
-
+.imgList::-webkit-scrollbar {
+  width: 0;
+  height:0;
+  background-color: #f5f5f5;
+}
+.imgList::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f5f5f5;
+}
 .imgList-item {
+  padding-left: 8px;
+  margin: 3px;
   width: 106px;
   height: 120px;
   text-align: center;
   /* margin: 3px; */
   color: white;
   border-radius: 2px;
-  background-color: red;
+  background-color: #F56C6C;
 }
 
 .imgList-item-active {
-  background-color: #67c23a;
+  background-color: #5CB87A;
 }
 
 .imgList-item-image {
