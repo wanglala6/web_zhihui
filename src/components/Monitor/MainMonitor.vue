@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="top-right">
-        <Map></Map>
+        <VolPositionMap :height="mapHeight"></VolPositionMap>
         <div class="btn-list">
           <!-- 最相似图片 -->
           <el-popover
@@ -19,11 +19,11 @@
             trigger="click"
             :offset="-100"
           >
-            <div class="donutChartWrapper">
-              <div class="donutChart">
-                <DonutChart gaugeData="gaugeData"></DonutChart>
-              </div>
-            </div>
+<!--            <div class="donutChartWrapper">-->
+<!--              <div class="donutChart">-->
+<!--                <DonutChart gaugeData="gaugeData"></DonutChart>-->
+<!--              </div>-->
+<!--            </div>-->
             <div class="com_img box_style">
               <div class="image-top">相似度:{{maxSimilarity}}%</div>
               <el-image
@@ -39,7 +39,6 @@
               slot="reference"
             ></MapBtn>
           </el-popover>
-
           <el-popover
             placement="left"
             width="250"
@@ -69,22 +68,22 @@
 </template>
 
 <script>
-import Map from "@/components/Map";
+// import Map from "@/components/Map";
 import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
 import MsgBox from "@/components/Monitor/MsgBox";
-import DonutChart from "@/components/Monitor/DonutChart";
+// import DonutChart from "@/components/Monitor/DonutChart";
 import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
 import MapBtn from "@/components/Monitor/MapBtn";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
+import VolPositionMap from "@/components/VolPositionMap"
 import { devServer } from "../../../vue.config";
 
 export default {
   name: "MainMonitor",
   components: {
     VaryMsgTabs,
-    DonutChart,
+    VolPositionMap,
     RecognizedImgs,
-    Map,
     MsgBox,
     MapBtn,
     StatisticsCard,
@@ -97,7 +96,8 @@ export default {
         gaugeTitle: "相似度",
       },
       maxSimilarityImg: '',
-      maxSimilarity: 0
+      maxSimilarity: 0,
+      mapHeight: document.body.clientHeight - 60 + "px",
     };
   },
   methods: {

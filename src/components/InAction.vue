@@ -18,12 +18,13 @@ export default {
   components: { ActionCard },
   data() {
     return {
+      commanderId: "",
       actionList: [],
       queryInfo: {
         status: 1,
         pageSize: 1000,
         currentPage: 1,
-        commanderId: this.$route.query.commanderId,
+        commanderId: this.commanderId,
       },
     };
   },
@@ -47,7 +48,7 @@ export default {
   },
   created() {
     console.log(this.$route.query.commanderId);
-
+    this.commanderId = this.$route.query.commanderId;
     this.getActionList();
   },
 };

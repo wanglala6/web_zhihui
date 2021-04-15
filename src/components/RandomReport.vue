@@ -40,30 +40,8 @@
             :key="item"
             :preview-src-list="scope.row.content.imgs">
           </el-image>
-<!--          <img v-for="item in scope.row.content.imgs" :src="item" :key="item" width="40" height="40"/>-->
         </template>
-        <!--        <div-->
-        <!--          class="demo-image__preview"-->
-        <!--          v-for="img in imgs"-->
-        <!--          :key="img.id"-->
-        <!--        >-->
-        <!--          <el-image-->
-        <!--            style="width: 200px; height: 200px; border-radius: 5px; margin-right: 10px;"-->
-        <!--            :src="img"-->
-        <!--            :preview-src-list="imgs"-->
-        <!--            z-index="99999999999"-->
-        <!--          >-->
-        <!--          </el-image>-->
-        <!--        </div>-->
       </el-table-column>
-<!--      <el-table-column fixed="right" label="线索" width="180" align="center">-->
-<!--        <template slot-scope="scope">-->
-<!--          <el-button type="text" size="small" @click="detail(scope.row)"-->
-<!--          >完整内容-->
-<!--          </el-button-->
-<!--          >-->
-<!--        </template>-->
-<!--      </el-table-column>-->
     </el-table>
     <!-- 分页 -->
     <el-pagination
@@ -94,13 +72,16 @@
     <!-- 发布线索 -->
   </div>
 </template>
+
 <script>
 import { devServer } from "../../vue.config";
-
 export default {
+  name: "RandomReport",
   data() {
     return {
       tmp: "",
+      actionId: "",
+      lostId: "",
       clue_msg: {},
       keyword: "",
       dialogVisible: false,
@@ -153,7 +134,7 @@ export default {
     getclue() {
       this.$http({
         methods: "get",
-        url: "/command/clue/by-action/" + this.$route.query.id,
+        url: "/command/random_report/msg/by-action/" + this.$route.query.id,
         params: {
           currentPage: this.page.currentPage,
           pageSize: this.page.pageSize,
@@ -196,6 +177,8 @@ export default {
     },
   },
   created() {
+    this.actionId = this.$route.query.id
+    this.lostId = this.$route.query.lostId
     this.getclue();
   },
 };

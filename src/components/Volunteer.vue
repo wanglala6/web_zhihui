@@ -98,14 +98,18 @@
         ref="addref"
         :rules="addrules"
       >
-        <el-form-item label="姓名" prop="name" >
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="newvol.name" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="账户" prop="account">
           <el-input v-model="newvol.account" class="wid"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="newvol.password" class="wid"></el-input>
+          <el-input
+            type="password"
+            v-model="newvol.password"
+            class="wid"
+          ></el-input>
         </el-form-item>
         <el-form-item label="QQ" prop="qq">
           <el-input v-model="newvol.qq" class="wid"></el-input>
@@ -138,13 +142,11 @@
 export default {
   data() {
     return {
+      commanderId: "",
       diaadd: false,
       newvol: {
-        residence: {},
       },
-      vol: {
-        residence: {},
-      },
+      vol: {},
       diaedit: false,
       addrules: {
         name: [{ required: true, message: "请输入姓名", trigger: "blur" }],
@@ -179,6 +181,14 @@ export default {
           method: "post",
           url: "/command/volunteer/",
           data: this.newvol,
+        }).then((res) => {
+          if (res.data.code === 200) {
+            this.$message.success("添加成功");
+          } else if (res.data.code === 401) {
+            this.$message.console.error("登录过期");
+          } else {
+            this.$message("添加失败");
+          }
         });
       });
     },
@@ -191,7 +201,7 @@ export default {
       this.diaedit = true;
     },
     editaffirm() {
-       if (this.vol2.forbidden === "正常") {
+      if (this.vol2.forbidden === "正常") {
         this.vol2.forbidden = false;
       } else {
         this.vol2.forbidden = true;
@@ -207,7 +217,9 @@ export default {
         console.log(res.data);
         if (res.data.code === 200) {
           this.$message.success("修改成功");
-          this.getvol()
+          this.getvol();
+        } else if (res.data.code === 401) {
+          this.$message.console.error("登录过期");
         } else {
           this.$message(res.data.message);
         }
@@ -233,6 +245,8 @@ export default {
               ele.forbidden = "冻结";
             }
           });
+        } else if (res.data.code === 401) {
+          this.$message.console.error("登录过期");
         } else {
           this.$message("查询失败");
         }
@@ -244,7 +258,10 @@ export default {
         url: "/phone/volunteer/" + row.id,
       }).then((res) => {
         if (res.data.code === 200) {
+          this.getvol();
           this.$message.success("删除成功");
+        } else if (res.data.code === 401) {
+          this.$message.console.error("登录过期");
         } else {
           this.$message("删除失败");
         }
@@ -303,6 +320,8 @@ export default {
     },
   },
   created() {
+    console.log(this.commanderId, "志愿者");
+    this.commanderId = this.$route.query.commanderId;
     this.getvol();
   },
 };
@@ -314,7 +333,7 @@ export default {
 .input-with-select {
   width: 40%;
 }
-.wid{
+.wid {
   width: 75%;
 }
 </style>

@@ -2,6 +2,13 @@
   <div class="amount">
     <baidu-map class="map" :style="{height: height}" :center="center" :zoom="11" enableScrollWheelZoom="true"
                :scroll-wheel-zoom="true">
+<!--      <bm-view></bm-view>-->
+      <bm-control :offset="{width: '100px', height: '100px'}">
+        <bm-auto-complete :v-model="keyword" :sugStyle="{zIndex: 1}">
+          <el-input placeholder="请输入地名关键字" v-model="keyword" class="search_box"></el-input>
+        </bm-auto-complete>
+      </bm-control>
+      <bm-local-search :keyword="keyword" :auto-viewport="true" ></bm-local-search>
       <bm-marker
         :position="position"
         :title="position.name"
@@ -9,6 +16,7 @@
         @click="lookDetail(position)"
         v-for="position in positionList"
         :key="position.id"
+        :icon="{ url: volIcon, size: { width: 32, height: 32 } }"
         >
 <!--        :icon="{ url: position.avatar, size: { width: 70, height: 70 } }"-->
         <bm-info-window
@@ -18,6 +26,7 @@
           >志愿者:{{ infoWindow.name }}</bm-info-window
         >
       </bm-marker>
+
       <bm-marker
         :position="elderPosition"
         title="走失老人位置"
@@ -52,12 +61,14 @@ export default {
       url: "https://gitee.com/waxijiang/MyImage/raw/master/img/test.png",
       center: {},
       oldIcon: "https://gitee.com/waxijiang/MyImage/raw/master/img/oldimg.svg",
+      volIcon: "https://gitee.com/waxijiang/MyImage/raw/master/img/vol32.svg",
       positionList: [],
       elderPosition: {},
       markerIcon: "",
       infoWindow: {
         name: ""
       },
+      keyword: '',
     };
   },
   methods: {
@@ -132,8 +143,8 @@ export default {
     }
   },
   created() {
-    this.getPosition();
     this.getOld();
+    this.getPosition();
   },
 };
 </script>
@@ -141,5 +152,8 @@ export default {
 <style lang='less' scoped>
 .map {
   width: 100%;
+}
+.search-box{
+  width: 200px;
 }
 </style>

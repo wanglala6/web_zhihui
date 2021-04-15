@@ -9,11 +9,12 @@
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-         <div class="font">救援队指挥中心</div>
+        <div class="font">救援队指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
-          <el-dropdown class="notify" @mouseenter.native="pullMsg">
-            <el-badge :value="1" class="notify-icon">
+          <el-dropdown class="notify" @mouseenter.native="pullMsg " @command="goto_notice_detail"
+          >
+            <el-badge :value="icon_value" class="notify-icon" :hidden="isHidden">
               <div class="el-icon-message-solid"></div>
             </el-badge>
             <el-dropdown-menu
@@ -26,6 +27,7 @@
                 class="notify-item"
                 v-for="notice in notices"
                 :key="notice.index"
+                :command="notice.type"
               >
                 <el-avatar
                   shape="square"
@@ -35,6 +37,7 @@
                 <div class="notify-item-body">
                   <div class="notify-item-name">
                     {{ notice.volunteer.name }}
+                    <!--                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>-->
                   </div>
                   <div class="notify-item-msg">{{ notice.msg }}</div>
                 </div>
@@ -168,13 +171,13 @@
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
-                  <span>队员报备</span>
+                  <span>出发报备</span>
                 </template>
               </el-menu-item>
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/clue"
-                :route="{ path: '/clue', query: { actionId: id, lostId: lostId } }"
+                :route="{ path: '/clue', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -185,13 +188,24 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { actionId: id, lostId: lostId } }"
+                :route="{ path: '/identifyRecord', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-user"></i>
                   <!-- 文本 -->
                   <span>甄别记录</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item
+                index="/randomReport"
+                :route="{ path: '/randomReport', query: { id: id, lostId: lostId } }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-user"></i>
+                  <!-- 文本 -->
+                  <span>报备记录</span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -208,7 +222,7 @@
 
               <el-menu-item
                 index="/newsEdit"
-                :route="{ path: '/newsEdit', query: { actionId: this.id, lostId: lostId } }"
+                :route="{ path: '/newsEdit', query: { id: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -221,7 +235,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/news"
-                :route="{ path: '/news', query: { actionId: this.id, lostId: lostId } }"
+                :route="{ path: '/news', query: { id: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -239,11 +253,11 @@
         </el-main>
       </el-container>
     </el-container>
-<!--    <div class="alarm_box"-->
-<!--      :visible.sync="alarmVisible">-->
-<!--      <img src="../assets/alarm.svg" class="alarm_style">-->
-<!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
-<!--    </div>-->
+    <!--    <div class="alarm_box"-->
+    <!--      :visible.sync="alarmVisible">-->
+    <!--      <img src="../assets/alarm.svg" class="alarm_style">-->
+    <!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
+    <!--    </div>-->
   </div>
 </template>
 <script>
@@ -258,6 +272,8 @@ import {
 export default {
   data() {
     return {
+      isHidden: true,
+      icon_value: 0,
       alarmVisible: "false",
       lostId: "",
       id: "",
@@ -329,6 +345,7 @@ export default {
       );
       console.log(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
+      this.Msg.name = res.data.name
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
       } else if (this.type === "START_REPORT") {
@@ -336,6 +353,7 @@ export default {
       } else if (this.type === "RANDOM_REPORT") {
         this.Msg.abstract = "平时报备";
       }
+      // this.notices.push(this.Msg)
       this.notify();
     },
     // jq：stomp监听消息队列相关函数
@@ -348,6 +366,11 @@ export default {
       console.log("Failed: " + frame);
     },
     responseCallback: function (frame) {
+      console.log("测试")
+      console.log(this.icon_value)
+      this.icon_value = this.icon_value + 1
+      console.log(this.icon_value)
+      this.isHidden = false
       this.news = JSON.parse(
         this.evil(decodeURI(frame.body)).replace("/\\", "")
       ).data;
@@ -382,6 +405,7 @@ export default {
             element.msgType = "clue";
             element.index = notice.length;
             element.msg = "发现了一条线索";
+            element.type = "clue"
             notice.push(element);
           });
           // 处理识别记录
@@ -390,6 +414,7 @@ export default {
             element.index = notice.length;
             element.msg =
               "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
+            element.type = "identify"
             notice.push(element);
           });
           // 处理随机报备
@@ -398,6 +423,7 @@ export default {
               element.msgType = "randomReport";
               element.index = notice.length;
               element.msg = "提交了一条报备信息";
+              element.type = "random_report"
               notice.push(element);
             }
           });
@@ -406,11 +432,22 @@ export default {
             element.msgType = "startReport";
             element.index = notice.length;
             element.msg = "确定出发,并填写了出发报备表单";
+            element.type = "start_report"
             notice.push(element);
           });
-
-          notice.sort(this.compare("createTime"));
+          // notice.forEach((ele) => {
+          //   console.log(ele.createTime)
+          // })
+          // notice.sort(this.compare("createTime")).reverse();
+          notice.sort(function (a, b) {
+            return a.createTime < b.createTime ? 1 : -1
+          });
           _this.notices = notice;
+          console.log(_this.notices)
+          console.log("测试")
+          this.icon_value = 0
+          console.log(this.icon_value)
+          this.isHidden = true
         })
         .catch((err) => {
           console.log(err);
@@ -421,9 +458,37 @@ export default {
       return function (a, b) {
         var value1 = a[property];
         var value2 = b[property];
-        return value1 - value2;
+        var t1 = new Date(Date.parse(value1.replace(/-/g, "/")))
+        var t2 = new Date(Date.parse(value2.replace(/-/g, "/")))
+        return t2.getTime() - t1.getTime()
       };
     },
+    goto_notice_detail(type) {
+      console.log(type)
+      var id = this.$route.query.id
+      var lostId = this.$route.query.lostId
+      if (type === "clue") {
+        this.$router.push({
+          path: "/clue",
+          query: { id: id, lostId: lostId }
+        });
+      } else if (type === "identify") {
+        this.$router.push({
+          path: "/identifyRecord",
+          query: { id: id, lostId: lostId }
+        });
+      } else if (type === "random_report") {
+        this.$router.push({
+          path: "/randomReport",
+          query: { id: id, lostId: lostId }
+        });
+      } else {
+        this.$router.push({
+          path: "/post",
+          query: { id: id, lostId: lostId }
+        });
+      }
+    }
   },
   created() {
     this.connect();
@@ -464,31 +529,41 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.alarm_box{
-  height:100%;
-  width:100%;
-  background-color:#000;
-  position:absolute;
-  top:0;
-  z-index:100;
-  opacity:0.8;
+.link_style {
+  position: absolute;
+  margin-left: 100px;
 }
-.alarm_style{
+
+.alarm_box {
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  opacity: 0.8;
+}
+
+.alarm_style {
   width: 24%;
   margin-left: 38%;
   margin-top: 12%;
 }
-.font{
+
+.font {
   position: absolute;
   margin-left: 70px;
-  font-size:20px;
+  font-size: 20px;
 }
+
 .weather {
   z-index: 99999999;
 }
+
 .el-menu-item {
   //border-bottom: 0.5px solid #dedede;
 }
+
 .el-header {
   opacity: 0.99;
   background-color: #373d41; //#373d41
@@ -595,7 +670,8 @@ export default {
   color: #8f99ad;
   font-size: 14px;
 }
-.main{
-  overflow: hidden  !important;
+
+.main {
+  overflow: hidden !important;
 }
 </style>

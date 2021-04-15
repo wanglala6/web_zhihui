@@ -38,13 +38,19 @@ import MapSearch from "@/components/MapSearch";
 import IdentifyRecord from "@/components/IdentifyRecord";
 import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
+import RandomReport from "@/components/RandomReport"
 
+import StaticsHome from "@/views/Hot"
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '*',
     redirect: '/notFound'
+  },
+  {
+    path: '/staticshome',
+    component: StaticsHome
   },
   {
         path: '/',
@@ -115,6 +121,10 @@ const routes = [
         redirect: '/elderMsg',
 
         children: [
+          {
+            path: '/randomReport',
+            component: RandomReport
+          },
           {
             path: '/identifyRecord',
             component: IdentifyRecord,

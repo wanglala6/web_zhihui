@@ -31,7 +31,7 @@ export default {
       var lostId = this.$route.query.lostId
       this.$router.push({
         path: "/clue",
-        query: { actionId: id, lostId: lostId }
+        query: { id: id, lostId: lostId }
       });
     },
     getclue() {
