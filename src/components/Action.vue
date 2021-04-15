@@ -74,9 +74,29 @@ export default {
         ],
       },
       options: [],
+      commanderId: "",
     };
   },
   methods: {
+    async getActionList() {
+      const { data: res } = await this.$http({
+        method: "get",
+        url: "/command/action/search-like",
+        params: this.queryInfo,
+      });
+      if (res.code === 200) this.actionList = res.data;
+      console.log(res.data);
+    },
+    getunactionlist() {
+      this.$http({
+        method: "get",
+        url: "/command/action/search-like",
+        params: this.queryInfo,
+      }).then((res) => {
+        console.log(res);
+        this.unactionList = res.data.data;
+      });
+    },
     // 点击切换tab
     handleClick: function (e) {
       if (e.name === "inAction") {
@@ -84,6 +104,7 @@ export default {
           path: "/inAction",
           query: {
             commanderId: this.$route.query.commanderId,
+            id: this.$route.query,
           },
         });
       } else if (e.name === "unAction") {
@@ -124,7 +145,9 @@ export default {
     },
     // 创建活动
     upload() {
+      var _this = this
       this.$refs.addFormref.validate((valid) => {
+        console.log(_this.commanderId)
         if (!valid) return;
         this.$http
           .post(
@@ -132,7 +155,7 @@ export default {
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commandId: this.commanderId,
+              commanderId: _this.commanderId,
             }),
             {
               headers: {
@@ -144,14 +167,15 @@ export default {
             console.log(res);
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
-              this.getunactionlist();
-              this.getActionList();
-              this.adddialogVisible = false;
+              _this.getunactionlist();
+              _this.getActionList();
+              _this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
-              this.$router.push({
-                path: "/unaction",
-                query: { commanderId: this.commanderId },
-              });
+              // this.$router.push({
+              //   path: "/unaction",
+              //   query: { commanderId: _this.commanderId },
+              // });
+              this.$router.go(0)
             } else {
               this.$message("创建活动失败");
             }
@@ -159,6 +183,9 @@ export default {
       });
     },
   },
+  created() {
+    this.commanderId = this.$route.query.commanderId
+  }
 };
 </script>
 <style lang="less" scoped>

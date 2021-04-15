@@ -191,8 +191,8 @@ export default {
   },
   data() {
     return {
+      id: "",
       addundia: false, // 未开始活动
-
       isHover: false,
       diaedit: false,
       form: {
@@ -366,13 +366,19 @@ export default {
       this.addundia = true;
     },
     send() {
-      console.log(this.location);
+      console.log("test")
+      console.log(this.action.id);
       this.$refs.locationref.validate((valid) => {
         if (!valid) return;
         this.$http({
           methods: "get",
           url: "/command/volunteer/by-distance",
-          params: this.location,
+          params: {
+            actionId: this.action.id,
+            latitude: this.location.latitude,
+            longitude: this.location.longitude,
+            distance: this.location.distance
+          }
         }).then((res) => {
           console.log(res);
           if (res.data.code === 200) {
@@ -424,6 +430,10 @@ export default {
           this.$message.success("发送成功");
           this.volundia = false;
           this.addundia = false;
+          this.$router.go(0)
+          // this.$router.push({
+          //   name: "/inAction",
+          // });
         } else {
           this.$message("发送失败");
         }
@@ -450,6 +460,10 @@ export default {
       this.ids = arr;
     },
   },
+  created() {
+    this.id = this.$route.query.id;
+    console.log("get:id" + this.id)
+  }
 };
 </script>
 <style lang="less" scoped>
