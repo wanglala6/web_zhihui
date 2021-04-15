@@ -456,7 +456,7 @@ export default {
 .action {
   height: 250px;
   width: 200px;
-  margin: 10px 30px 10px 0;
+  margin: 10px 19px 10px 0;
   cursor: pointer;
   border-radius: 5px;
 }

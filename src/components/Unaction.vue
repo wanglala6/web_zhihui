@@ -61,6 +61,7 @@ export default {
 <style lang="less" scoped>
 .action-list {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .activity {
