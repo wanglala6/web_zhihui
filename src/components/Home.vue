@@ -239,6 +239,11 @@
         </el-main>
       </el-container>
     </el-container>
+<!--    <div class="alarm_box"-->
+<!--      :visible.sync="alarmVisible">-->
+<!--      <img src="../assets/alarm.svg" class="alarm_style">-->
+<!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
+<!--    </div>-->
   </div>
 </template>
 <script>
@@ -253,6 +258,7 @@ import {
 export default {
   data() {
     return {
+      alarmVisible: "false",
       id: "",
       iscollapse: false,
       older: {},
@@ -457,6 +463,19 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.alarm_box{
+  height:100%;
+  width:100%;
+  background-color:#000;
+  position:absolute;
+  top:0;
+  z-index:100
+}
+.alarm_style{
+  width: 24%;
+  margin-left: 38%;
+  margin-top: 12%;
+}
 .font{
   position: absolute;
   margin-left: 70px;
