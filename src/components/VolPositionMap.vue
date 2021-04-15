@@ -1,6 +1,7 @@
 <template>
   <div class="amount">
-    <baidu-map class="map" :center="elderPosition" :zoom="13">
+    <baidu-map class="map" :center="center" :zoom="11" enableScrollWheelZoom="true"
+               :scroll-wheel-zoom="true">
       <bm-marker
         :position="position"
         :title="position.name"
@@ -8,12 +9,27 @@
         @click="lookDetail(position)"
         v-for="position in positionList"
         :key="position.id"
-        :icon="{ url: position.avatar, size: { width: 34, height: 34 } }"
-        ><bm-info-window
+        >
+<!--        :icon="{ url: position.avatar, size: { width: 70, height: 70 } }"-->
+        <bm-info-window
           :show="position.showInfo"
           @close="infoWindowClose(position)"
           @open="infoWindowOpen(position)"
           >志愿者:{{ infoWindow.name }}</bm-info-window
+        >
+      </bm-marker>
+      <bm-marker
+        :position="elderPosition"
+        title="走失老人位置"
+        :zIndex="99999999"
+        @click="lookDetail(elderPosition)"
+        :icon="{ url: oldIcon, size: { width: 64, height: 64 } }"
+      >
+        <bm-info-window
+          :show="elderPosition.showInfo"
+          @close="infoWindowClose(elderPosition)"
+          @open="infoWindowOpen(elderPosition)"
+        >老人</bm-info-window
         >
       </bm-marker>
     </baidu-map>
@@ -32,6 +48,9 @@ export default {
   },
   data() {
     return {
+      url: "https://gitee.com/waxijiang/MyImage/raw/master/img/test.png",
+      center: {},
+      oldIcon: "https://gitee.com/waxijiang/MyImage/raw/master/img/oldimg.svg",
       positionList: [],
       elderPosition: {},
       markerIcon: "",
@@ -77,10 +96,18 @@ export default {
       await this.$http
         .get("/command/lost/" + this.$route.query.lostId)
         .then((res) => {
-          console.log(res.data.data.longitude);
+          console.log(res)
+          // console.log(res.data.data.longitude);
+          _this.center = {
+            lng: res.data.data.longitude,
+            lat: res.data.data.latitude,
+          }
           _this.elderPosition = {
             lng: res.data.data.longitude,
             lat: res.data.data.latitude,
+            avatar: devServer.proxy["/"].target + res.data.data.avatar,
+            showInfo: false,
+            name: res.name,
           };
         })
         .catch((err) => {

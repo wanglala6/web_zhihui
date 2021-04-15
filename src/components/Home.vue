@@ -125,7 +125,7 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/mapMsg" :route="{ path: '/mapMsg', query: { id: id, lostId: lostId } }">
+              <el-menu-item index="/volPositionMap" :route="{ path: '/volPositionMap', query: { id: id, lostId: lostId } }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-map-location"></i>
@@ -469,7 +469,8 @@ export default {
   background-color:#000;
   position:absolute;
   top:0;
-  z-index:100
+  z-index:100;
+  opacity:0.8;
 }
 .alarm_style{
   width: 24%;
