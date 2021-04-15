@@ -35,6 +35,7 @@
                 <div class="notify-item-body">
                   <div class="notify-item-name">
                     {{ notice.volunteer.name }}
+                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>
                   </div>
                   <div class="notify-item-msg">{{ notice.msg }}</div>
                 </div>
@@ -402,6 +403,7 @@ export default {
             element.msgType = "clue";
             element.index = notice.length;
             element.msg = "发现了一条线索";
+            element.type = "clue"
             notice.push(element);
           });
           // 处理识别记录
@@ -410,6 +412,7 @@ export default {
             element.index = notice.length;
             element.msg =
               "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
+            element.type = "identify"
             notice.push(element);
           });
           // 处理随机报备
@@ -418,6 +421,7 @@ export default {
               element.msgType = "randomReport";
               element.index = notice.length;
               element.msg = "提交了一条报备信息";
+              element.type = "random_report"
               notice.push(element);
             }
           });
@@ -426,6 +430,7 @@ export default {
             element.msgType = "startReport";
             element.index = notice.length;
             element.msg = "确定出发,并填写了出发报备表单";
+            element.type = "start_report"
             notice.push(element);
           });
           // notice.forEach((ele) => {
@@ -456,6 +461,32 @@ export default {
         return t2.getTime() - t1.getTime()
       };
     },
+    goto_notice_detail(type) {
+      console.log(type)
+      var id = this.$route.query.id
+      var lostId = this.$route.query.lostId
+      if (type === "clue") {
+        this.$router.push({
+          path: "/clue",
+          query: { actionId: id, lostId: lostId }
+        });
+      } else if (type === "identify") {
+        this.$router.push({
+          path: "/identifyRecord",
+          query: { actionId: id, lostId: lostId }
+        });
+      } else if (type === "random_report") {
+        this.$router.push({
+          path: "/randomReport",
+          query: { actionId: id, lostId: lostId }
+        });
+      } else {
+        this.$router.push({
+          path: "/post",
+          query: { actionId: id, lostId: lostId }
+        });
+      }
+    }
   },
   created() {
     this.connect();
@@ -496,6 +527,10 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.link_style{
+  position:  absolute;
+  margin-left: 100px;
+}
 .alarm_box{
   height:100%;
   width:100%;

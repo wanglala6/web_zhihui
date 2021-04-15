@@ -80,6 +80,8 @@ export default {
   data() {
     return {
       tmp: "",
+      actionId: "",
+      lostId: "",
       clue_msg: {},
       keyword: "",
       dialogVisible: false,
@@ -175,6 +177,8 @@ export default {
     },
   },
   created() {
+    this.actionId = this.$route.query.actionId
+    this.lostId = this.$route.query.lostId
     this.getclue();
   },
 };
