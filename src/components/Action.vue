@@ -132,7 +132,7 @@ export default {
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commandId: this.commanderId,
+              commanderId: this.commanderId,
             }),
             {
               headers: {
@@ -158,6 +158,10 @@ export default {
           });
       });
     },
+  },
+  created() {
+    console.log(this.$route.query.commanderId, "创建活动");
+    this.commanderId = this.$route.query.commanderId;
   },
 };
 </script>
