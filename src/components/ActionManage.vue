@@ -159,10 +159,14 @@ export default {
         this.beginTime = new Date(data.createTime);
         //  this.get_time_diff(new Date(data.createTime)),
         var _this = this;
+        if (data.finishTime) {
+          this.getTimeStamp(new Date(data.finishTime))
+        } else {
+          this.timer = setInterval(() => {
+            _this.get_time_diff(new Date(this.beginTime));
+          }, 1000);
+        }
 
-        this.timer = setInterval(() => {
-          _this.get_time_diff(new Date(this.beginTime));
-        }, 1000);
         // 设置志愿者人数
         this.$http
           .get("/command/action/list-volunteers/" + this.$route.query.id)
@@ -197,6 +201,19 @@ export default {
       this.action.time =
         dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
       this.$forceUpdate();
+    },
+    // 活动时长
+    getTimeStamp(finish) {
+      var dateDiff = finish.getTime() - this.beginTime.getTime();
+      var dayDiff = Math.floor(dateDiff / (24 * 3600 * 1000));
+      var leave1 = dateDiff % (24 * 3600 * 1000);
+      var hours = Math.floor(leave1 / (3600 * 1000));
+      var leave2 = leave1 % (3600 * 1000);
+      var minutes = Math.floor(leave2 / (60 * 1000));
+      var leave3 = leave2 % (60 * 1000);
+      var seconds = Math.round(leave3 / 1000);
+         this.action.time =
+        dayDiff + "天" + hours + "小时" + minutes + "分钟" + seconds + "秒";
     },
     sureFindLost() {
       var _this = this;
