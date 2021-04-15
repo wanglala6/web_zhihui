@@ -104,7 +104,6 @@ export default {
           path: "/inAction",
           query: {
             commanderId: this.$route.query.commanderId,
-            id: this.$route.query,
           },
         });
       } else if (e.name === "unAction") {
@@ -184,8 +183,9 @@ export default {
     },
   },
   created() {
-    this.commanderId = this.$route.query.commanderId
-  }
+    console.log(this.$route.query.commanderId, "创建活动");
+    this.commanderId = this.$route.query.commanderId;
+  },
 };
 </script>
 <style lang="less" scoped>

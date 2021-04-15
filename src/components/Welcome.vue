@@ -17,13 +17,14 @@
             >
             <el-link
               class="head-item"
-              :href="'/#/volunteer?'"
+              :href="'/#/volunteer?commanderId=' + commanderId"
+
               :underline="false"
               >志愿者管理</el-link
             >
             <el-link
               class="head-item"
-              :href="'/#/statistics'"
+              :href="'/#/staticshome'"
               :underline="false"
               >大数据统计平台</el-link
             >
@@ -521,5 +522,4 @@ export default {
   overflow: hidden;
   margin-top: 20px;
 }
-
 </style>
