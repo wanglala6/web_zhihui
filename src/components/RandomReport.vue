@@ -134,7 +134,7 @@ export default {
     getclue() {
       this.$http({
         methods: "get",
-        url: "/command/random_report/msg/by-action/" + this.$route.query.actionId,
+        url: "/command/random_report/msg/by-action/" + this.$route.query.id,
         params: {
           currentPage: this.page.currentPage,
           pageSize: this.page.pageSize,
@@ -177,7 +177,7 @@ export default {
     },
   },
   created() {
-    this.actionId = this.$route.query.actionId
+    this.actionId = this.$route.query.id
     this.lostId = this.$route.query.lostId
     this.getclue();
   },

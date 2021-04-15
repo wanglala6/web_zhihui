@@ -9,10 +9,11 @@
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-         <div class="font">救援队指挥中心</div>
+        <div class="font">救援队指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
-          <el-dropdown class="notify" @mouseenter.native="pullMsg">
+          <el-dropdown class="notify" @mouseenter.native="pullMsg " @command="goto_notice_detail"
+          >
             <el-badge :value="icon_value" class="notify-icon" :hidden="isHidden">
               <div class="el-icon-message-solid"></div>
             </el-badge>
@@ -26,6 +27,7 @@
                 class="notify-item"
                 v-for="notice in notices"
                 :key="notice.index"
+                :command="notice.type"
               >
                 <el-avatar
                   shape="square"
@@ -35,7 +37,7 @@
                 <div class="notify-item-body">
                   <div class="notify-item-name">
                     {{ notice.volunteer.name }}
-                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>
+                    <!--                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>-->
                   </div>
                   <div class="notify-item-msg">{{ notice.msg }}</div>
                 </div>
@@ -175,7 +177,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/clue"
-                :route="{ path: '/clue', query: { actionId: id, lostId: lostId } }"
+                :route="{ path: '/clue', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -186,7 +188,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { actionId: id, lostId: lostId } }"
+                :route="{ path: '/identifyRecord', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -197,7 +199,7 @@
               </el-menu-item>
               <el-menu-item
                 index="/randomReport"
-                :route="{ path: '/randomReport', query: { actionId: id, lostId: lostId } }"
+                :route="{ path: '/randomReport', query: { id: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -220,7 +222,7 @@
 
               <el-menu-item
                 index="/newsEdit"
-                :route="{ path: '/newsEdit', query: { actionId: this.id, lostId: lostId } }"
+                :route="{ path: '/newsEdit', query: { id: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -233,7 +235,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/news"
-                :route="{ path: '/news', query: { actionId: this.id, lostId: lostId } }"
+                :route="{ path: '/news', query: { id: this.id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -251,11 +253,11 @@
         </el-main>
       </el-container>
     </el-container>
-<!--    <div class="alarm_box"-->
-<!--      :visible.sync="alarmVisible">-->
-<!--      <img src="../assets/alarm.svg" class="alarm_style">-->
-<!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
-<!--    </div>-->
+    <!--    <div class="alarm_box"-->
+    <!--      :visible.sync="alarmVisible">-->
+    <!--      <img src="../assets/alarm.svg" class="alarm_style">-->
+    <!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
+    <!--    </div>-->
   </div>
 </template>
 <script>
@@ -437,7 +439,7 @@ export default {
           //   console.log(ele.createTime)
           // })
           // notice.sort(this.compare("createTime")).reverse();
-          notice.sort(function(a, b) {
+          notice.sort(function (a, b) {
             return a.createTime < b.createTime ? 1 : -1
           });
           _this.notices = notice;
@@ -468,22 +470,22 @@ export default {
       if (type === "clue") {
         this.$router.push({
           path: "/clue",
-          query: { actionId: id, lostId: lostId }
+          query: { id: id, lostId: lostId }
         });
       } else if (type === "identify") {
         this.$router.push({
           path: "/identifyRecord",
-          query: { actionId: id, lostId: lostId }
+          query: { id: id, lostId: lostId }
         });
       } else if (type === "random_report") {
         this.$router.push({
           path: "/randomReport",
-          query: { actionId: id, lostId: lostId }
+          query: { id: id, lostId: lostId }
         });
       } else {
         this.$router.push({
           path: "/post",
-          query: { actionId: id, lostId: lostId }
+          query: { id: id, lostId: lostId }
         });
       }
     }
@@ -527,35 +529,41 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.link_style{
-  position:  absolute;
+.link_style {
+  position: absolute;
   margin-left: 100px;
 }
-.alarm_box{
-  height:100%;
-  width:100%;
-  background-color:#000;
-  position:absolute;
-  top:0;
-  z-index:100;
-  opacity:0.8;
+
+.alarm_box {
+  height: 100%;
+  width: 100%;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  z-index: 100;
+  opacity: 0.8;
 }
-.alarm_style{
+
+.alarm_style {
   width: 24%;
   margin-left: 38%;
   margin-top: 12%;
 }
-.font{
+
+.font {
   position: absolute;
   margin-left: 70px;
-  font-size:20px;
+  font-size: 20px;
 }
+
 .weather {
   z-index: 99999999;
 }
+
 .el-menu-item {
   //border-bottom: 0.5px solid #dedede;
 }
+
 .el-header {
   opacity: 0.99;
   background-color: #373d41; //#373d41
@@ -662,7 +670,8 @@ export default {
   color: #8f99ad;
   font-size: 14px;
 }
-.main{
-  overflow: hidden  !important;
+
+.main {
+  overflow: hidden !important;
 }
 </style>

@@ -66,7 +66,7 @@ name: "IdentifyRecord",
     },
   },
   created() {
-    this.actionId = this.$route.query.actionId
+    this.actionId = this.$route.query.id
     this.getIdentifyImgs()
   }
 }
