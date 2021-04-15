@@ -153,7 +153,7 @@ export default {
     getclue() {
       this.$http({
         methods: "get",
-        url: "/command/clue/by-action/" + this.$route.query.actionId,
+        url: "/command/clue/by-action/" + this.$route.query.id,
         params: {
           currentPage: this.page.currentPage,
           pageSize: this.page.pageSize,

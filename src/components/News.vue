@@ -392,7 +392,7 @@ export default {
     },
   },
   created() {
-    this.actionId = this.$route.query.actionId;
+    this.actionId = this.$route.query.id;
     if (this.$route.query.type !== undefined) {
       this.type = this.$route.query.type;
       this.handleCommand(this.$route.query.command)
