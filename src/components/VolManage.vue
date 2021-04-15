@@ -1,22 +1,28 @@
 <template>
   <div class="container">
     <div>
-      <el-input
-        placeholder="请输入搜寻志愿者相关信息"
-        v-model="inputMsg"
-        class="input-with-select"
-        style="margin-top: 30px; width: 100%"
-      >
-        <el-button
-          slot="append"
-          icon="el-icon-search"
-          @click="searchResult"
-        ></el-button>
-      </el-input>
+      <div style="display: flex;justify-content:space-between;">
+        <el-input
+          placeholder="请输入搜寻志愿者相关信息"
+          v-model="inputMsg"
+          class="input-with-select"
+          style="margin-top: 30px; width: 30%"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="searchResult"
+          ></el-button>
+        </el-input>
+        <div style="margin-top: 30px;" v-if="isTeamUp">
+          <el-button type="primary" @click="save">保存</el-button>
+          <el-button type="info" @click="cancel">取消</el-button>
+        </div>
+      </div>
+
       <div style="height: 0px; margin-top: 10px; margin-bottom: 10px"></div>
       <el-table :data="result" fit style="width: 100%" height="326">
-        <el-table-column prop="name" label="姓名">
-        </el-table-column>
+        <el-table-column prop="name" label="姓名"> </el-table-column>
         <el-table-column prop="tel" label="电话"> </el-table-column>
         <el-table-column prop="addr" label="地址"> </el-table-column>
         <el-table-column prop="createTime" label="创建时间"> </el-table-column>
@@ -40,20 +46,7 @@
             </el-select>
           </template>
         </el-table-column>
-<!--        <el-table-column align="right">-->
-<!--          <template slot="header" >-->
-<!--            <el-switch v-model="isTeamUp" active-text="组队模式" class="team_font"> </el-switch>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
       </el-table>
-      <!-- <el-pagination
-        background
-        layout="prev, pager, next"
-        :total="1000"
-        current-change="handleCurrentChange"
-        class="pagination"
-      >
-      </el-pagination> -->
     </div>
 
     <!-- 队伍表 -->
@@ -99,6 +92,7 @@ export default {
       const that = this;
       console.log("查询所有");
       console.log(res);
+      this.result = []
       res.data.forEach(function (element) {
         that.volList.push(element.name);
         that.result.push({
@@ -140,6 +134,7 @@ export default {
         });
     },
     chooseTeam(e) {
+      this.isTeamUp = true;
       // 判断志愿者是否已经在其他队伍中，如果在则移除
       for (var team in this.teams) {
         console.log(team);
@@ -163,7 +158,13 @@ export default {
       this.$forceUpdate();
       console.log(this.teams);
     },
-    handleCurrentChange: function() {}
+    handleCurrentChange: function () {},
+    cancel: function () {
+      this.isTeamUp = false;
+      this.searchAll();
+    },
+    save: function () {
+    }
   },
   created() {
     this.actionId = this.$route.query.id;
@@ -174,7 +175,7 @@ export default {
 </script>
 
 <style scoped>
-.team_font{
+.team_font {
   font-size: 10px;
 }
 .container {

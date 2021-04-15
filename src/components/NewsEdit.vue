@@ -7,12 +7,6 @@
           <el-col :span="12"><h1>发送通知</h1></el-col>
           <el-col :span="12"><p class="goto_notice_label" @click="goto_history">已发通知</p></el-col>
         </el-row>
-        <el-input
-          type="textarea"
-          autosize
-          placeholder="请输入标题"
-          v-model="title">
-        </el-input>
         <el-select v-model="type" placeholder="请选择通知类型" class="select_box">
           <el-option
             v-for="item in type_options"
@@ -164,6 +158,7 @@ export default {
         that.type = ""
         that.receiveId = ""
         console.log(res)
+        this.$message.success("发送成功")
       }).catch((err) => {
         console.log(err)
       })
