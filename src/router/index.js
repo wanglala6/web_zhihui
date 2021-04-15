@@ -34,7 +34,7 @@ import Statistics from "@/components/Statistics"
 import Location from "@/components/Location";
 import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
-import VolPositionMap from "@/components/VolPositionMap";
+import MapSearch from "@/components/MapSearch";
 import IdentifyRecord from "@/components/IdentifyRecord";
 import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
@@ -120,8 +120,8 @@ const routes = [
             component: IdentifyRecord,
           },
           {
-            path: '/volPositionMap',
-            component: VolPositionMap,
+            path: '/mapSearch',
+            component: MapSearch,
           },
           {
             path: '/volManage',

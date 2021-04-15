@@ -1,6 +1,6 @@
 <template>
   <div class="amount">
-    <baidu-map class="map" :center="center" :zoom="11" enableScrollWheelZoom="true"
+    <baidu-map class="map" :style="{height: height}" :center="center" :zoom="11" enableScrollWheelZoom="true"
                :scroll-wheel-zoom="true">
       <bm-marker
         :position="position"
@@ -38,7 +38,7 @@
 <script>
 import BmMarker from "vue-baidu-map/components/overlays/Marker";
 import BmInfoWindow from "vue-baidu-map/components/overlays/InfoWindow";
-// import { devServer } from "../../vue.config";
+import { devServer } from "../../vue.config";
 
 export default {
   name: "VolPositionMap",
@@ -46,6 +46,7 @@ export default {
     BmMarker,
     BmInfoWindow,
   },
+  props: ["height"],
   data() {
     return {
       url: "https://gitee.com/waxijiang/MyImage/raw/master/img/test.png",
@@ -56,7 +57,7 @@ export default {
       markerIcon: "",
       infoWindow: {
         name: ""
-      }
+      },
     };
   },
   methods: {
@@ -140,6 +141,5 @@ export default {
 <style lang='less' scoped>
 .map {
   width: 100%;
-  height: 350px;
 }
 </style>

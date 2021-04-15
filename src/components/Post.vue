@@ -10,7 +10,7 @@
     </el-table>
     <h1>志愿者报备位置</h1>
     <div class="position_map">
-      <VolPositionMap></VolPositionMap>
+      <VolPositionMap height="350px"></VolPositionMap>
     </div>
   </div>
 </template>
@@ -162,6 +162,7 @@ export default {
 //}
 .post_container {
   margin: 15px;
+  height: 100%;
 }
 .el-pagination {
   padding-top: 15px;

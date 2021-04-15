@@ -125,7 +125,7 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/volPositionMap" :route="{ path: '/volPositionMap', query: { id: id, lostId: lostId } }">
+              <el-menu-item index="/mapSearch" :route="{ path: '/mapSearch', query: { id: id, lostId: lostId } }">
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-map-location"></i>
@@ -259,6 +259,7 @@ export default {
   data() {
     return {
       alarmVisible: "false",
+      lostId: "",
       id: "",
       iscollapse: false,
       older: {},
