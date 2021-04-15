@@ -234,7 +234,7 @@
           </el-menu>
         </el-aside>
         <!-- 右侧主体区 -->
-        <el-main>
+        <el-main class="main">
           <router-view></router-view>
         </el-main>
       </el-container>
@@ -592,5 +592,8 @@ export default {
 .notify-item-msg {
   color: #8f99ad;
   font-size: 14px;
+}
+.main{
+  overflow: hidden  !important;
 }
 </style>

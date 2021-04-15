@@ -8,7 +8,7 @@
             <span>人脸库照片数</span>
           </el-col>
           <el-col class="item" :span="6">
-             <span class="font">{{ identify.successCount }}</span>
+            <span class="font">{{ identify.successCount }}</span>
             <span>识别成功数</span>
           </el-col>
           <el-col class="item" :span="6">
@@ -18,7 +18,7 @@
           </el-col>
 
           <el-col class="item" :span="6">
-             <span class="font">{{ identify.successRate }}</span>
+            <span class="font">{{ identify.successRate }}</span>
             <span>识别成功率</span>
           </el-col>
         </el-row>
@@ -44,7 +44,7 @@ export default {
         method: "get",
         url: "/statistic/face-count",
       }).then((res) => {
-       // console.log(res.data, "成功率");
+        // console.log(res.data, "成功率");
         if (res.data.code === 200) {
           this.identify = res.data.data;
         } else {
@@ -54,7 +54,9 @@ export default {
     },
   },
   created() {
-    setInterval(this.getdata, 2000);
+    setInterval(() => {
+      this.getdata();
+    }, 2000);
   },
 };
 </script>
@@ -62,7 +64,6 @@ export default {
 <style lang="less" scoped>
 .order {
   width: 100%;
-
 }
 .inner {
   border: 15px solid transparent;
@@ -74,8 +75,8 @@ export default {
   color: #4c9bfd;
   font-size: 12px;
 }
-.font{
-  color: #fff  !important;
+.font {
+  color: #fff !important;
   display: block;
   text-align: center;
 }
