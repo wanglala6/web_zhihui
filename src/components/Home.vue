@@ -174,7 +174,7 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/clue"
-                :route="{ path: '/clue', query: { id: id, lostId: lostId } }"
+                :route="{ path: '/clue', query: { actionId: id, lostId: lostId } }"
               >
                 <template slot="title">
                   <!-- 图标 -->

@@ -1,9 +1,14 @@
 <template>
   <div class="clue_container">
-    <div v-for="clue in tableData" :key="clue.id">
-      <p class="clue_content">{{clue.volunteer.name}}:{{clue.content.content}}</p>
-      <hr style="color: #b8b8b7" />
-    </div>
+    <el-link type="primary" @click="goto_detail" class="link_style">查看详情</el-link>
+      <el-timeline :reverse="false" class="timeline">
+        <el-timeline-item
+          v-for="clue in tableData"
+          :key="clue.id"
+          :timestamp="clue.createTime">
+          <p class="clue_content">{{clue.volunteer.name}}:{{clue.content.content}}</p>
+        </el-timeline-item>
+      </el-timeline>
   </div>
 </template>
 
@@ -21,6 +26,14 @@ export default {
     };
   },
   methods: {
+    goto_detail() {
+      var id = this.$route.query.id
+      var lostId = this.$route.query.lostId
+      this.$router.push({
+        path: "/clue",
+        query: { actionId: id, lostId: lostId }
+      });
+    },
     getclue() {
       this.$http({
         methods: "get",
@@ -47,6 +60,15 @@ export default {
 </script>
 
 <style scoped>
+.link_style{
+  position: absolute;
+  /*margin-bottom: 0px;*/
+  font-size: 10px;
+  right: 20px;
+}
+.timeline{
+  padding: 20px;
+}
 .clue_container {
   height: 180px;
 }
