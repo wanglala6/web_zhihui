@@ -24,7 +24,6 @@ export default {
   methods: {
     getIdentifyImgs() {
       var _this = this;
-
       this.$http
         .get("/phone/identify/by-action/" + this.$route.query.id)
         .then((res) => {

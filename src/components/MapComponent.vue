@@ -4,7 +4,7 @@
    v-on   cancel    取消时发出事件
 -->
 <template>
-  <div style="padding-top: 50px; border: 1px solid red">
+  <div style="padding-top: 50px; border: 1px solid #ff0000">
     <!-- <modal
       @on-cancel="cancel"
       v-model="showMapComponent"
