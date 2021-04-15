@@ -25,10 +25,10 @@
               </div>
             </div>
             <div class="com_img box_style">
-              <div class="image-top">相似度:90%</div>
+              <div class="image-top">相似度:{{maxSimilarity}}%</div>
               <el-image
-                src="http://47.106.239.161:5000/files/download?filename=77f334e953c44745e30c008aad7df8b9.jpg&onlineOpen=true"
-                :fit="fit"
+                :src="maxSimilarityImg"
+                fit="fit"
                 class="image"
               ></el-image>
             </div>
@@ -71,13 +71,13 @@
 <script>
 import Map from "@/components/Map";
 import RecognizedImgs from "@/components/Monitor/RecognizedImgs";
-// import VolStatusTb from "@/components/Monitor/VolStatusTb"
-// import CountTable from "@/components/Monitor/CountTable"
 import MsgBox from "@/components/Monitor/MsgBox";
 import DonutChart from "@/components/Monitor/DonutChart";
 import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
 import MapBtn from "@/components/Monitor/MapBtn";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
+import { devServer } from "../../../vue.config";
+
 export default {
   name: "MainMonitor",
   components: {
@@ -96,10 +96,26 @@ export default {
         guageColor: "#878787",
         gaugeTitle: "相似度",
       },
+      maxSimilarityImg: '',
+      maxSimilarity: 0
     };
   },
-  methods: {},
-  created() {},
+  methods: {
+    getMaxSimilarityImg() {
+      var _this = this;
+      console.log("获取最高相似度记录")
+      this.$http.get("/command/identify/highest-score/" + this.$route.query.id).then(res => {
+        console.log(res)
+        _this.maxSimilarityImg = devServer.proxy['/'].target + "/files/download?filename=" + res.data.data.imgUrl
+        _this.maxSimilarity = Math.ceil(res.data.data.similarity)
+      }).catch(err => {
+        console.log(err)
+      })
+    }
+  },
+  created() {
+    this.getMaxSimilarityImg()
+  },
 };
 </script>
 
