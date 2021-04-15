@@ -1,27 +1,49 @@
 <template>
-  <div class='amount'>
-    <baidu-map class="map" :center="{lng: 114.331, lat: 30.5776}" :zoom="15">
-      <bml-heatmap :data="positionList" :max="100" :radius="20">
-      </bml-heatmap>
+  <div class="amount">
+    <baidu-map class="map" :center="elderPosition" :zoom="13">
+      <bm-marker
+        :position="position"
+        :title="position.name"
+        :zIndex="99999999"
+        @click="lookDetail(position)"
+        v-for="position in positionList"
+        :key="position.id"
+        :icon="{ url: position.avatar, size: { width: 34, height: 34 } }"
+        ><bm-info-window
+          :show="position.showInfo"
+          @close="infoWindowClose(position)"
+          @open="infoWindowOpen(position)"
+          >志愿者:{{ infoWindow.name }}</bm-info-window
+        >
+      </bm-marker>
     </baidu-map>
   </div>
 </template>
 <script>
-import { BmlHeatmap } from 'vue-baidu-map'
-  export default {
+import BmMarker from "vue-baidu-map/components/overlays/Marker";
+import BmInfoWindow from "vue-baidu-map/components/overlays/InfoWindow";
+import { devServer } from "../../vue.config";
+
+export default {
   name: "VolPositionMap",
-  data () {
-    return {
-      positionList: []
-    }
-  },
   components: {
-    BmlHeatmap
+    BmMarker,
+    BmInfoWindow,
+  },
+  data() {
+    return {
+      positionList: [],
+      elderPosition: {},
+      markerIcon: "",
+      infoWindow: {
+        name: ""
+      }
+    };
   },
   methods: {
-    updateCirclePath (e) {
-      this.circlePath.center = e.target.getCenter()
-      this.circlePath.radius = e.target.getRadius()
+    updateCirclePath(e) {
+      this.circlePath.center = e.target.getCenter();
+      this.circlePath.radius = e.target.getRadius();
     },
     async getPosition() {
       var _this = this;
@@ -31,22 +53,61 @@ import { BmlHeatmap } from 'vue-baidu-map'
           console.log("获取出发位置成功!");
           console.log(res);
           res.data.data.forEach((element) => {
-            var tmp = {}
-            tmp = { lng: element.location.longitude, lat: element.location.latitude, count: 131 }
-             _this.positionList.push(tmp)
+            var tmp = {};
+            tmp = {
+              lng: element.location.longitude,
+              lat: element.location.latitude,
+              name: element.volunteer.name,
+              id: element.id,
+              avatar: element.volunteer.avatar,
+              showInfo: false
+            };
+            _this.positionList.push(tmp);
           });
-          console.log(_this.positionList)
+          console.log(_this.positionList);
         })
         .catch((err) => {
           console.log("获取出发位置失败!");
           console.log(err);
         });
     },
-  },
-    created () {
-    this.getPosition()
+    async getOld() {
+      console.log("获取老人信息");
+      var _this = this;
+      await this.$http
+        .get("/command/lost/" + this.$route.query.lostId)
+        .then((res) => {
+          console.log(res.data.data.longitude);
+          _this.elderPosition = {
+            lng: res.data.data.longitude,
+            lat: res.data.data.latitude,
+          };
+        })
+        .catch((err) => {
+          console.log("获取老人位置失败!");
+          console.log(err);
+        });
+    },
+
+    infoWindowClose(position) {
+      //  弹框关闭
+      position.showInfo = false;
+    },
+
+    infoWindowOpen(position) {
+      //  弹框打开
+      position.showInfo = true;
+    },
+    lookDetail(position) {
+      position.showInfo = true;
+      this.infoWindow.name = position.name;
     }
-}
+  },
+  created() {
+    this.getPosition();
+    this.getOld();
+  },
+};
 </script>
 
 <style lang='less' scoped>

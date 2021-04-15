@@ -1,53 +1,59 @@
 <template>
-  <div class="action" @click.stop="jump(action)">
-    <div
-      class="action-img"
-      v-bind:class="{ 'action-img-hover': isHover }"
-      @mouseenter="showBotton"
-      @mouseleave="hideBotton"
-    >
-      <img
-        :class="{ 'action-img-hover': isHover }"
-        style="width: 100%; height: 100%"
-        :src="action.lost.avatar"
-      />
-      <div class="action-img-botton" v-if="isHover">
-        <div class="action-img-title">{{ action.lost.name }}</div>
-        <div class="action-img-btn">
-          <el-button
-            @click="del(action)"
-            size="mini"
-            class="del-btn"
-            v-if="action.status == 0"
-            >删除</el-button
-          >
-          <el-button @click.stop="editdia(action)" size="mini" class="edit-btn"
-            >修改</el-button
-          >
-        </div>
-      </div>
-    </div>
-    <div class="action_head">
-      <div class="action_head">
-        <div class="action_head_name">{{ action.name }}</div>
-        <div class="action_head_lost">
-          <i class="el-icon-user-solid"></i>
-          <span style="font-weight: bold; margin-left: 3px"
-            >走失者: {{ action.lost.name }}</span
-          >
-        </div>
-        <div class="action_head_commaner">
-          <i class="el-icon-s-custom"></i>
-          指挥员: {{ action.commander.name }}
-        </div>
-        <div class="flex action_head_time">
-          <div>
-            <i class="el-icon-time"></i>
+  <div class="action">
+    <div @click.stop="jump(action)">
+      <div
+        class="action-img"
+        v-bind:class="{ 'action-img-hover': isHover }"
+        @mouseenter="showBotton"
+        @mouseleave="hideBotton"
+      >
+        <img
+          :class="{ 'action-img-hover': isHover }"
+          style="width: 100%; height: 100%"
+          :src="action.lost.avatar"
+        />
+        <div class="action-img-botton" v-if="isHover">
+          <div class="action-img-title">{{ action.lost.name }}</div>
+          <div class="action-img-btn">
+            <el-button
+              @click="del(action)"
+              size="mini"
+              class="del-btn"
+              v-if="action.status == 0"
+              >删除</el-button
+            >
+            <el-button
+              @click.stop="editdia(action)"
+              size="mini"
+              class="edit-btn"
+              >修改</el-button
+            >
           </div>
-          <div style="margin-left: 3px">{{ action.createTime }}</div>
+        </div>
+      </div>
+      <div class="action_head">
+        <div class="action_head">
+          <div class="action_head_name">{{ action.name }}</div>
+          <div class="action_head_lost">
+            <i class="el-icon-user-solid"></i>
+            <span style="font-weight: bold; margin-left: 3px"
+              >走失者: {{ action.lost.name }}</span
+            >
+          </div>
+          <div class="action_head_commaner">
+            <i class="el-icon-s-custom"></i>
+            指挥员: {{ action.commander.name }}
+          </div>
+          <div class="flex action_head_time">
+            <div>
+              <i class="el-icon-time"></i>
+            </div>
+            <div style="margin-left: 3px">{{ action.createTime }}</div>
+          </div>
         </div>
       </div>
     </div>
+
     <!-- 修改名字 -->
     <el-dialog :visible.sync="diaedit" width="30%">
       <el-form :model="form" label-width="80px">
@@ -299,7 +305,11 @@ export default {
     },
     jump(item) {
       // 如果是正在进行的行动就跳转
-      if (this.action.status === "1") {
+      if (
+        this.action.status === "1" ||
+        this.action.status === "2" ||
+        this.action.status === "3"
+      ) {
         console.log(this.$route.query.commanderId);
 
         console.log("mmm", item.lostId);
@@ -376,7 +386,7 @@ export default {
       });
     },
     close() {
-      console.log("关闭地图")
+      console.log("关闭地图");
       this.addundia = false;
       this.$refs.locationref.resetFields();
     },
