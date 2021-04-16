@@ -23,25 +23,28 @@
               placement="bottom-start"
             >
               <el-dropdown-item class="notify-title">我的消息</el-dropdown-item>
-              <el-dropdown-item
-                class="notify-item"
-                v-for="notice in notices"
-                :key="notice.index"
-                :command="notice.type"
-              >
-                <el-avatar
-                  shape="square"
-                  :size="50"
-                  :src="notice.volunteer.avatar"
-                ></el-avatar>
-                <div class="notify-item-body">
-                  <div class="notify-item-name">
-                    {{ notice.volunteer.name }}
-                    <!--                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>-->
+              <el-dropdown-item class="notify-without" v-if="hasMsg === false">暂无信息</el-dropdown-item>
+              <div v-if="hasMsg">
+                <el-dropdown-item
+                  class="notify-item"
+                  v-for="notice in notices"
+                  :key="notice.index"
+                  :command="notice.type"
+                >
+                  <el-avatar
+                    shape="square"
+                    :size="50"
+                    :src="notice.volunteer.avatar"
+                  ></el-avatar>
+                  <div class="notify-item-body">
+                    <div class="notify-item-name">
+                      {{ notice.volunteer.name }}
+                      <!--                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>-->
+                    </div>
+                    <div class="notify-item-msg">{{ notice.msg }}</div>
                   </div>
-                  <div class="notify-item-msg">{{ notice.msg }}</div>
-                </div>
-              </el-dropdown-item>
+                </el-dropdown-item>
+              </div>
             </el-dropdown-menu>
           </el-dropdown>
           <el-button type="info" @click="logout">退出</el-button>
@@ -293,6 +296,7 @@ export default {
           },
         },
       ],
+      hasMsg: true
     };
   },
   methods: {
@@ -392,6 +396,7 @@ export default {
     },
     // 抓取所有消息
     pullMsg: function (e) {
+      this.hasMsg = true;
       console.log(e);
       var _this = this;
       this.$http
@@ -442,6 +447,10 @@ export default {
           notice.sort(function (a, b) {
             return a.createTime < b.createTime ? 1 : -1
           });
+          if (notice.length === 0) {
+            this.hasMsg = false;
+            return;
+          }
           _this.notices = notice;
           console.log(_this.notices)
           console.log("测试")
@@ -629,6 +638,15 @@ export default {
 .notify-title {
   text-align: center;
   border-bottom: 1px solid #ebebeb;
+  width: 270px;
+}
+
+.notify-without {
+  text-align: center;
+  width: 270px;
+  height: 200px;
+  line-height: 200px;
+  color: #909399;
 }
 
 .notify-dropdown {
@@ -648,7 +666,7 @@ export default {
 }
 
 .notify-item {
-  width: 300px;
+  width: 270px;
   height: 44px;
   padding: 14px;
   display: flex;
