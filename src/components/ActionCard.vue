@@ -268,7 +268,7 @@ export default {
         methods: "delete",
         url: "/command/action/" + row.id,
       }).then((res) => {
-        console.log(res.data);
+        console.log(res.data, '删除');
         if (res.data.code === 200) {
           this.$message.success("删除成功");
           this.$emit("flush");
@@ -430,10 +430,10 @@ export default {
           this.$message.success("发送成功");
           this.volundia = false;
           this.addundia = false;
-          this.$router.go(0)
-          // this.$router.push({
-          //   name: "/inAction",
-          // });
+          // this.$router.go(0)
+          this.$router.push({
+            name: "/inAction",
+          });
         } else {
           this.$message("发送失败");
         }

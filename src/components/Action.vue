@@ -78,25 +78,6 @@ export default {
     };
   },
   methods: {
-    async getActionList() {
-      const { data: res } = await this.$http({
-        method: "get",
-        url: "/command/action/search-like",
-        params: this.queryInfo,
-      });
-      if (res.code === 200) this.actionList = res.data;
-      console.log(res.data);
-    },
-    getunactionlist() {
-      this.$http({
-        method: "get",
-        url: "/command/action/search-like",
-        params: this.queryInfo,
-      }).then((res) => {
-        console.log(res);
-        this.unactionList = res.data.data;
-      });
-    },
     // 点击切换tab
     handleClick: function (e) {
       if (e.name === "inAction") {
@@ -166,15 +147,13 @@ export default {
             console.log(res);
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
-              _this.getunactionlist();
-              _this.getActionList();
               _this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
               // this.$router.push({
               //   path: "/unaction",
               //   query: { commanderId: _this.commanderId },
               // });
-              this.$router.go(0)
+              // this.$router.go(0)
             } else {
               this.$message("创建活动失败");
             }

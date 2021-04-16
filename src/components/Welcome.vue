@@ -13,6 +13,7 @@
               class="head-item"
               :href="'/#/inAction?commanderId=' + commanderId"
               :underline="false"
+              :color = "color"
               >行动管理</el-link
             >
             <el-link
