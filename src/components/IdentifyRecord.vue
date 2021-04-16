@@ -13,16 +13,9 @@
           <p>相似度：{{item.similarity}}</p>
           <p>上传者：{{item.name}}</p>
         </div>
-<!--        <el-carousel class="block">-->
-<!--          <el-carousel-item v-for="item in 4" :key="item">-->
-<!--            <h3 class="small">{{ item }}</h3>-->
-<!--            <el-image-->
-<!--              style="height:320px;width:500px"-->
-<!--              :src="url"-->
-<!--              :fit="fit">-->
-<!--            </el-image>-->
-<!--          </el-carousel-item>-->
-<!--        </el-carousel>-->
+      </el-col>
+      <el-col :span="24" v-if="result.length === 0" class="without-record">
+        暂无人脸识别记录
       </el-col>
     </el-row>
   </div>
@@ -100,5 +93,11 @@ name: "IdentifyRecord",
 
 .el-carousel__item:nth-child(2n+1) {
   background-color: #d3dce6;
+}
+
+.without-record {
+  text-align: center;
+  line-height: 210px;
+  color: #767676;
 }
 </style>
