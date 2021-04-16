@@ -12,9 +12,16 @@
         <div class="font">救援队指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
-          <el-dropdown class="notify" @mouseenter.native="pullMsg " @command="goto_notice_detail"
+          <el-dropdown
+            class="notify"
+            @mouseenter.native="pullMsg"
+            @command="goto_notice_detail"
           >
-            <el-badge :value="icon_value" class="notify-icon" :hidden="isHidden">
+            <el-badge
+              :value="icon_value"
+              class="notify-icon"
+              :hidden="isHidden"
+            >
               <div class="el-icon-message-solid"></div>
             </el-badge>
             <el-dropdown-menu
@@ -23,7 +30,9 @@
               placement="bottom-start"
             >
               <el-dropdown-item class="notify-title">我的消息</el-dropdown-item>
-              <el-dropdown-item class="notify-without" v-if="hasMsg === false">暂无信息</el-dropdown-item>
+              <el-dropdown-item class="notify-without" v-if="hasMsg === false"
+                >暂无信息</el-dropdown-item
+              >
               <div v-if="hasMsg">
                 <el-dropdown-item
                   class="notify-item"
@@ -39,7 +48,6 @@
                   <div class="notify-item-body">
                     <div class="notify-item-name">
                       {{ notice.volunteer.name }}
-                      <!--                    <el-link type="primary" @click="goto_notice_detail(notice.type)" class="link_style">查看详情</el-link>-->
                     </div>
                     <div class="notify-item-msg">{{ notice.msg }}</div>
                   </div>
@@ -55,8 +63,6 @@
         <!-- 侧边栏 -->
         <el-aside :width="iscollapse ? '64px' : '200px'">
           <div class="toggle_button" @click="togglecollapse">|||</div>
-
-          <!--          &lt;!&ndash; 侧边栏菜单区 &ndash;&gt; //#333744-->
           <el-menu
             background-color="#ececec"
             text-color="#000"
@@ -78,7 +84,10 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/actionManage"
-                :route="{ path: '/actionManage', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/actionManage',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -89,13 +98,30 @@
               </el-menu-item>
               <el-menu-item
                 index="/volManage"
-                :route="{ path: '/volManage', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/volManage',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-mobile"></i>
                   <!-- 文本 -->
                   <span>行动管理</span>
+                </template>
+              </el-menu-item>
+              <el-menu-item
+                index="/actionRecord"
+                :route="{
+                  path: '/actionRecord',
+                  query: { id: id, lostId: lostId },
+                }"
+              >
+                <template slot="title">
+                  <!-- 图标 -->
+                  <i class="el-icon-s-flag"></i>
+                  <!-- 文本 -->
+                  <span>流程记录</span>
                 </template>
               </el-menu-item>
             </el-submenu>
@@ -111,7 +137,10 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/elderMsg"
-                :route="{ path: '/elderMsg', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/elderMsg',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -122,7 +151,10 @@
               </el-menu-item>
               <el-menu-item
                 index="/valSearch"
-                :route="{ path: '/valSearch', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/valSearch',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -131,7 +163,13 @@
                   <span>志愿者查询</span>
                 </template>
               </el-menu-item>
-              <el-menu-item index="/mapSearch" :route="{ path: '/mapSearch', query: { id: id, lostId: lostId } }">
+              <el-menu-item
+                index="/mapSearch"
+                :route="{
+                  path: '/mapSearch',
+                  query: { id: id, lostId: lostId },
+                }"
+              >
                 <template slot="title">
                   <!-- 图标 -->
                   <i class="el-icon-map-location"></i>
@@ -191,7 +229,10 @@
               </el-menu-item>
               <el-menu-item
                 index="/identifyRecord"
-                :route="{ path: '/identifyRecord', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/identifyRecord',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -202,7 +243,10 @@
               </el-menu-item>
               <el-menu-item
                 index="/randomReport"
-                :route="{ path: '/randomReport', query: { id: id, lostId: lostId } }"
+                :route="{
+                  path: '/randomReport',
+                  query: { id: id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -225,7 +269,10 @@
 
               <el-menu-item
                 index="/newsEdit"
-                :route="{ path: '/newsEdit', query: { id: this.id, lostId: lostId } }"
+                :route="{
+                  path: '/newsEdit',
+                  query: { id: this.id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -238,7 +285,10 @@
               <!-- 二级菜单 -->
               <el-menu-item
                 index="/news"
-                :route="{ path: '/news', query: { id: this.id, lostId: lostId } }"
+                :route="{
+                  path: '/news',
+                  query: { id: this.id, lostId: lostId },
+                }"
               >
                 <template slot="title">
                   <!-- 图标 -->
@@ -296,7 +346,7 @@ export default {
           },
         },
       ],
-      hasMsg: true
+      hasMsg: true,
     };
   },
   methods: {
@@ -349,7 +399,7 @@ export default {
       );
       console.log(this.type);
       this.Msg.title = "来自志愿者:" + res.data.name;
-      this.Msg.name = res.data.name
+      this.Msg.name = res.data.name;
       if (this.type === "EMERGENCY_NOTICE") {
         this.Msg.abstract = "紧急通知";
       } else if (this.type === "START_REPORT") {
@@ -370,11 +420,11 @@ export default {
       console.log("Failed: " + frame);
     },
     responseCallback: function (frame) {
-      console.log("测试")
-      console.log(this.icon_value)
-      this.icon_value = this.icon_value + 1
-      console.log(this.icon_value)
-      this.isHidden = false
+      console.log("测试");
+      console.log(this.icon_value);
+      this.icon_value = this.icon_value + 1;
+      console.log(this.icon_value);
+      this.isHidden = false;
       this.news = JSON.parse(
         this.evil(decodeURI(frame.body)).replace("/\\", "")
       ).data;
@@ -410,7 +460,7 @@ export default {
             element.msgType = "clue";
             element.index = notice.length;
             element.msg = "发现了一条线索";
-            element.type = "clue"
+            element.type = "clue";
             notice.push(element);
           });
           // 处理识别记录
@@ -419,7 +469,7 @@ export default {
             element.index = notice.length;
             element.msg =
               "进行了在线识别,准确率:" + Math.ceil(element.similarity) + "%";
-            element.type = "identify"
+            element.type = "identify";
             notice.push(element);
           });
           // 处理随机报备
@@ -428,7 +478,7 @@ export default {
               element.msgType = "randomReport";
               element.index = notice.length;
               element.msg = "提交了一条报备信息";
-              element.type = "random_report"
+              element.type = "random_report";
               notice.push(element);
             }
           });
@@ -437,7 +487,7 @@ export default {
             element.msgType = "startReport";
             element.index = notice.length;
             element.msg = "确定出发,并填写了出发报备表单";
-            element.type = "start_report"
+            element.type = "start_report";
             notice.push(element);
           });
           // notice.forEach((ele) => {
@@ -445,18 +495,18 @@ export default {
           // })
           // notice.sort(this.compare("createTime")).reverse();
           notice.sort(function (a, b) {
-            return a.createTime < b.createTime ? 1 : -1
+            return a.createTime < b.createTime ? 1 : -1;
           });
           if (notice.length === 0) {
             this.hasMsg = false;
             return;
           }
           _this.notices = notice;
-          console.log(_this.notices)
-          console.log("测试")
-          this.icon_value = 0
-          console.log(this.icon_value)
-          this.isHidden = true
+          console.log(_this.notices);
+          console.log("测试");
+          this.icon_value = 0;
+          console.log(this.icon_value);
+          this.isHidden = true;
         })
         .catch((err) => {
           console.log(err);
@@ -467,37 +517,37 @@ export default {
       return function (a, b) {
         var value1 = a[property];
         var value2 = b[property];
-        var t1 = new Date(Date.parse(value1.replace(/-/g, "/")))
-        var t2 = new Date(Date.parse(value2.replace(/-/g, "/")))
-        return t2.getTime() - t1.getTime()
+        var t1 = new Date(Date.parse(value1.replace(/-/g, "/")));
+        var t2 = new Date(Date.parse(value2.replace(/-/g, "/")));
+        return t2.getTime() - t1.getTime();
       };
     },
     goto_notice_detail(type) {
-      console.log(type)
-      var id = this.$route.query.id
-      var lostId = this.$route.query.lostId
+      console.log(type);
+      var id = this.$route.query.id;
+      var lostId = this.$route.query.lostId;
       if (type === "clue") {
         this.$router.push({
           path: "/clue",
-          query: { id: id, lostId: lostId }
+          query: { id: id, lostId: lostId },
         });
       } else if (type === "identify") {
         this.$router.push({
           path: "/identifyRecord",
-          query: { id: id, lostId: lostId }
+          query: { id: id, lostId: lostId },
         });
       } else if (type === "random_report") {
         this.$router.push({
           path: "/randomReport",
-          query: { id: id, lostId: lostId }
+          query: { id: id, lostId: lostId },
         });
       } else {
         this.$router.push({
           path: "/post",
-          query: { id: id, lostId: lostId }
+          query: { id: id, lostId: lostId },
         });
       }
-    }
+    },
   },
   created() {
     this.connect();
