@@ -83,6 +83,6 @@ export default {
 .without-clue {
   text-align: center;
   line-height: 180px;
-  color: #e7e9ec;
+  color: #909399;
 }
 </style>

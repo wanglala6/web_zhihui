@@ -143,6 +143,6 @@ export default {
 .without-identify {
   text-align: center;
   line-height: 300px;
-  color: #e7e9ec;
+  color: #909399;
 }
 </style>

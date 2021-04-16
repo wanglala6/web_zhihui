@@ -238,6 +238,6 @@ export default {
 .without-identify {
   text-align: center;
   line-height: 210px;
-  color: #e7e9ec;
+  color: #909399;
 }
 </style>

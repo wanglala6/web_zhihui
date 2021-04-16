@@ -98,6 +98,6 @@ name: "IdentifyRecord",
 .without-record {
   text-align: center;
   line-height: 210px;
-  color: #767676;
+  color: #909399;
 }
 </style>
