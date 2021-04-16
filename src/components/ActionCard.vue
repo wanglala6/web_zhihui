@@ -430,10 +430,15 @@ export default {
           this.$message.success("发送成功");
           this.volundia = false;
           this.addundia = false;
-          // this.$router.go(0)
+          // 发送成功后直接进入行动界面
           this.$router.push({
-            name: "/inAction",
-          });
+          path: "/elderMsg",
+          query: {
+            lostId: this.action.lost.id,
+            commanderId: this.$route.query.commanderId,
+            id: this.action.id,
+          },
+        });
         } else {
           this.$message("发送失败");
         }
