@@ -110,12 +110,14 @@ export default {
             id: element.id,
           });
         } else {
-          that.teams[element.teamName] = [
-            {
-              name: element.name,
-              id: element.id,
-            },
-          ];
+          if (element.teamName !== "未组队") {
+            that.teams[element.teamName] = [
+              {
+                name: element.name,
+                id: element.id,
+              },
+            ];
+          }
         }
 
         // 设置状态
@@ -139,7 +141,10 @@ export default {
           });
         } else {
           // 将队伍添加到已存在队伍，防止重复创建
-          if (that.existTeam.indexOf(element.teamName) === -1 || element.teamName !== "未组队") {
+          if (
+            that.existTeam.indexOf(element.teamName) === -1 ||
+            element.teamName !== "未组队"
+          ) {
             that.existTeam.push({
               teamName: element.teamName,
               id: element.team.id,
@@ -254,7 +259,7 @@ export default {
             console.log("创建队伍成功,id=" + res.data.data);
             this.isTeamUp = false;
             _this.joinTeam(res.data.data, volunteerIds);
-            _this.searchAll()
+            _this.searchAll();
           })
           .catch((err) => {
             console.log(err);
