@@ -125,9 +125,9 @@ export default {
     },
     // 创建活动
     upload() {
-      var _this = this
+      var _this = this;
       this.$refs.addFormref.validate((valid) => {
-        console.log(_this.commanderId)
+        console.log(_this.commanderId);
         if (!valid) return;
         this.$http
           .post(
@@ -149,11 +149,11 @@ export default {
               this.$message.success("创建活动成功");
               _this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();
-              // this.$router.push({
-              //   path: "/unaction",
-              //   query: { commanderId: _this.commanderId },
-              // });
-              // this.$router.go(0)
+              this.tab_active_value = "unAction";
+              this.$router.push({
+                path: "/unaction",
+                query: { commanderId: _this.commanderId },
+              });
             } else {
               this.$message("创建活动失败");
             }
