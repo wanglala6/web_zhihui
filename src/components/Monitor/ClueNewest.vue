@@ -11,7 +11,7 @@
         </el-timeline-item>
       </el-timeline>
     </div>
-    <div class="without-clue">
+    <div class="without-clue" v-if="tableData.length === 0">
       暂无线索
     </div>
   </div>

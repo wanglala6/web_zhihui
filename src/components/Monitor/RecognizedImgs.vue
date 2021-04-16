@@ -1,11 +1,17 @@
 <template>
-  <div class="imgList">
-    <div class="imgList-item" :class="{'imgList-item-active': record.similarity>80}" v-for="record in result" :key="record.id">
-      <span style="font-size: 4px">相似度：{{record.similarity}}%</span>
-      <img
-        :src="record.img"
-        class="imgList-item-image"
-      />
+  <div>
+    <div class="imgList" v-if="result.length !== 0">
+      <div class="imgList-item" :class="{'imgList-item-active': record.similarity>80}" v-for="record in result"
+           :key="record.id">
+        <span style="font-size: 4px">相似度：{{ record.similarity }}%</span>
+        <img
+          :src="record.img"
+          class="imgList-item-image"
+        />
+      </div>
+    </div>
+    <div v-if="result.length === 0" class="without-identify">
+      暂无人脸识别记录
     </div>
   </div>
 </template>
@@ -57,6 +63,7 @@ export default {
   text-align: center;
   width: 100%;
 }
+
 .image {
   height: 120px;
 }
@@ -95,15 +102,18 @@ export default {
   height: 300px;
   overflow: auto;
 }
+
 .imgList::-webkit-scrollbar {
   width: 0;
-  height:0;
+  height: 0;
   background-color: #f5f5f5;
 }
+
 .imgList::-webkit-scrollbar-track {
   border-radius: 10px;
   background-color: #f5f5f5;
 }
+
 .imgList-item {
   padding-left: 8px;
   margin: 3px;
@@ -128,5 +138,11 @@ export default {
   padding-top: 5px;
   margin-bottom: 3px;
   height: 90px;
+}
+
+.without-identify {
+  text-align: center;
+  line-height: 300px;
+  color: #e7e9ec;
 }
 </style>
