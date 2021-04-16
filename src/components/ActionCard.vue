@@ -57,7 +57,7 @@
     <!-- 修改名字 -->
     <el-dialog :visible.sync="diaedit" width="30%">
       <el-form :model="form" label-width="80px">
-        <el-form-item label="活动名称">
+        <el-form-item label="行动名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item class="text-align:center" label-width="45%">
@@ -401,6 +401,10 @@ export default {
     },
     // 发送消息给志愿者
     sendmessage() {
+      if (this.ids.length === 0) {
+        this.$message.error("至少选择一个志愿者!")
+        return;
+      }
       const staytimeGap =
         new Date("2021-03-18 16:14").getTime() -
         new Date("2021-03-17 16:14").getTime();
