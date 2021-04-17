@@ -25,12 +25,17 @@
 <!--              </div>-->
 <!--            </div>-->
             <div class="com_img box_style">
-              <div class="image-top">相似度:{{maxSimilarity}}%</div>
-              <el-image
-                :src="maxSimilarityImg"
-                fit="fit"
-                class="image"
-              ></el-image>
+              <div v-if="maxSimilarityImg !== ''">
+                <div class="image-top">相似度:{{maxSimilarity}}%</div>
+                <el-image
+                  :src="maxSimilarityImg"
+                  fit="fit"
+                  class="image"
+                ></el-image>
+              </div>
+              <div v-if="maxSimilarityImg === ''" class="without-identify">
+                暂无识别记录
+              </div>
             </div>
             <MapBtn
               value="相似度最高图片"
@@ -228,5 +233,11 @@ export default {
 }
 .imgs{
 
+}
+
+.without-identify {
+  text-align: center;
+  line-height: 210px;
+  color: #909399;
 }
 </style>

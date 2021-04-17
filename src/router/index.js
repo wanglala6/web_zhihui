@@ -38,7 +38,6 @@ import IdentifyRecord from "@/components/IdentifyRecord";
 import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
 import RandomReport from "@/components/RandomReport"
-import Location from "@/components/Location";
 Vue.use(VueRouter)
 
 const routes = [
@@ -50,10 +49,6 @@ const routes = [
         path: '/',
         redirect: '/login'
     },
-{
-  path: '/location',
-  component: Location
-},
     {
         path: '/login',
         component: Login
@@ -114,137 +109,136 @@ const routes = [
         name: '/home',
         redirect: '/elderMsg',
 
+    children: [
+      {
+        path: '/randomReport',
+        component: RandomReport
+      },
+      {
+        path: '/identifyRecord',
+        component: IdentifyRecord,
+      },
+      {
+        path: '/mapSearch',
+        component: MapSearch,
+      },
+      {
+        path: '/volManage',
+        component: VolManage,
+      },
+      {
+        path: '/actionManage',
+        component: ActionManage,
+      },
+      {
+        path: '/mainMonitor',
+        component: MainMonitor,
         children: [
           {
-            path: '/randomReport',
-            component: RandomReport
+            path: '/volTrack',
+            component: VolunteerTrack,
           },
           {
-            path: '/identifyRecord',
-            component: IdentifyRecord,
+            path: '/recognizedImgs',
+            component: RecognizedImgs,
           },
           {
-            path: '/mapSearch',
-            component: MapSearch,
+            path: '/countTable',
+            component: CountTable,
           },
           {
-            path: '/volManage',
-            component: VolManage,
+            path: '/volStatusGTb',
+            component: VolStatusTb,
           },
           {
-            path: '/actionManage',
-            component: ActionManage,
-            name: 'actionManage'
+            path: '/msgBox',
+            component: MsgBox
           },
           {
-            path: '/mainMonitor',
-            component: MainMonitor,
-            children: [
-              {
-                path: '/volTrack',
-                component: VolunteerTrack,
-              },
-              {
-                path: '/recognizedImgs',
-                component: RecognizedImgs,
-              },
-              {
-                path: '/countTable',
-                component: CountTable,
-              },
-              {
-                path: '/volStatusGTb',
-                component: VolStatusTb,
-              },
-              {
-                path: '/msgBox',
-                component: MsgBox
-              },
-              {
-                path: '/donutChart',
-                component: DonutChart
-              },
-              {
-                path: '/varyMsgTabs',
-                component: VaryMsgTabs
-              },
-              {
-                path: 'clueNewest',
-                component: ClueNewest
-              },
-              {
-                path: 'statisticsCard',
-                component: StatisticsCard
-              }
-            ]
+            path: '/donutChart',
+            component: DonutChart
           },
           {
-            path: '/monitor',
-            component: Monitor
+            path: '/varyMsgTabs',
+            component: VaryMsgTabs
           },
-            {
-                path: '/elderMsg',
-                component: ElderMsg,
-                name: '/elderMsg'
-              },
-              {
-                  path: '/clue',
-                  component: Clue
-              },
-              {
-                  path: '/post',
-                  component: Post
-              },
-              {
-                path: '/news',
-                component: News
-              },
-              {
-                path: '/newsEdit',
-                component: NewsEdit
-              },
-            {
-              path: '/startNewsDetail',
-              component: StartNewsDetail
-            },
-            {
-                path: '/VolunteerStatus',
-                component: VolunteerStatus
-            },
-            {
-              path: '/weather',
-              component: Weather
-            },
-            {
-              path: '/valSearch',
-              component: ValSearch
-            },
-            {
-              path: '/mapMsg',
-              component: Map
-            }
+          {
+            path: 'clueNewest',
+            component: ClueNewest
+          },
+          {
+            path: 'statisticsCard',
+            component: StatisticsCard
+          }
+        ]
+      },
+      {
+        path: '/monitor',
+        component: Monitor
+      },
+      {
+        path: '/elderMsg',
+        component: ElderMsg,
+        name: '/elderMsg'
+      },
+      {
+        path: '/clue',
+        component: Clue
+      },
+      {
+        path: '/post',
+        component: Post
+      },
+      {
+        path: '/news',
+        component: News
+      },
+      {
+        path: '/newsEdit',
+        component: NewsEdit
+      },
+      {
+        path: '/startNewsDetail',
+        component: StartNewsDetail
+      },
+      {
+        path: '/VolunteerStatus',
+        component: VolunteerStatus
+      },
+      {
+        path: '/weather',
+        component: Weather
+      },
+      {
+        path: '/valSearch',
+        component: ValSearch
+      },
+      {
+        path: '/mapMsg',
+        component: Map
+      }
     ]
   },
-    {
-      path: '*',
-      redirect: '/notFound',
-    }
+  {
+    path: '*',
+    redirect: '/notFound',
+  }
 ]
 
 const router = new VueRouter({
-    routes
+  routes
 })
 // 挂载路由导航守卫
 router.beforeEach((to, form, next) => {
-    // to 表示将要访问的路径
- // from代表从哪个路径跳转而来
- // next 表示一个函数 表示放行 next('/login') 强制跳转
- if (to.path === '/login') return next();
+  // to 表示将要访问的路径
+  // from代表从哪个路径跳转而来
+  // next 表示一个函数 表示放行 next('/login') 强制跳转
+  if (to.path === '/login') return next();
 
- // 获取token
-const tokenstr = window.sessionStorage.getItem('token')
-if (!tokenstr) return next('/login')
- next()
+  // 获取token
+  const tokenstr = window.sessionStorage.getItem('token')
+  if (!tokenstr) return next('/login')
+  next()
 });
 
 export default router

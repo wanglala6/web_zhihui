@@ -11,15 +11,17 @@
           <el-col :span="12">
             <el-link
               class="head-item"
-              :href="'/#/inAction?commanderId=' + commanderId"
               :underline="false"
+              :class="{ 'el-upload-active': isActionManage }"
+              :color="color"
+              @click="toActionManage"
               >行动管理</el-link
             >
             <el-link
               class="head-item"
-              :href="'/#/volunteer?commanderId=' + commanderId"
-
+              :class="{ 'el-upload-active': isVolunteerManage }"
               :underline="false"
+              @click="toVolunteerManage"
               >志愿者管理</el-link
             >
             <el-link
@@ -258,6 +260,10 @@ export default {
           },
         ],
       },
+
+      // 用于上方切换高亮
+      isActionManage: true,
+      isVolunteerManage: false,
     };
   },
   watch: {
@@ -417,6 +423,26 @@ export default {
         this.logout();
       }
     },
+    toActionManage() {
+      this.isActionManage = true;
+      this.isVolunteerManage = false;
+      this.$router.push({
+        path: "/inAction",
+        query: {
+          commanderId: this.commanderId,
+        },
+      });
+    },
+    toVolunteerManage() {
+      this.isVolunteerManage = true;
+      this.isActionManage = false;
+      this.$router.push({
+        path: "/volunteer",
+        query: {
+          commanderId: this.commanderId,
+        },
+      });
+    },
   },
 
   created() {
@@ -504,6 +530,11 @@ export default {
 .avatar-uploader .el-upload:hover {
   border-color: #409eff;
 }
+
+.el-upload-active {
+  color: #409eff !important;
+}
+
 .avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;

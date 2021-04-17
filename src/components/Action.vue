@@ -74,6 +74,7 @@ export default {
         ],
       },
       options: [],
+      commanderId: "",
     };
   },
   methods: {
@@ -125,7 +126,9 @@ export default {
     },
     // 创建活动
     upload() {
+      var _this = this;
       this.$refs.addFormref.validate((valid) => {
+        console.log(_this.commanderId);
         if (!valid) return;
         this.$http
           .post(
@@ -133,7 +136,7 @@ export default {
             JSON.stringify({
               lostId: parseInt(this.addForm.lostId),
               name: this.addForm.name,
-              commanderId: this.commanderId,
+              commanderId: _this.commanderId,
             }),
             {
               headers: {
@@ -145,11 +148,12 @@ export default {
             console.log(res);
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
-              this.getunactionlist();
-              this.getActionList();
+              _this.adddialogVisible = false;
+              this.$refs.addFormref.resetFields();
+              this.tab_active_value = "unAction";
               this.$router.push({
                 path: "/unaction",
-                query: { commanderId: this.commanderId },
+                query: { commanderId: _this.commanderId },
               });
               this.adddialogVisible = false;
               this.$refs.addFormref.resetFields();

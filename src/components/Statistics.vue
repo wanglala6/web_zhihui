@@ -6,7 +6,7 @@
     </el-row> -->
     <header class="screen-header">
       <span class="logo" @click="goba">{{ back }}返回 </span>
-      <span class="title">电商平台实时监控系统</span>
+      <span class="title">大数据监控平台</span>
       <div class="title-right">
         <div class="datetime">{{ systemDateTime }}</div>
       </div>

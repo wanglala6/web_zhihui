@@ -1,6 +1,7 @@
 <template>
   <div class="clue_container">
-    <el-link type="primary" @click="goto_detail" class="link_style">查看详情</el-link>
+    <div v-if="tableData.length !== 0">
+      <el-link type="primary" @click="goto_detail" class="link_style">查看详情</el-link>
       <el-timeline :reverse="false" class="timeline">
         <el-timeline-item
           v-for="clue in tableData"
@@ -9,6 +10,10 @@
           <p class="clue_content">{{clue.volunteer.name}}:{{clue.content.content}}</p>
         </el-timeline-item>
       </el-timeline>
+    </div>
+    <div class="without-clue" v-if="tableData.length === 0">
+      暂无线索
+    </div>
   </div>
 </template>
 
@@ -62,7 +67,6 @@ export default {
 <style scoped>
 .link_style{
   position: absolute;
-  /*margin-bottom: 0px;*/
   font-size: 10px;
   right: 20px;
 }
@@ -70,9 +74,15 @@ export default {
   padding: 20px;
 }
 .clue_container {
-  height: 180px;
+  height: 100%;
 }
 .clue_content {
   font-size: 6px;
+}
+
+.without-clue {
+  text-align: center;
+  line-height: 180px;
+  color: #909399;
 }
 </style>

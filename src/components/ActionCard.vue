@@ -57,7 +57,7 @@
     <!-- 修改名字 -->
     <el-dialog :visible.sync="diaedit" width="30%">
       <el-form :model="form" label-width="80px">
-        <el-form-item label="活动名称">
+        <el-form-item label="行动名称">
           <el-input v-model="form.name"></el-input>
         </el-form-item>
         <el-form-item class="text-align:center" label-width="45%">
@@ -191,8 +191,8 @@ export default {
   },
   data() {
     return {
+      id: "",
       addundia: false, // 未开始活动
-
       isHover: false,
       diaedit: false,
       form: {
@@ -268,7 +268,7 @@ export default {
         methods: "delete",
         url: "/command/action/" + row.id,
       }).then((res) => {
-        console.log(res.data);
+        console.log(res.data, '删除');
         if (res.data.code === 200) {
           this.$message.success("删除成功");
           this.$emit("flush");
@@ -366,13 +366,19 @@ export default {
       this.addundia = true;
     },
     send() {
-      console.log(this.location);
+      console.log("test")
+      console.log(this.action.id);
       this.$refs.locationref.validate((valid) => {
         if (!valid) return;
         this.$http({
           methods: "get",
           url: "/command/volunteer/by-distance",
-          params: this.location,
+          params: {
+            actionId: this.action.id,
+            latitude: this.location.latitude,
+            longitude: this.location.longitude,
+            distance: this.location.distance
+          }
         }).then((res) => {
           console.log(res);
           if (res.data.code === 200) {
@@ -395,6 +401,10 @@ export default {
     },
     // 发送消息给志愿者
     sendmessage() {
+      if (this.ids.length === 0) {
+        this.$message.error("至少选择一个志愿者!")
+        return;
+      }
       const staytimeGap =
         new Date("2021-03-18 16:14").getTime() -
         new Date("2021-03-17 16:14").getTime();
@@ -424,6 +434,15 @@ export default {
           this.$message.success("发送成功");
           this.volundia = false;
           this.addundia = false;
+          // 发送成功后直接进入行动界面
+          this.$router.push({
+          path: "/elderMsg",
+          query: {
+            lostId: this.action.lost.id,
+            commanderId: this.$route.query.commanderId,
+            id: this.action.id,
+          },
+        });
         } else {
           this.$message("发送失败");
         }
@@ -450,13 +469,17 @@ export default {
       this.ids = arr;
     },
   },
+  created() {
+    this.id = this.$route.query.id;
+    console.log("get:id" + this.id)
+  }
 };
 </script>
 <style lang="less" scoped>
 .action {
   height: 250px;
   width: 200px;
-  margin: 10px 30px 10px 0;
+  margin: 10px 19px 10px 0;
   cursor: pointer;
   border-radius: 5px;
 }
