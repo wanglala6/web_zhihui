@@ -88,8 +88,8 @@ export default {
       var option = {
         title: {
           text: "▎走失者区域分布",
-          left: 10,
-          top: 5,
+          left: 20,
+          top: 20,
           textStyle: {
             color: "white",
           },
@@ -247,6 +247,7 @@ export default {
 </script>
   <style lang="less" scoped>
 .loc {
+  padding: .625rem;
 }
 .map {
   color: #fff;
