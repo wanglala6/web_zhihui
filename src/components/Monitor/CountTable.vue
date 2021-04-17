@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import 'echarts/lib/chart/bar'
+ import 'echarts/lib/chart/bar'
 export default {
   data () {
     return {

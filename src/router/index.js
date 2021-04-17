@@ -31,7 +31,6 @@ import StatisticsCard from "@/components/Monitor/StatisticsCard";
 import Action from "@/components/Action"
 import InAction from "@/components/InAction"
 import Statistics from "@/components/Statistics"
-import Location from "@/components/Location";
 import NotFound from "@/components/NotFound"
 import VolManage from "@/components/VolManage";
 import MapSearch from "@/components/MapSearch";
@@ -39,8 +38,7 @@ import IdentifyRecord from "@/components/IdentifyRecord";
 import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
 import RandomReport from "@/components/RandomReport"
-
-import StaticsHome from "@/views/Hot"
+import Location from "@/components/Location";
 Vue.use(VueRouter)
 
 const routes = [
@@ -49,17 +47,13 @@ const routes = [
     redirect: '/notFound'
   },
   {
-    path: '/staticshome',
-    component: StaticsHome
-  },
-  {
         path: '/',
         redirect: '/login'
     },
-    {
-      path: '/location',
-      component: Location
-    },
+{
+  path: '/location',
+  component: Location
+},
     {
         path: '/login',
         component: Login
@@ -108,11 +102,11 @@ const routes = [
                 path: '/volunteer',
                 component: Volunteer
             },
-            {
-              path: '/statistics',
-              component: Statistics
-            }
         ]
+    },
+    {
+      path: '/statistics',
+      component: Statistics
     },
     {
         path: '/home',

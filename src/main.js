@@ -9,10 +9,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/global.css'
 import axios from 'axios'
 import BaiduMap from 'vue-baidu-map'
-import SocketService from '@/utils/socket_service.js'
-// 对服务端进行 webSocket的连接
-SocketService.Instance.connect()
-Vue.prototype.$socket = SocketService.Instance
+
 Vue.use(BaiduMap, {
   ak: 'pKCbOFewojmC9xuiiGwOq1MAyABiQwD8'
 })

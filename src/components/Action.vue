@@ -79,6 +79,7 @@ export default {
   methods: {
     // 点击切换tab
     handleClick: function (e) {
+      console.log(e, "e");
       if (e.name === "inAction") {
         this.$router.push({
           path: "/inAction",
@@ -146,12 +147,12 @@ export default {
               this.$message.success("创建活动成功");
               this.getunactionlist();
               this.getActionList();
-              this.adddialogVisible = false;
-              this.$refs.addFormref.resetFields();
               this.$router.push({
                 path: "/unaction",
                 query: { commanderId: this.commanderId },
               });
+              this.adddialogVisible = false;
+              this.$refs.addFormref.resetFields();
             } else {
               this.$message("创建活动失败");
             }

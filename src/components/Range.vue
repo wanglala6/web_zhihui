@@ -1,27 +1,28 @@
 <template>
-  <div>
-    <el-row class="overview pie">
-      <el-row class="piehead">
+  <div class="pie" id="p">
+    <el-row class="overview">
+      <!-- <el-row class="piehead">
         <span>走失者年龄阶段分布</span>
-      </el-row>
-      <el-row>
-        <el-col :span="18" class="piecol">
+      </el-row> -->
+      <el-row style="height: 100%">
+        <el-col :span="24" class="piecol">
           <div class="chart_box">
             <div class="" id="chinesechart"></div>
           </div>
         </el-col>
-        <el-col :span="6">
+        <!-- <el-col :span="6">
           <div>
             <h4>{{ total }}</h4>
             <span>走失者总数</span>
           </div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-row>
   </div>
 </template>
 <script>
 import echarts from "echarts";
+import screenfull from "screenfull"; // 引入全屏显示
 
 export default {
   data() {
@@ -32,6 +33,12 @@ export default {
   },
   mounted() {
     setInterval(this.getage(), 2000);
+    const element = document.getElementById("p");
+    document.getElementById("p").addEventListener("click", () => {
+      if (screenfull.isEnabled) {
+        screenfull.request(element); // 元素全屏
+      }
+    });
   },
   methods: {
     getage() {
@@ -39,10 +46,10 @@ export default {
         method: "get",
         url: "/statistic/lost-age-range",
       }).then((res) => {
-    //    console.log(res.data, "年龄分步");
+        //    console.log(res.data, "年龄分步");
         if (res.data.code === 200) {
           this.age = res.data.data;
-     //     console.log(this.age);
+          //     console.log(this.age);
           this.total = res.data.total;
           this.ageChart();
         } else {
@@ -54,6 +61,15 @@ export default {
       var myChart = echarts.init(document.getElementById("chinesechart"));
 
       var option = {
+        title: {
+          text: "▎走失者年龄阶段分布",
+          left: 20,
+          top: 15,
+          bottom: 10,
+          textStyle: {
+            color: "white",
+          },
+        },
         tooltip: {
           trigger: "item",
         },
@@ -62,13 +78,13 @@ export default {
           {
             name: "年龄分布",
             type: "pie",
-            radius: "50%",
+            radius: "60%",
             center: ["50%", "50%"],
             label: {
               fontsize: 10,
             },
             labelLine: {
-              length: 6,
+              length: 10,
               length2: 8,
             },
             data: [
@@ -101,14 +117,19 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+.pie {
+  box-sizing: border-box;
+  padding: 0.625rem;
+  padding-top: 0;
+}
 .overview {
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   border: 15px solid transparent;
   border-width: 51 38 20 132;
   border-image-source: url(../assets/imgs/border.png);
   border-image-slice: 51 38 20 132;
-  margin-top: 10px;
   background-color: #181725;
   border-color: #2c64a9;
 }
@@ -131,15 +152,21 @@ export default {
   top: 0;
   float: left;
   color: #fff;
+  font-size: 1rem;
 }
 .chart_box {
-  width: 95%;
-  height: 150px;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
 #chinesechart {
   width: 100%;
-  height: 150px;
-  margin: 0 auto;
+  height: 35vh;
+}
+.piecol {
+  height: 100%;
 }
 </style>

@@ -139,13 +139,13 @@
   </div>
 </template>
 <script>
+
 export default {
   data() {
     return {
       commanderId: "",
       diaadd: false,
-      newvol: {
-      },
+      newvol: {},
       vol: {},
       diaedit: false,
       addrules: {
@@ -180,7 +180,10 @@ export default {
         this.$http({
           method: "post",
           url: "/command/volunteer/",
-          data: this.newvol,
+          data: JSON.stringify(this.newvol),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }).then((res) => {
           if (res.data.code === 200) {
             this.$message.success("添加成功");

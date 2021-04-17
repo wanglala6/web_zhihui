@@ -24,7 +24,7 @@
             >
             <el-link
               class="head-item"
-              :href="'/#/staticshome'"
+              :href="'/#/statistics?commanderId=' + commanderId"
               :underline="false"
               >大数据统计平台</el-link
             >

@@ -1,23 +1,29 @@
 <template>
-  <div>
-    <div class="inner">
-      <el-row class="head">
+  <div class="vol">
+    <div class="inner" id="qp">
+      <!-- <el-row class="head">
         <span>志愿者统计模块</span>
-      </el-row>
-      <el-row>
-        <el-col :span="18">
+      </el-row> -->
+      <el-row style="height:100%">
+        <el-col :span="24" style="height:100%"  >
+          <div class="col_chart">
           <div class="chart"></div>
+
+          </div>
         </el-col>
-        <el-col :span="6" class="data">
-          <h4>志愿者总数</h4>
-          <span>{{ total }}</span>
-        </el-col>
+        <!-- <el-col :span="6" class="data">
+          <div>
+            <h4>志愿者总数</h4>
+            <span>{{ total }}</span>
+          </div>
+        </el-col> -->
       </el-row>
     </div>
   </div>
 </template>
 <script>
 import echarts from "echarts";
+import screenfull from "screenfull"; // 引入全屏显示
 export default {
   data() {
     return {
@@ -32,7 +38,7 @@ export default {
         method: "get",
         url: "/statistic/volunteer-count",
       }).then((res) => {
-       // console.log(res.data, "志愿者总数");
+        // console.log(res.data, "志愿者总数");
         if (res.data.code === 200) {
           this.total = res.data.data.total;
         } else {
@@ -61,6 +67,14 @@ export default {
     chart() {
       var myChart = echarts.init(document.querySelector(".chart"));
       var option = {
+         title: {
+          text: "▎志愿者统计模块",
+          left: 10,
+          top: 5,
+          textStyle: {
+            color: "white",
+          },
+        },
         color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
           { offset: 0, color: "#00fffb" },
           { offset: 1, color: "#0061ce" },
@@ -69,10 +83,10 @@ export default {
           trigger: "item",
         },
         grid: {
-          left: "0%",
+          left: "8%",
           right: "3%",
           bottom: "3%",
-          top: "3%",
+          top: "10%",
           containLabel: true,
           show: true,
           borderColor: "rgba(0,240,255,0.3)",
@@ -135,7 +149,13 @@ export default {
     },
   },
   mounted() {
-    setInterval(this.getvol(), 2000);
+    this.getvol();
+    const element = document.getElementById("qp");
+    document.getElementById("qp").addEventListener("click", () => {
+      if (screenfull.isEnabled) {
+        screenfull.request(element); // 元素全屏
+      }
+    });
   },
   created() {
     this.to();
@@ -145,6 +165,10 @@ export default {
 <style lang="less" scoped>
 * {
   color: #fff;
+}
+.vol {
+  padding: 1rem;
+  padding-top: 0;
 }
 .inner {
   box-sizing: border-box;
@@ -156,16 +180,20 @@ export default {
   border-image-slice: 51 38 20 132;
   margin-top: 10px;
 }
+.col_chart{
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
 .chart {
   width: 100%;
-  height: 200px;
+  height: 54vh;
+
 }
 .data {
-  display: inline-block;
-  margin-top: 50px;
   box-sizing: border-box;
   background-image: url(../assets/imgs/rect.png);
-  background-size: cover;
+  background-size: 100% 100%;
 }
 .data span {
   display: block;
