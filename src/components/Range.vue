@@ -32,7 +32,13 @@ export default {
     };
   },
   mounted() {
-    setInterval(this.getage(), 2000);
+    var th = this;
+    setTimeout(() => {
+      th.getage();
+    }, 0);
+    setInterval(() => {
+      th.getage();
+    }, 10000);
     const element = document.getElementById("p");
     document.getElementById("p").addEventListener("click", () => {
       if (screenfull.isEnabled) {
@@ -130,8 +136,11 @@ export default {
   border-width: 51 38 20 132;
   border-image-source: url(../assets/imgs/border.png);
   border-image-slice: 51 38 20 132;
-  background-color: #181725;
+
   border-color: #2c64a9;
+}
+.overview:hover {
+  background-color: #181725;
 }
 .overview h4 {
   text-align: center;

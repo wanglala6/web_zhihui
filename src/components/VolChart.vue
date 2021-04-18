@@ -4,11 +4,10 @@
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
-      <el-row style="height:100%">
-        <el-col :span="24" style="height:100%"  >
+      <el-row style="height: 100%">
+        <el-col :span="24" style="height: 100%">
           <div class="col_chart">
-          <div class="chart"></div>
-
+            <div class="chart"></div>
           </div>
         </el-col>
         <!-- <el-col :span="6" class="data">
@@ -30,6 +29,7 @@ export default {
       volname: [],
       volcnt: [],
       total: "",
+      data: [],
     };
   },
   methods: {
@@ -53,12 +53,20 @@ export default {
       }).then((res) => {
         console.log(res.data, "meige志愿者总数");
         if (res.data.code === 200) {
-          res.data.data.forEach((element) => {
-            this.volname.push(element.name);
-            this.volcnt.push(element.volunteerCount);
-          });
-          console.log(this.volname);
-          this.chart();
+          if (this.data === res.data.data) {
+          } else {
+            this.volname = [];
+            this.volcnt = [];
+            res.data.data.forEach((element) => {
+              this.volname.push(element.name);
+              this.volcnt.push(element.volunteerCount);
+            });
+            console.log(this.volname);
+            this.chart();
+            this.data = res.data.data;
+          }
+        } else if (res.data.code === 401) {
+          this.$message.console.error("登录过期");
         } else {
           this.$message(res.message);
         }
@@ -67,7 +75,7 @@ export default {
     chart() {
       var myChart = echarts.init(document.querySelector(".chart"));
       var option = {
-         title: {
+        title: {
           text: "▎志愿者统计模块",
           left: 10,
           top: 5,
@@ -149,6 +157,9 @@ export default {
     },
   },
   mounted() {
+    setInterval(() => {
+      this.getvol();
+    }, 10000);
     this.getvol();
     const element = document.getElementById("qp");
     document.getElementById("qp").addEventListener("click", () => {
@@ -170,6 +181,9 @@ export default {
   padding: 1rem;
   padding-top: 0;
 }
+.inner:hover {
+  background-color: #181725;
+}
 .inner {
   box-sizing: border-box;
   width: 100%;
@@ -180,7 +194,7 @@ export default {
   border-image-slice: 51 38 20 132;
   margin-top: 10px;
 }
-.col_chart{
+.col_chart {
   height: 100%;
   display: flex;
   align-items: center;
@@ -188,7 +202,6 @@ export default {
 .chart {
   width: 100%;
   height: 54vh;
-
 }
 .data {
   box-sizing: border-box;

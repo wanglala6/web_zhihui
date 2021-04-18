@@ -101,6 +101,12 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="newvol.name" class="wid"></el-input>
         </el-form-item>
+        <el-form-item label="性别" prop="gender">
+          <el-radio-group v-model="newvol.gender">
+            <el-radio label="男"></el-radio>
+            <el-radio label="女"></el-radio>
+          </el-radio-group>
+        </el-form-item>
         <el-form-item label="账户" prop="account">
           <el-input v-model="newvol.account" class="wid"></el-input>
         </el-form-item>
@@ -139,7 +145,6 @@
   </div>
 </template>
 <script>
-
 export default {
   data() {
     return {
@@ -153,6 +158,7 @@ export default {
         account: [{ required: true, message: "请输入账号", trigger: "blur" }],
         qq: [{ required: true, message: "请输入qq", trigger: "blur" }],
         telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
+        gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
       },
       pubishdialogVisible: false, // 发布线索
       dialogVisible: false,
@@ -180,13 +186,13 @@ export default {
         this.$http({
           method: "post",
           url: "/command/volunteer/",
-          data: JSON.stringify(this.newvol),
-          headers: {
-            "Content-Type": "application/json",
-          },
+          // data: JSON.stringify(this.newvol),
+          data: this.newvol,
         }).then((res) => {
           if (res.data.code === 200) {
             this.$message.success("添加成功");
+            this.getvol();
+            this.diaadd = false;
           } else if (res.data.code === 401) {
             this.$message.console.error("登录过期");
           } else {
