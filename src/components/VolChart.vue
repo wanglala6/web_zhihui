@@ -22,7 +22,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 export default {
   data() {
     return {
