@@ -15,7 +15,7 @@
       <!-- 概览区域 -->
       <el-col :span="6">
         <div class="left">
-          <ActionNumber></ActionNumber>
+          <ActionNumber id="kk"></ActionNumber>
         </div>
         <div class="left">
           <range></range>
@@ -51,6 +51,8 @@
   </div>
 </template>
 <script>
+import screenfull from "screenfull"; // 引入全屏显示
+
 import VolChart from "@/components/VolChart";
 import Success from "@/components/Success";
 import Location from "@/components/Location";
@@ -80,7 +82,14 @@ export default {
     this.commanderId = this.$route.query.commanderId;
   },
   // 此时页面上元素已经渲染完毕了
-  mounted() {},
+  mounted() {
+      const element = document.getElementById("qp");
+    document.getElementById("qp").addEventListener("click", () => {
+      if (screenfull.isEnabled) {
+        screenfull.request(element); // 元素全屏
+      }
+    });
+  },
   destroyed() {
     clearInterval(this.timerID);
   },

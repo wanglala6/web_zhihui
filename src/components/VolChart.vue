@@ -22,7 +22,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 export default {
   data() {
     return {
@@ -161,12 +161,12 @@ export default {
       this.getvol();
     }, 10000);
     this.getvol();
-    const element = document.getElementById("qp");
-    document.getElementById("qp").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
-    });
+    // const element = document.getElementById("qp");
+    // document.getElementById("qp").addEventListener("click", () => {
+    //   if (screenfull.isEnabled) {
+    //     screenfull.request(element); // 元素全屏
+    //   }
+    // });
   },
   created() {
     this.to();
