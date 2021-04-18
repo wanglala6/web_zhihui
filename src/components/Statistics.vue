@@ -56,6 +56,14 @@ import Success from "@/components/Success";
 import Location from "@/components/Location";
 import Range from "@/components/Range";
 import ActionNumber from "@/components/ActionNumber";
+import Stomp from "stompjs";
+import {
+  MQTT_SERVICE,
+  MQTT_USERNAME,
+  MQTT_PASSWORD,
+} from "../config/sysconstant.js";
+import screenfull from "screenfull"; // 引入全屏显示
+
 export default {
   components: {
     VolChart,
@@ -73,11 +81,13 @@ export default {
       systemDateTime: null,
       // 用于保存当前系统日期的定时器id
       timerID: null,
+      client: Stomp.client(MQTT_SERVICE),
     };
   },
   created() {
     this.currentTime();
     this.commanderId = this.$route.query.commanderId;
+    this.connect();
   },
   // 此时页面上元素已经渲染完毕了
   mounted() {},
@@ -95,12 +105,74 @@ export default {
     },
     currentTime() {
       this.systemDateTime = new Date().toLocaleString();
-
       this.timerID && clearInterval(this.timerID);
-
       this.timerID = setInterval(() => {
         this.systemDateTime = new Date().toLocaleString();
       }, 1000);
+    },
+    // hxx：stomp监听消息队列相关函数
+    onConnected: function (frame) {
+      var topic = "/queue/" + this.$route.query.commanderId + "_admin";
+      // ---订阅频道
+      this.client.subscribe(topic, this.responseCallback, this.onFailed);
+    },
+    onFailed: function (frame) {
+      console.log("Failed: " + frame);
+    },
+    responseCallback: function (frame) {
+      var currentFocus = "1";
+      var commandList = ["1", "2", "3", "4", "5"];
+      var data = JSON.parse(frame.body);
+      var operation = data.operation;
+      if (commandList.indexOf(operation) !== -1) {
+        const element = document.getElementById(operation);
+        if (screenfull.isEnabled) {
+          screenfull.request(element); // 元素全屏
+        }
+      } else {
+        if (currentFocus === "1") {
+          if (operation === "right") {
+            currentFocus = "3";
+          } else if (operation === "down") {
+            currentFocus = "2";
+          }
+        } else if (currentFocus === "2") {
+          if (operation === "up") {
+            currentFocus = "1";
+          } else if (operation === "right") {
+            currentFocus = "3";
+          }
+        } else if (currentFocus === "3") {
+          if (operation === "left") {
+            currentFocus = "1";
+          } else if (operation === "right") {
+            currentFocus = "4";
+          }
+        } else if (currentFocus === "4") {
+          if (operation === "left") {
+            currentFocus = "3";
+          } else if (operation === "down") {
+            currentFocus = "5";
+          }
+        } else if (currentFocus === "5") {
+          if (operation === "up") {
+            currentFocus = "4";
+          } else if (operation === "left") {
+            currentFocus = "3";
+          }
+        }
+        var element = document.getElementById(currentFocus);
+        element.dispatchEvent(new Event("onmouseenter"));
+      }
+    },
+    connect: function () {
+      // ---初始化mqtt客户端，并连接mqtt服务
+      var headers = {
+        login: MQTT_USERNAME,
+        passcode: MQTT_PASSWORD,
+        // additional header
+      };
+      this.client.connect(headers, this.onConnected, this.onFailed);
     },
   },
 };

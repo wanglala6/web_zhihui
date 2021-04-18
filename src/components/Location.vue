@@ -1,5 +1,5 @@
 <template>
-  <div class="loc" id="l">
+  <div class="loc" id="3">
     <div class="map">
       <!-- <div class="head">
         <span>走失者区域分布</span>
@@ -235,8 +235,8 @@ export default {
   },
   mounted() {
     this.getsta();
-    const element = document.getElementById("l");
-    document.getElementById("l").addEventListener("click", () => {
+    const element = document.getElementById("3");
+    document.getElementById("3").addEventListener("click", () => {
       if (screenfull.isEnabled) {
         screenfull.request(element); // 元素全屏
       }

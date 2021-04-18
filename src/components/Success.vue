@@ -1,8 +1,8 @@
 <template>
-  <div class="s" id="ll">
+  <div class="s" id="4">
     <div class="or">
       <div class="in">
-        <span style="padding:0;margin-bottom:0">▎志愿者出动率</span>
+        <span style="padding: 0; margin-bottom: 0">▎志愿者出动率</span>
         <div id="chart2"></div>
         <!-- <el-row class="data">
           <el-col class="item" :span="6">
@@ -39,6 +39,7 @@
 <script>
 import echarts from "echarts";
 import "echarts-liquidfill";
+import screenfull from "screenfull";
 // import screenfull from "screenfull"; // 引入全屏显示
 
 export default {
@@ -386,6 +387,12 @@ export default {
     setInterval(() => {
       this.chart();
     }, 2000);
+    const element = document.getElementById("4");
+    document.getElementById("4").addEventListener("click", () => {
+      if (screenfull.isEnabled) {
+        screenfull.request(element); // 元素全屏
+      }
+    });
   },
 };
 </script>

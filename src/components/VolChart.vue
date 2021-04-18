@@ -1,6 +1,6 @@
 <template>
   <div class="vol">
-    <div class="inner" id="qp">
+    <div class="inner" id="5">
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
@@ -161,8 +161,8 @@ export default {
       this.getvol();
     }, 10000);
     this.getvol();
-    const element = document.getElementById("qp");
-    document.getElementById("qp").addEventListener("click", () => {
+    const element = document.getElementById("5");
+    document.getElementById("5").addEventListener("click", () => {
       if (screenfull.isEnabled) {
         screenfull.request(element); // 元素全屏
       }

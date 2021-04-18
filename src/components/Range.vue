@@ -1,5 +1,5 @@
 <template>
-  <div class="pie" id="p">
+  <div class="pie" id="2">
     <el-row class="overview">
       <!-- <el-row class="piehead">
         <span>走失者年龄阶段分布</span>
@@ -39,8 +39,8 @@ export default {
     setInterval(() => {
       th.getage();
     }, 10000);
-    const element = document.getElementById("p");
-    document.getElementById("p").addEventListener("click", () => {
+    const element = document.getElementById("2");
+    document.getElementById("2").addEventListener("click", () => {
       if (screenfull.isEnabled) {
         screenfull.request(element); // 元素全屏
       }

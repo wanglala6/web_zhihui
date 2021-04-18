@@ -1,5 +1,5 @@
 <template>
-  <div class="vol" id="a">
+  <div class="vol" id="1">
     <div class="inner">
       <!-- <div class="head">
         <span>行动统计模块</span>
@@ -162,8 +162,8 @@ export default {
     setInterval(() => {
       th.getact();
     }, 10000);
-    const element = document.getElementById("a");
-    document.getElementById("a").addEventListener("click", () => {
+    const element = document.getElementById("1");
+    document.getElementById("1").addEventListener("click", () => {
       if (screenfull.isEnabled) {
         screenfull.request(element); // 元素全屏
       }
