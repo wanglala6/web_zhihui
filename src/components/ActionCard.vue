@@ -213,8 +213,8 @@ export default {
       place: "",
       ids: [], // 征集消息志愿者
       location: {
-        longitude: "34",
-        latitude: "32",
+        longitude: "",
+        latitude: "",
       },
 
       /**/
@@ -251,7 +251,7 @@ export default {
     value: function (currentValue) {
       this.showMapComponent = currentValue;
       if (currentValue) {
-        this.keyword = "新输入走失者近卫";
+        this.keyword = "";
       }
     },
   },

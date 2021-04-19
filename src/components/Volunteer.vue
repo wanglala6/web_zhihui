@@ -159,6 +159,7 @@ export default {
         qq: [{ required: true, message: "请输入qq", trigger: "blur" }],
         telephone: [{ required: true, message: "请输入电话", trigger: "blur" }],
         gender: [{ required: true, message: "请选择性别", trigger: "blur" }],
+        password: [{ required: true, message: "请选择密码", trigger: "blur" }],
       },
       pubishdialogVisible: false, // 发布线索
       dialogVisible: false,
@@ -186,8 +187,7 @@ export default {
         this.$http({
           method: "post",
           url: "/command/volunteer/",
-          // data: JSON.stringify(this.newvol),
-          data: this.newvol,
+          data: JSON.stringify(this.newvol),
         }).then((res) => {
           if (res.data.code === 200) {
             this.$message.success("添加成功");
@@ -227,6 +227,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success("修改成功");
           this.getvol();
+          this.diaedit = false;
         } else if (res.data.code === 401) {
           this.$message.console.error("登录过期");
         } else {
@@ -267,8 +268,8 @@ export default {
         url: "/phone/volunteer/" + row.id,
       }).then((res) => {
         if (res.data.code === 200) {
-          this.getvol();
           this.$message.success("删除成功");
+          this.getvol();
         } else if (res.data.code === 401) {
           this.$message.console.error("登录过期");
         } else {
