@@ -251,7 +251,7 @@ export default {
     value: function (currentValue) {
       this.showMapComponent = currentValue;
       if (currentValue) {
-        this.keyword = "";
+        this.keyword = "新输入走失者近卫";
       }
     },
   },

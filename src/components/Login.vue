@@ -40,14 +40,14 @@
       <div class="login_con">
         <div class="login_box">
           <el-form
-            label-width="60px"
+            label-width="80px"
             ref="loginformref"
             class="login_form"
             :model="loginform"
             :rules="rules"
           >
             <!-- 用户名 -->
-            <el-form-item label="用户名" prop="username">
+            <el-form-item label="用户名" prop="account">
               <el-input v-model="loginform.account"></el-input>
             </el-form-item>
             <!-- 密码 -->
@@ -148,7 +148,7 @@ export default {
     },
     // 重置
     resetlogin() {
-      this.$refs.loginform.resetFields();
+      this.$refs.loginformref.resetFields();
     },
     // 登录
     login() {
