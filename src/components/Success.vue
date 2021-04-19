@@ -407,6 +407,8 @@ export default {
 .s {
   padding: 0.625rem;
   height: 28vh;
+  display: flex;
+  align-items: center;
 }
 .or {
   width: 100%;
