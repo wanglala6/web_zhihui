@@ -2,7 +2,7 @@
   <div class="notfound_container">
     <div class="main_box">
       <div class="img_border">
-        <img src="http://47.106.239.161:5000/files/download?filename=fd2bf673a8a0de912de47a22863e1391.jfif&onlineOpen=true" class="loss_image">
+        <img :src="result.avatar" class="loss_image">
       </div>
       <div class="top_box">
         <div class="label_404"><h1>404</h1></div>
@@ -12,13 +12,13 @@
         </div>
       </div>
       <div class="down_box">
-          <p>姓名：<b>奥巴马</b></p>
-          <p>性别：<b>男</b></p>
-          <p>年龄：<b>78</b></p>
-          <p>走失时间：<b>2021年1月2日</b></p>
-          <p>走失地点：<b>XX省XX市</b></p>
-          <p>家人联系电话：<b>8208820</b></p>
-          <p>失踪人特征描述：<b>大花袄子，患阿兹海默症</b></p>
+          <p>姓名：<b>{{result.name}}</b></p>
+          <p>性别：<b>{{result.gender}}</b></p>
+          <p>年龄：<b>{{result.age}}</b></p>
+          <p>走失时间：<b>{{result.createTime}}</b></p>
+          <p>走失地点：<b>{{result.lastPlace}}</b></p>
+          <p>家人联系电话：<b>{{result.telephone}}</b></p>
+          <p>失踪人特征描述：<b>{{result.feature}},{{result.disease}}</b></p>
       </div>
       <div class="bottom_box">
         <div class="see_details">
@@ -30,12 +30,28 @@
 </template>
 
 <script>
+import { devServer } from "../../vue.config";
+
 export default {
   name: "NotFound",
+  data() {
+    return {
+      result: "",
+    }
+  },
   methods: {
     goto_home_page() {
       this.$router.push("/login")
+    },
+    async getMsg() {
+      const res = await this.$http.get("/command/lost/random");
+      console.log(res.data.data);
+      this.result = res.data.data
+      this.result.avatar = devServer.proxy["/"].target + res.data.data.avatar
     }
+  },
+  created() {
+    this.getMsg()
   }
 }
 </script>
@@ -50,7 +66,7 @@ export default {
   padding: 2px;
   margin: 18px;
   position: absolute;
-  height: 230px;
+  height: 205px;
   border-radius: 2px;
   border: 1px solid #e6e9e5;
 }
