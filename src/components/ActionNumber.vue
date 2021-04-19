@@ -133,7 +133,7 @@ export default {
         method: "get",
         url: "/statistic/action-count",
       }).then((res) => {
-        console.log(res.data, "行动总数");
+        // console.log(res.data, "行动总数");
         if (res.data.code === 200) {
           if (this.data === res.data.data) {
           } else {
@@ -143,7 +143,7 @@ export default {
             this.act_count.push(res.data.data[2]);
             this.act_count.push(res.data.data[3]);
             this.data = res.data.data;
-            console.log(this.act_count);
+            // console.log(this.act_count);
             this.chart();
           }
         } else if (res.data.code === 401) {

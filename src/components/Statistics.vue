@@ -15,7 +15,7 @@
       <!-- 概览区域 -->
       <el-col :span="6">
         <div class="left">
-          <ActionNumber id="kk"></ActionNumber>
+          <ActionNumber></ActionNumber>
         </div>
         <div class="left">
           <range></range>
@@ -64,7 +64,7 @@ import {
   MQTT_USERNAME,
   MQTT_PASSWORD,
 } from "../config/sysconstant.js";
-import screenfull from "screenfull"; // 引入全屏显示
+// import func from "vue-editor-bridge";
 
 export default {
   components: {
@@ -93,12 +93,6 @@ export default {
   },
   // 此时页面上元素已经渲染完毕了
   mounted() {
-      const element = document.getElementById("qp");
-    document.getElementById("qp").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
-    });
   },
   destroyed() {
     clearInterval(this.timerID);
@@ -171,7 +165,8 @@ export default {
           }
         }
         var element = document.getElementById(currentFocus);
-        element.dispatchEvent(new Event("onmouseenter"));
+        // element.dispatchEvent(new Event("onmouseenter"));
+        element.style.backgroundColor = "#181725";
       }
     },
     connect: function () {

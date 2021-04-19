@@ -3,7 +3,10 @@
     <div class="or">
       <div class="in">
         <span style="padding: 0; margin-bottom: 0">▎志愿者出动率</span>
-        <div id="chart2"></div>
+
+        <div class="col_succ">
+          <div id="chart2"></div>
+        </div>
         <!-- <el-row class="data">
           <el-col class="item" :span="6">
             <div class="box">
@@ -398,6 +401,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.or:hover {
+  background-color: #181725;
+}
 .s {
   padding: 0.625rem;
   height: 28vh;
@@ -410,6 +416,11 @@ export default {
   border-width: 51 38 20 132;
   border-image-source: url(../assets/imgs/border.png);
   border-image-slice: 51 38 20 132;
+}
+.col_succ {
+  height: 100%;
+  display: flex;
+  align-items: center;
 }
 .order span {
   color: #4c9bfd;

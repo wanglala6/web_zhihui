@@ -35,7 +35,7 @@ export default {
         method: "get",
         url: "/statistic/lost-geo",
       }).then((res) => {
-        console.log(res.data, "map");
+        // console.log(res.data, "map");
         if (res.data.code === 200) {
           this.sta = res.data.data;
           this.chart();

@@ -22,7 +22,7 @@
 </template>
 <script>
 import echarts from "echarts";
-// import screenfull from "screenfull"; // 引入全屏显示
+import screenfull from "screenfull"; // 引入全屏显示
 export default {
   data() {
     return {
@@ -51,7 +51,7 @@ export default {
         method: "get",
         url: "/statistic/action-volunteer-count",
       }).then((res) => {
-        console.log(res.data, "meige志愿者总数");
+        // console.log(res.data, "meige志愿者总数");
         if (res.data.code === 200) {
           if (this.data === res.data.data) {
           } else {
@@ -61,7 +61,7 @@ export default {
               this.volname.push(element.name);
               this.volcnt.push(element.volunteerCount);
             });
-            console.log(this.volname);
+            // console.log(this.volname);
             this.chart();
             this.data = res.data.data;
           }
