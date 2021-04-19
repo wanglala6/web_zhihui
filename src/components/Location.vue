@@ -251,7 +251,7 @@ export default {
 }
 .map {
   color: #fff;
-  background-color: rgba(255, 255, 255, 0.05);
+  // background-color: rgba(255, 255, 255, 0.05);
 }
 .all {
   width: 100%;
