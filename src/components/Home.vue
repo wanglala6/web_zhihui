@@ -311,6 +311,7 @@
     <!--      <img src="../assets/alarm.svg" class="alarm_style">-->
     <!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
     <!--    </div>-->
+    <alarm :isHide="isHide" :volunteer="volunteer" :similarity="similarity" @close="close"></alarm>
   </div>
 </template>
 <script>
@@ -321,8 +322,10 @@ import {
   MQTT_USERNAME,
   MQTT_PASSWORD,
 } from "../config/sysconstant.js";
+import Alarm from "../components/Alarm";
 
 export default {
+  components: { Alarm },
   data() {
     return {
       isHidden: true,
@@ -336,6 +339,10 @@ export default {
       news: {},
       Msg: {},
       type: "",
+      score: 0,
+      isHide: true,
+      volunteer: undefined,
+      similarity: 0,
       // 头部消息图标使用
       notices: [
         {
@@ -350,6 +357,9 @@ export default {
     };
   },
   methods: {
+    close() {
+      this.isHide = true
+    },
     logout() {
       // window.sessionStorage.clear();
       this.$router.push({
@@ -363,7 +373,7 @@ export default {
     },
     //  jq:消息弹窗函数
     notify() {
-      console.log("显示弹窗")
+      console.log("显示弹窗");
       var _this = this;
       this.$notify.info({
         title: this.Msg.title,
@@ -412,25 +422,29 @@ export default {
       this.type = JSON.parse(this.evil(frame.body).replace("/\\", "")).type;
 
       if (this.type === "EMERGENCY_NOTICE") {
-        this.news.volunteerId = this.news.id;
+        this.volunteer = this.news.volunteer
+        this.similarity = Math.ceil(this.news.score)
+        this.isHide = false;
+      } else {
+        console.log(this.type);
+        this.$http
+          .get("/command/volunteer/" + this.news.volunteerId)
+          .then((res) => {
+            console.log(res);
+            this.Msg.title = "来自志愿者:" + res.data.data.name;
+            console.log(this.Msg.title);
+            if (this.type === "EMERGENCY_NOTICE") {
+              this.Msg.abstract = "紧急通知";
+            } else if (this.type === "START_REPORT") {
+              this.Msg.abstract = "出发报备";
+            } else if (this.type === "RANDOM_REPORT") {
+              this.Msg.abstract = "平时报备";
+            }
+            // this.notices.push(this.Msg)
+            this.notify();
+          });
       }
-      console.log(this.type);
-      this.$http
-        .get("/command/volunteer/" + this.news.volunteerId)
-        .then((res) => {
-          console.log(res);
-          this.Msg.title = "来自志愿者:" + res.data.data.name;
-          console.log(this.Msg.title)
-          if (this.type === "EMERGENCY_NOTICE") {
-            this.Msg.abstract = "紧急通知";
-          } else if (this.type === "START_REPORT") {
-            this.Msg.abstract = "出发报备";
-          } else if (this.type === "RANDOM_REPORT") {
-            this.Msg.abstract = "平时报备";
-          }
-          // this.notices.push(this.Msg)
-          this.notify();
-        });
+
       // ---接收消息
     },
     connect: function () {
