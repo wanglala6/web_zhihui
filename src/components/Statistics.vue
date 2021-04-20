@@ -154,7 +154,7 @@ export default {
     },
     // hxx：stomp监听消息队列相关函数
     onConnected: function (frame) {
-      var topic = "/queue/" + this.$route.query.commanderId + "_admin";
+      var topic = "/queue/" + this.$route.query.commanderId + "_admin_statistics";
       // ---订阅频道
       this.client.subscribe(topic, this.responseCallback, this.onFailed);
     },

@@ -159,6 +159,31 @@
         >
       </el-card>
     </el-dialog>
+    <!-- 走失者信息对话框 -->
+    <el-dialog
+      title="紧急：新走失者出现，请尽快与家属联系！"
+      :visible.sync="newLostDialogVisible"
+      width="50%"
+    >
+      <div style="display:flex;">
+        <div>
+          <img :src="lost.avatar" :alt="lost.name" style="width:200px">
+        </div>
+        <div style="margin-left:50px">
+          <p>名字: {{lost.name}}</p>
+          <p>年龄：{{lost.age}}</p>
+          <p>性别: {{lost.gender}}</p>
+          <p>走失区域: {{lost.lastPlace}}</p>
+          <p>家属联系电话: {{lost.familyTelephone}}</p>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="newLostDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="newLostDialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -171,6 +196,13 @@ import {
   BmLocalSearch,
   BmMarker,
 } from "vue-baidu-map";
+import Stomp from "stompjs";
+// ---jq:在sysconstant.js配置文件中配置mqtt的服务端地址，账号等信息
+import {
+  MQTT_SERVICE,
+  MQTT_USERNAME,
+  MQTT_PASSWORD,
+} from "../config/sysconstant.js";
 
 export default {
   // components: Mpp,
@@ -184,6 +216,7 @@ export default {
   },
   data() {
     return {
+      client: Stomp.client(MQTT_SERVICE),
       activeIndex: "/inaction",
       commanderId: 0,
       username: "",
@@ -264,6 +297,9 @@ export default {
       // 用于上方切换高亮
       isActionManage: true,
       isVolunteerManage: false,
+      // 用于显示走失者
+      lost: {},
+      newLostDialogVisible: false
     };
   },
   watch: {
@@ -443,9 +479,53 @@ export default {
         },
       });
     },
+    // 监听管理员队列
+    onConnectedAdmin: function (frame) {
+      var topic = "/queue/" + this.$route.query.commanderId + "_admin";
+      // ---订阅频道
+      this.client.subscribe(
+        topic,
+        this.responseCallbackAdmin,
+        this.onFailedAdmin
+      );
+    },
+    onFailedAdmin: function (frame) {
+      console.log("Failed: " + frame);
+    },
+    responseCallbackAdmin: function (frame) {
+      // ---接收消息
+      var data = frame;
+      console.log(data)
+      data = JSON.parse(data.body);
+      console.log(data);
+      this.lost = data.lost;
+      this.notify("出现新走失者!", "走失者名字：" + data.lost.name);
+    },
+    connectAdmin: function () {
+      // ---初始化mqtt客户端，并连接mqtt服务
+      var headers = {
+        login: MQTT_USERNAME,
+        passcode: MQTT_PASSWORD,
+        // additional header
+      };
+      this.client.connect(headers, this.onConnectedAdmin, this.onFailedAdmin);
+    },
+    notify(title, msg) {
+      console.log("显示弹窗");
+      var _this = this;
+      this.$notify.info({
+        title: title,
+        message: msg,
+        duration: 0,
+        onClick() {
+          _this.newLostDialogVisible = true;
+        },
+      });
+    },
   },
 
   created() {
+    this.connectAdmin();
     this.commanderId = this.$route.query.commanderId;
     console.log(this.commanderId);
     this.username = JSON.parse(window.sessionStorage.getItem("user")).name;
