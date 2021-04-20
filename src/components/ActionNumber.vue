@@ -12,7 +12,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 
 export default {
   data() {
@@ -20,6 +20,7 @@ export default {
       data: {},
       act_count: [],
       act: ["未开始行动", "正在行动", "遗留行动", "已完成行动"],
+      myChart: null,
     };
   },
   methods: {
@@ -122,9 +123,14 @@ export default {
 
       myChart.clear();
       myChart.setOption(option, true);
+      this.myChart = myChart;
 
       // 当浏览器窗口缩小的时候）图表也等比例缩放
       window.addEventListener("resize", function () {
+        myChart.resize();
+      });
+
+      window.addEventListener("click", function () {
         myChart.resize();
       });
     },
@@ -162,11 +168,8 @@ export default {
     setInterval(() => {
       th.getact();
     }, 10000);
-    const element = document.getElementById("1");
     document.getElementById("1").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
+      this.$emit("hideOther", "1");
     });
   },
 };

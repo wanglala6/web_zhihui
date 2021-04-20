@@ -42,7 +42,7 @@
 <script>
 import echarts from "echarts";
 import "echarts-liquidfill";
-import screenfull from "screenfull";
+// import screenfull from "screenfull";
 // import screenfull from "screenfull"; // 引入全屏显示
 
 export default {
@@ -383,6 +383,10 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+
+      window.addEventListener("click", function () {
+        myChart.resize();
+      });
     },
   },
   mounted() {
@@ -390,11 +394,12 @@ export default {
     setInterval(() => {
       this.chart();
     }, 2000);
-    const element = document.getElementById("4");
+    // const element = document.getElementById("4");
     document.getElementById("4").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
+      // if (screenfull.isEnabled) {
+      //   screenfull.request(element); // 元素全屏
+      // }
+      this.$emit("hideOther", "4");
     });
   },
 };
@@ -412,8 +417,11 @@ export default {
 }
 .or {
   width: 100%;
+  // height: 100%;
 }
 .in {
+  // width: 100%;
+  // height: 100%;
   border: 15px solid transparent;
   border-width: 51 38 20 132;
   border-image-source: url(../assets/imgs/border.png);
