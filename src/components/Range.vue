@@ -22,7 +22,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 
 export default {
   data() {
@@ -39,11 +39,12 @@ export default {
     setInterval(() => {
       th.getage();
     }, 10000);
-    const element = document.getElementById("2");
+    // const element = document.getElementById("2");
     document.getElementById("2").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
+      // if (screenfull.isEnabled) {
+      //   screenfull.request(element); // 元素全屏
+      // }
+      this.$emit("hideOther", "2");
     });
   },
   methods: {
@@ -116,6 +117,10 @@ export default {
       myChart.setOption(option, true);
       // 当浏览器窗口缩小的时候）图表也等比例缩放
       window.addEventListener("resize", function () {
+        myChart.resize();
+      });
+
+      window.addEventListener("click", function () {
         myChart.resize();
       });
     },

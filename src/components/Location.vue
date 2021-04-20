@@ -10,7 +10,7 @@
 </template>
 <script>
 import echarts from "echarts";
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 
 // import "echarts/map/js/world.js";
 // import "echarts/map/js/china.js";
@@ -228,6 +228,10 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+
+      window.addEventListener("click", function () {
+        myChart.resize();
+      });
     },
     randomValue() {
       return Math.round(Math.random() * 1000);
@@ -235,11 +239,12 @@ export default {
   },
   mounted() {
     this.getsta();
-    const element = document.getElementById("3");
+    // const element = document.getElementById("3");
     document.getElementById("3").addEventListener("click", () => {
-      if (screenfull.isEnabled) {
-        screenfull.request(element); // 元素全屏
-      }
+      // if (screenfull.isEnabled) {
+      //   screenfull.request(element); // 元素全屏
+      // }
+      this.$emit("hideOther", "3");
     });
     // this.chart();
   },
@@ -247,7 +252,7 @@ export default {
 </script>
   <style lang="less" scoped>
 .loc {
-  padding: .625rem;
+  padding: 0.625rem;
 }
 .map {
   color: #fff;

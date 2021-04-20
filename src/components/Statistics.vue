@@ -13,12 +13,18 @@
     </header>
     <el-row class="gailan">
       <!-- 概览区域 -->
-      <el-col :span="6">
-        <div class="left">
-          <ActionNumber></ActionNumber>
+      <el-col :span="6" :class="leftScreenfull">
+        <div class="left" :class="{ screenfull: actionNumberScreenfull }">
+          <ActionNumber
+            @hideOther="hideOther"
+            :class="{ screenfull: actionNumberScreenfull }"
+          ></ActionNumber>
         </div>
-        <div class="left">
-          <range></range>
+        <div class="left" :class="{ screenfull: rangeScreenfull }">
+          <range
+            :class="{ screenfull: rangeScreenfull }"
+            @hideOther="hideOther"
+          ></range>
         </div>
 
         <!-- <el-row class="overview">
@@ -40,18 +46,27 @@
           </el-col>
         </el-row> -->
       </el-col>
-      <el-col :span="11">
-        <location></location>
+      <el-col :span="11" :class="centerScreenfull">
+        <location
+          :class="{ screenfull: locationScreenfull }"
+          @hideOther="hideOther"
+        ></location>
       </el-col>
-      <el-col :span="7" class="right">
-        <success></success>
-        <vol-chart></vol-chart>
+      <el-col :span="7" class="right" :class="rightScreenfull">
+        <success
+          :class="{ screenfull: successScreenfull }"
+          @hideOther="hideOther"
+        ></success>
+        <vol-chart
+          :class="{ screenfull: volChartScreenfull }"
+          @hideOther="hideOther"
+        ></vol-chart>
       </el-col>
     </el-row>
   </div>
 </template>
 <script>
-import screenfull from "screenfull"; // 引入全屏显示
+// import screenfull from "screenfull"; // 引入全屏显示
 
 import VolChart from "@/components/VolChart";
 import Success from "@/components/Success";
@@ -84,7 +99,32 @@ export default {
       // 用于保存当前系统日期的定时器id
       timerID: null,
       client: Stomp.client(MQTT_SERVICE),
+      actionNumberScreenfull: false,
+      rangeScreenfull: false,
+      locationScreenfull: false,
+      volChartScreenfull: false,
+      successScreenfull: false,
+      isScreenfull: false,
     };
+  },
+  computed: {
+    leftScreenfull: function () {
+      return {
+        screenfull: this.actionNumberScreenfull || this.rangeScreenfull,
+        hide: this.successScreenfull || this.volChartScreenfull,
+      };
+    },
+    rightScreenfull: function () {
+      return {
+        screenfull: this.successScreenfull || this.volChartScreenfull,
+      };
+    },
+    centerScreenfull: function () {
+      return {
+        screenfull: this.locationScreenfull,
+        hide: this.successScreenfull || this.volChartScreenfull,
+      };
+    },
   },
   created() {
     this.currentTime();
@@ -92,8 +132,7 @@ export default {
     this.connect();
   },
   // 此时页面上元素已经渲染完毕了
-  mounted() {
-  },
+  mounted() {},
   destroyed() {
     clearInterval(this.timerID);
   },
@@ -126,12 +165,12 @@ export default {
       var currentFocus = "1";
       var commandList = ["1", "2", "3", "4", "5"];
       var data = JSON.parse(frame.body);
+      console.log(data)
       var operation = data.operation;
       if (commandList.indexOf(operation) !== -1) {
         const element = document.getElementById(operation);
-        if (screenfull.isEnabled) {
-          screenfull.request(element); // 元素全屏
-        }
+        // this.hideOther(operation);
+        element.click()
       } else {
         if (currentFocus === "1") {
           if (operation === "right") {
@@ -165,7 +204,6 @@ export default {
           }
         }
         var element = document.getElementById(currentFocus);
-        // element.dispatchEvent(new Event("onmouseenter"));
         element.style.backgroundColor = "#181725";
       }
     },
@@ -177,6 +215,38 @@ export default {
         // additional header
       };
       this.client.connect(headers, this.onConnected, this.onFailed);
+    },
+    hideOther(e) {
+      console.log(e);
+      var chartList = ["1", "2", "3", "4", "5"];
+      var element;
+      chartList.forEach((elem) => {
+        if (!this.isScreenfull) {
+          if (elem !== e) {
+            element = document.getElementById(elem);
+            console.log(element);
+            element.style.display = "none";
+          }
+        } else {
+          if (elem !== e) {
+            element = document.getElementById(elem);
+            console.log(element);
+            element.style.display = "";
+          }
+        }
+      });
+      if (e === "1") {
+        this.actionNumberScreenfull = !this.actionNumberScreenfull;
+      } else if (e === "2") {
+        this.rangeScreenfull = !this.rangeScreenfull;
+      } else if (e === "3") {
+        // this.locationScreenfull = !this.locationScreenfull;
+      } else if (e === "4") {
+        this.successScreenfull = !this.successScreenfull;
+      } else if (e === "5") {
+        this.volChartScreenfull = !this.volChartScreenfull;
+      }
+      this.isScreenfull = !this.isScreenfull;
     },
   },
 };
@@ -325,5 +395,14 @@ h3 {
   box-sizing: border-box;
 }
 .left {
+}
+
+.screenfull {
+  width: 100%;
+  height: 100%;
+}
+
+.hide {
+  display: none;
 }
 </style>

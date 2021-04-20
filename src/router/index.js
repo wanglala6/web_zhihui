@@ -38,6 +38,7 @@ import IdentifyRecord from "@/components/IdentifyRecord";
 import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
 import RandomReport from "@/components/RandomReport"
+import ActionRecord from "../components/ActionRecord";
 Vue.use(VueRouter)
 
 const routes = [
@@ -110,6 +111,10 @@ const routes = [
         redirect: '/elderMsg',
 
     children: [
+      {
+        path: '/actionRecord',
+        component: ActionRecord
+      },
       {
         path: '/randomReport',
         component: RandomReport
