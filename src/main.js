@@ -9,11 +9,13 @@ import 'element-ui/lib/theme-chalk/index.css';
 import './assets/css/global.css'
 import axios from 'axios'
 import BaiduMap from 'vue-baidu-map'
+import VueIntro from 'vue-introjs'
+import 'intro.js/introjs.css';
 
 Vue.use(BaiduMap, {
   ak: 'pKCbOFewojmC9xuiiGwOq1MAyABiQwD8'
 })
-
+Vue.use(VueIntro);
 // import dataV from '@jiaminghi/data-view'
 // import echarts from 'echart'
 //

@@ -1,3 +1,4 @@
+// const webpack = require('webpack')
 module.exports = {
     configureWebpack: {
       externals: {
@@ -5,6 +6,12 @@ module.exports = {
         'BMap': 'BMap'
       }
     },
+    // chainWebpack: config => {
+    //   config.plugin('provide').use(webpack.ProvidePlugin, [{
+    //     // other modules
+    //     introJs: ['intro.js']
+    //   }])
+    // },
     devServer: {
       proxy: {
         '/': {

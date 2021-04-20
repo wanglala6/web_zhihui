@@ -20,7 +20,11 @@
             <el-col :span="8" class="choose_box"
               ><p class="short_content" @click="introduction">简介</p></el-col
             >
-            <el-col :span="8" class="choose_box"
+            <el-col
+              :span="8"
+              class="choose_box"
+              data-step="1"
+              data-intro="点击进行登录"
               ><p class="short_content" @click="goto_login">登录</p></el-col
             >
             <el-col :span="8" class="choose_box"
@@ -36,7 +40,7 @@
         归家行动项目创建于2003年11月29日，主要用于帮助寻走走失老人。带他们回家！
       </p>
     </el-dialog>
-    <el-dialog title="登录" :visible.sync="see_login" class="login_style">
+    <el-dialog title="登录" :visible.sync="see_login" class="login_style" >
       <div class="login_con">
         <div class="login_box">
           <el-form
@@ -55,7 +59,7 @@
               <el-input v-model="loginform.password" type="password"></el-input>
             </el-form-item>
             <!-- 按钮 -->
-            <el-form-item class="btn_s">
+            <el-form-item class="btn_s" >
               <el-button type="primary" @click="login">登录</el-button>
               <el-button type="info" @click="resetlogin">重置</el-button>
             </el-form-item>
@@ -99,6 +103,9 @@
   <!--&lt;!&ndash;  </div>&ndash;&gt;-->
 </template>
 <script>
+// 导出组件数据
+import introJs from "intro.js";
+import "intro.js/introjs.css";
 import Cookies from "js-cookie";
 export default {
   data() {
@@ -137,6 +144,22 @@ export default {
     };
   },
   methods: {
+    guide() {
+      introJs()
+        .setOptions({
+          nextLabel: "下一个", // 下一个按钮文字
+          prevLabel: "上一个", // 上一个按钮文字
+          skipLabel: "跳过", // 跳过按钮文字
+          doneLabel: "立即体验", // 完成按钮文字
+          hidePrev: true, // 在第一步中是否隐藏上一个按钮
+          hideNext: true, // 在最后一步中是否隐藏下一个按钮
+          exitOnOverlayClick: false, // 点击叠加层时是否退出介绍
+          showStepNumbers: false, // 是否显示红色圆圈的步骤编号
+          disableInteraction: true, // 是否禁用与突出显示的框内的元素的交互，就是禁止点击
+          showBullets: false, // 是否显示面板指示点
+        })
+        .start();
+    },
     contact() {
       this.see_contact = true;
     },
@@ -195,6 +218,9 @@ export default {
           });
       });
     },
+  },
+  mounted() {
+    this.guide();
   },
 };
 </script>

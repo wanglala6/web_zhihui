@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="20">
-        <el-tabs v-model="tab_active_value" @tab-click="handleClick">
+      <el-col :span="20"  data-step="2" data-intro="点击尚未开始,查看创建活动" data-position="bottom">
+        <el-tabs v-model="tab_active_value" @tab-click="handleClick" data-step="3" data-intro="点击正在进行,查看正在进行的活动" data-position="bottom">
           <el-tab-pane label="正在进行" name="inAction"></el-tab-pane>
           <el-tab-pane label="尚未开始" name="unAction"></el-tab-pane>
           <el-tab-pane label="已遗留" name="achivedAction"></el-tab-pane>
           <el-tab-pane label="已完成" name="finishAction"></el-tab-pane>
         </el-tabs>
       </el-col>
-      <el-col :span="2">
-        <el-button type="primary" @click="dialog">创建行动</el-button>
+      <el-col :span="2" data-step="1" data-intro="点击创建活动">
+        <el-button type="primary" @click="dialog" >创建行动</el-button>
       </el-col>
     </el-row>
     <div class="Inaction_container">
@@ -50,6 +50,8 @@
   </div>
 </template>
 <script>
+import introJs from "intro.js";
+import "intro.js/introjs.css";
 export default {
   data() {
     return {
@@ -78,6 +80,22 @@ export default {
     };
   },
   methods: {
+    guide() {
+      introJs()
+        .setOptions({
+          nextLabel: "下一个", // 下一个按钮文字
+          prevLabel: "上一个", // 上一个按钮文字
+          skipLabel: "跳过", // 跳过按钮文字
+          doneLabel: "立即体验", // 完成按钮文字
+          hidePrev: true, // 在第一步中是否隐藏上一个按钮
+          hideNext: true, // 在最后一步中是否隐藏下一个按钮
+          exitOnOverlayClick: false, // 点击叠加层时是否退出介绍
+          showStepNumbers: false, // 是否显示红色圆圈的步骤编号
+          disableInteraction: true, // 是否禁用与突出显示的框内的元素的交互，就是禁止点击
+          showBullets: false, // 是否显示面板指示点
+        })
+        .start();
+    },
     // 点击切换tab
     handleClick: function (e) {
       console.log(e, "e");
@@ -167,6 +185,9 @@ export default {
   created() {
     console.log(this.$route.query.commanderId, "创建活动");
     this.commanderId = this.$route.query.commanderId;
+  },
+  mounted() {
+    this.guide();
   },
 };
 </script>
