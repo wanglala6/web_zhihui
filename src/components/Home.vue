@@ -363,6 +363,7 @@ export default {
     },
     //  jq:消息弹窗函数
     notify() {
+      console.log("显示弹窗")
       var _this = this;
       this.$notify.info({
         title: this.Msg.title,
@@ -392,24 +393,6 @@ export default {
       var Fn = Function;
       return new Fn("return " + fn)();
     },
-    //  获取到通知弹窗需要的相关信息
-    async dataProcess() {
-      const { data: res } = await this.$http.get(
-        "/command/volunteer/" + this.news.volunteerId
-      );
-      console.log(this.type);
-      this.Msg.title = "来自志愿者:" + res.data.name;
-      this.Msg.name = res.data.name;
-      if (this.type === "EMERGENCY_NOTICE") {
-        this.Msg.abstract = "紧急通知";
-      } else if (this.type === "START_REPORT") {
-        this.Msg.abstract = "出发报备";
-      } else if (this.type === "RANDOM_REPORT") {
-        this.Msg.abstract = "平时报备";
-      }
-      // this.notices.push(this.Msg)
-      this.notify();
-    },
     // jq：stomp监听消息队列相关函数
     onConnected: function (frame) {
       var topic = "/queue/" + this.id + "_commander";
@@ -425,14 +408,29 @@ export default {
       this.icon_value = this.icon_value + 1;
       console.log(this.icon_value);
       this.isHidden = false;
-      this.news = JSON.parse(
-        this.evil(decodeURI(frame.body)).replace("/\\", "")
-      ).data;
-      this.type = JSON.parse(
-        this.evil(decodeURI(frame.body)).replace("/\\", "")
-      ).type;
-      this.dataProcess();
+      this.news = JSON.parse(this.evil(frame.body).replace("/\\", "")).data;
+      this.type = JSON.parse(this.evil(frame.body).replace("/\\", "")).type;
+
+      if (this.type === "EMERGENCY_NOTICE") {
+        this.news.volunteerId = this.news.id;
+      }
       console.log(this.type);
+      this.$http
+        .get("/command/volunteer/" + this.news.volunteerId)
+        .then((res) => {
+          console.log(res);
+          this.Msg.title = "来自志愿者:" + res.data.data.name;
+          console.log(this.Msg.title)
+          if (this.type === "EMERGENCY_NOTICE") {
+            this.Msg.abstract = "紧急通知";
+          } else if (this.type === "START_REPORT") {
+            this.Msg.abstract = "出发报备";
+          } else if (this.type === "RANDOM_REPORT") {
+            this.Msg.abstract = "平时报备";
+          }
+          // this.notices.push(this.Msg)
+          this.notify();
+        });
       // ---接收消息
     },
     connect: function () {

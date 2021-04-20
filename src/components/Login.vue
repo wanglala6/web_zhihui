@@ -213,7 +213,7 @@ export default {
                 query: { commanderId: id },
               });
             } else {
-              alert("登录失败，请重试");
+              this.$message("登录失败，请重试");
             }
           });
       });
