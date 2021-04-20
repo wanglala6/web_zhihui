@@ -1,6 +1,6 @@
 <template>
-  <div class="vol">
-    <div class="inner" id="5">
+  <div class="vol" id="5">
+    <div class="inner" >
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
@@ -155,8 +155,21 @@ export default {
         myChart.resize();
       });
 
-      window.addEventListener("click", function () {
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("5");
+
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
         myChart.resize();
+      });
+
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+        attributeOldValue: true,
       });
     },
   },

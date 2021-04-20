@@ -130,9 +130,30 @@ export default {
         myChart.resize();
       });
 
-      window.addEventListener("click", function () {
-        myChart.resize();
+      // window.addEventListener("click", function () {
+      //   myChart.resize();
+      // });
+
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("1");
+
+      this.observer = new MutationObserver((res) => {
+        console.log("回调")
+        myChart.resize()
       });
+
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+        attributeOldValue: true,
+      });
+
+      // document.getElementById("1").addEventListener("resize", function () {
+      //   myChart.resize();
+      // });
     },
     getact() {
       this.$http({

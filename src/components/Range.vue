@@ -120,8 +120,21 @@ export default {
         myChart.resize();
       });
 
-      window.addEventListener("click", function () {
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("2");
+
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
         myChart.resize();
+      });
+
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+        attributeOldValue: true,
       });
     },
   },
