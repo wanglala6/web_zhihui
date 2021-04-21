@@ -9,7 +9,7 @@
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>
-        <div class="font">救援队指挥中心</div>
+        <div class="font">归家行动指挥中心</div>
         <div>
           <div id="he-plugin-simple" class="weather"></div>
           <el-dropdown

@@ -95,8 +95,6 @@
   </div>
 </template>
 <script>
-import { devServer } from "../../vue.config";
-
 export default {
   data() {
     return {
@@ -161,16 +159,11 @@ export default {
       }).then((res) => {
         console.log(res.data);
         if (res.data.code === 200) {
-          var _this = this;
+          // var _this = this;
           this.tableData = []
           this.page.total = res.data.total;
           const tmp = res.data.data;
           tmp.forEach((ele) => {
-            _this.tmp = []
-            ele.content.imgs.forEach((e) => {
-              _this.tmp.push(devServer.proxy["/"].target + e)
-            })
-            ele.content.imgs = _this.tmp
             this.tableData.push(ele)
           })
         } else {

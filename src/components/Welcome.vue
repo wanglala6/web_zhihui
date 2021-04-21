@@ -10,7 +10,7 @@
           </el-col>
           <el-col :span="5" class="head_col">
             <span class="head" style="text-align: center; color: #ffffff"
-              >蓝天救援队指挥中心</span
+              >归家行动指挥中心</span
             >
           </el-col>
           <el-col :span="12">
@@ -594,9 +594,10 @@ export default {
 }
 .head_img {
 
-  height: 90px;
-  width: 90px;
-  margin-top: 5px;
+  height: 70px;
+  width: 70px;
+  margin-top: 15px;
+  margin-left: 25px;
 }
 .activity {
   height: 300px;
