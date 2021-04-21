@@ -3,7 +3,12 @@
     <el-container>
       <el-header>
         <el-row>
-          <el-col :offset="2" :span="5" class="head_col">
+          <el-col :span="2">
+            <div style="display:flex;align-items:center;"></div>
+              <img src="../assets/imgs/logo2.png" class="head_img" />
+
+          </el-col>
+          <el-col :span="5" class="head_col">
             <span class="head" style="text-align: center; color: #ffffff"
               >蓝天救援队指挥中心</span
             >
@@ -507,7 +512,12 @@ export default {
   margin-right: 20px;
   font-size: 16px;
 }
+.head_img {
 
+  height: 90px;
+  width: 90px;
+  margin-top: 5px;
+}
 .activity {
   height: 300px;
   width: 200px;

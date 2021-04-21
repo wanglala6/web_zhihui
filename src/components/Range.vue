@@ -1,5 +1,5 @@
 <template>
-  <div class="pie" id="2">
+  <div class="pie" id="2" @keyup.enter="show2">
     <el-row class="overview">
       <!-- <el-row class="piehead">
         <span>走失者年龄阶段分布</span>
@@ -119,7 +119,20 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+ var th = this;
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode;
+        if (key === 66) {
+          // document.getElementById("5").resize(function () {
+          //   myChart.resize();
+          // });
+          setInterval(function () {
+            myChart.resize();
+          }, 1000);
 
+          th.$emit("hideOther", "2");
+        }
+      };
       window.addEventListener("click", function () {
         myChart.resize();
       });

@@ -5,7 +5,7 @@
       <el-header>
         <div style="width: 55px; height: 55px; border-radius: 50%">
           <img
-            src="../assets/logo.jpg"
+            src="../assets/imgs/logo2.png"
             style="height: 100%; width: 100%; border-radius: 50%"
           />
         </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="vol">
-    <div class="inner" id="5">
+    <div class="inner" id="5" @keyup.enter="show5">
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
@@ -154,18 +154,38 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+      var th = this;
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode;
+        if (key === 70) {
+          // document.getElementById("5").resize(function () {
+          //   myChart.resize();
+          // });
+          setInterval(function () {
+            myChart.resize();
+          }, 100);
 
+          th.$emit("hideOther", "5");
+        }
+      };
       window.addEventListener("click", function () {
         myChart.resize();
       });
     },
+    // show5(e) {
+    //   if (e.keyCode === 53) {
+    //     this.getvol();
+    //   }
+    // },
   },
   mounted() {
+    this.getvol();
     setInterval(() => {
       this.getvol();
     }, 10000);
     // this.getvol();
     // const element = document.getElementById("5");
+
     document.getElementById("5").addEventListener("click", () => {
       // if (screenfull.isEnabled) {
       //   screenfull.request(element); // 元素全屏

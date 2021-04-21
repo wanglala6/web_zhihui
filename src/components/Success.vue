@@ -1,5 +1,5 @@
 <template>
-  <div class="s" id="4">
+  <div class="s" id="4" @keyup.enter="show4">
     <div class="or">
       <div class="in">
         <span style="padding: 0; margin-bottom: 0">▎志愿者出动率</span>
@@ -383,7 +383,20 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+      var th = this;
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode;
+        if (key === 69) {
+          // document.getElementById("5").resize(function () {
+          //   myChart.resize();
+          // });
+          setInterval(function () {
+            myChart.resize();
+          }, 100);
 
+          th.$emit("hideOther", "4");
+        }
+      };
       window.addEventListener("click", function () {
         myChart.resize();
       });

@@ -1,5 +1,5 @@
 <template>
-  <div class="vol" id="1">
+  <div class="vol" id="1" @keyup.enter="show1">
     <div class="inner">
       <!-- <div class="head">
         <span>行动统计模块</span>
@@ -129,7 +129,20 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+      var th = this;
+      document.onkeydown = function (e) {
+        const key = window.event.keyCode;
+        if (key === 65) {
+          // document.getElementById("5").resize(function () {
+          //   myChart.resize();
+          // });
+          setInterval(function () {
+            myChart.resize();
+          }, 100);
 
+          th.$emit("hideOther", "1");
+        }
+      };
       window.addEventListener("click", function () {
         myChart.resize();
       });

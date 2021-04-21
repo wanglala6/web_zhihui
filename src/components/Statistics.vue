@@ -165,12 +165,12 @@ export default {
       var currentFocus = "1";
       var commandList = ["1", "2", "3", "4", "5"];
       var data = JSON.parse(frame.body);
-      console.log(data)
+      console.log(data);
       var operation = data.operation;
       if (commandList.indexOf(operation) !== -1) {
         const element = document.getElementById(operation);
         // this.hideOther(operation);
-        element.click()
+        element.click();
       } else {
         if (currentFocus === "1") {
           if (operation === "right") {

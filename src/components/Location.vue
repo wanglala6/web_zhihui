@@ -1,5 +1,5 @@
 <template>
-  <div class="loc" id="3">
+  <div class="loc" id="3" @keyup.enter="show3">
     <div class="map">
       <!-- <div class="head">
         <span>走失者区域分布</span>
@@ -228,7 +228,20 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
+      var th = this;
+      document.onkeydown = function () {
+        const key = window.event.keyCode;
+        if (key === 67) {
+          // document.getElementById("5").resize(function () {
+          //   myChart.resize();
+          // });
+          setInterval(function () {
+            myChart.resize();
+          }, 100);
 
+          th.$emit("hideOther", "3");
+        }
+      };
       window.addEventListener("click", function () {
         myChart.resize();
       });
