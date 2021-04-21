@@ -39,6 +39,7 @@ import AchivedAction from "@/components/AchivedAction"
 import FinishAction from "@/components/FinishAction"
 import RandomReport from "@/components/RandomReport"
 import ActionRecord from "../components/ActionRecord";
+import Alarm from "../components/Alarm"
 Vue.use(VueRouter)
 
 const routes = [
@@ -111,6 +112,10 @@ const routes = [
         redirect: '/elderMsg',
 
     children: [
+      {
+        path: '/alarm',
+        component: Alarm
+      },
       {
         path: '/actionRecord',
         component: ActionRecord

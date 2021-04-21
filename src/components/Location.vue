@@ -228,7 +228,7 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      var th = this;
+      // var th = this;
       document.onkeydown = function () {
         const key = window.event.keyCode;
         if (key === 67) {
@@ -239,12 +239,24 @@ export default {
             myChart.resize();
           }, 100);
 
-          th.$emit("hideOther", "3");
+          const MutationObserver =
+            window.MutationObserver ||
+            window.WebKitMutationObserver ||
+            window.MozMutationObserver;
+          const element = document.getElementById("3");
+
+          this.observer = new MutationObserver((res) => {
+            console.log("回调");
+            myChart.resize();
+          });
+
+          this.observer.observe(element, {
+            attributes: true,
+            attributeFilter: ["class"],
+            attributeOldValue: true,
+          });
         }
       };
-      window.addEventListener("click", function () {
-        myChart.resize();
-      });
     },
     randomValue() {
       return Math.round(Math.random() * 1000);

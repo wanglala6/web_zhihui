@@ -58,7 +58,10 @@
           @hideOther="hideOther"
         ></success>
         <vol-chart
-          :class="{ screenfull: volChartScreenfull }"
+          :class="{
+            screenfull: volChartScreenfull,
+            nothing: successScreenfull,
+          }"
           @hideOther="hideOther"
         ></vol-chart>
       </el-col>
@@ -105,6 +108,7 @@ export default {
       volChartScreenfull: false,
       successScreenfull: false,
       isScreenfull: false,
+      currentFocus: "1",
     };
   },
   computed: {
@@ -154,7 +158,8 @@ export default {
     },
     // hxx：stomp监听消息队列相关函数
     onConnected: function (frame) {
-      var topic = "/queue/" + this.$route.query.commanderId + "_admin";
+      var topic =
+        "/queue/" + this.$route.query.commanderId + "_admin_statistics";
       // ---订阅频道
       this.client.subscribe(topic, this.responseCallback, this.onFailed);
     },
@@ -162,49 +167,62 @@ export default {
       console.log("Failed: " + frame);
     },
     responseCallback: function (frame) {
-      var currentFocus = "1";
       var commandList = ["1", "2", "3", "4", "5"];
+      var moveList = ["left", "right", "up", "down"];
       var data = JSON.parse(frame.body);
       console.log(data);
       var operation = data.operation;
+      // 去除所有背景色
+      commandList.forEach(function (ele) {
+        document.getElementById(ele).style.backgroundColor = "";
+      });
       if (commandList.indexOf(operation) !== -1) {
+        console.log("commandList");
         const element = document.getElementById(operation);
         // this.hideOther(operation);
         element.click();
-      } else {
-        if (currentFocus === "1") {
+      } else if (moveList.indexOf(operation) !== -1) {
+        console.log("moveList");
+        if (this.currentFocus === "1") {
           if (operation === "right") {
-            currentFocus = "3";
+            this.currentFocus = "3";
           } else if (operation === "down") {
-            currentFocus = "2";
+            this.currentFocus = "2";
           }
-        } else if (currentFocus === "2") {
+        } else if (this.currentFocus === "2") {
           if (operation === "up") {
-            currentFocus = "1";
+            this.currentFocus = "1";
           } else if (operation === "right") {
-            currentFocus = "3";
+            this.currentFocus = "3";
           }
-        } else if (currentFocus === "3") {
+        } else if (this.currentFocus === "3") {
           if (operation === "left") {
-            currentFocus = "1";
+            this.currentFocus = "1";
           } else if (operation === "right") {
-            currentFocus = "4";
+            this.currentFocus = "4";
           }
-        } else if (currentFocus === "4") {
+        } else if (this.currentFocus === "4") {
           if (operation === "left") {
-            currentFocus = "3";
+            this.currentFocus = "3";
           } else if (operation === "down") {
-            currentFocus = "5";
+            this.currentFocus = "5";
           }
-        } else if (currentFocus === "5") {
+        } else if (this.currentFocus === "5") {
           if (operation === "up") {
-            currentFocus = "4";
+            this.currentFocus = "4";
           } else if (operation === "left") {
-            currentFocus = "3";
+            this.currentFocus = "3";
           }
         }
-        var element = document.getElementById(currentFocus);
+        var element = document.getElementById(this.currentFocus);
         element.style.backgroundColor = "#181725";
+      } else {
+        console.log("actionList");
+        if (operation === "cancel" && this.isScreenfull) {
+          this.hideOther(this.currentFocus);
+        } else if (operation === "confirm" && !this.isScreenfull) {
+          this.hideOther(this.currentFocus);
+        }
       }
     },
     connect: function () {
@@ -240,7 +258,7 @@ export default {
       } else if (e === "2") {
         this.rangeScreenfull = !this.rangeScreenfull;
       } else if (e === "3") {
-        // this.locationScreenfull = !this.locationScreenfull;
+        this.locationScreenfull = !this.locationScreenfull;
       } else if (e === "4") {
         this.successScreenfull = !this.successScreenfull;
       } else if (e === "5") {
@@ -404,5 +422,8 @@ h3 {
 
 .hide {
   display: none;
+}
+
+.nothing {
 }
 </style>

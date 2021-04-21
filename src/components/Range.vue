@@ -119,7 +119,7 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
- var th = this;
+      //  var th = this;
       document.onkeydown = function (e) {
         const key = window.event.keyCode;
         if (key === 66) {
@@ -130,12 +130,24 @@ export default {
             myChart.resize();
           }, 1000);
 
-          th.$emit("hideOther", "2");
+          const MutationObserver =
+            window.MutationObserver ||
+            window.WebKitMutationObserver ||
+            window.MozMutationObserver;
+          const element = document.getElementById("2");
+
+          this.observer = new MutationObserver((res) => {
+            console.log("回调");
+            myChart.resize();
+          });
+
+          this.observer.observe(element, {
+            attributes: true,
+            attributeFilter: ["class"],
+            attributeOldValue: true,
+          });
         }
       };
-      window.addEventListener("click", function () {
-        myChart.resize();
-      });
     },
   },
 };

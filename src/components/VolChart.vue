@@ -1,6 +1,6 @@
 <template>
-  <div class="vol">
-    <div class="inner" id="5" @keyup.enter="show5">
+  <div class="vol" id="5">
+    <div class="inner" >
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
@@ -154,7 +154,7 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      var th = this;
+      // var th = this;
       document.onkeydown = function (e) {
         const key = window.event.keyCode;
         if (key === 70) {
@@ -165,12 +165,24 @@ export default {
             myChart.resize();
           }, 100);
 
-          th.$emit("hideOther", "5");
+          const MutationObserver =
+            window.MutationObserver ||
+            window.WebKitMutationObserver ||
+            window.MozMutationObserver;
+          const element = document.getElementById("5");
+
+          this.observer = new MutationObserver((res) => {
+            console.log("回调");
+            myChart.resize();
+          });
+
+          this.observer.observe(element, {
+            attributes: true,
+            attributeFilter: ["class", "style"],
+            attributeOldValue: true,
+          });
         }
       };
-      window.addEventListener("click", function () {
-        myChart.resize();
-      });
     },
     // show5(e) {
     //   if (e.keyCode === 53) {

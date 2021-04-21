@@ -383,7 +383,7 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      var th = this;
+      // var th = this;
       document.onkeydown = function (e) {
         const key = window.event.keyCode;
         if (key === 69) {
@@ -394,12 +394,24 @@ export default {
             myChart.resize();
           }, 100);
 
-          th.$emit("hideOther", "4");
+          const MutationObserver =
+            window.MutationObserver ||
+            window.WebKitMutationObserver ||
+            window.MozMutationObserver;
+          const element = document.getElementById("4");
+
+          this.observer = new MutationObserver((res) => {
+            console.log("回调");
+            myChart.resize();
+          });
+
+          this.observer.observe(element, {
+            attributes: true,
+            attributeFilter: ["class"],
+            attributeOldValue: true,
+          });
         }
       };
-      window.addEventListener("click", function () {
-        myChart.resize();
-      });
     },
   },
   mounted() {
