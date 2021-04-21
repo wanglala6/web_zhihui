@@ -42,11 +42,11 @@ export default {
         params: this.queryInfo,
       });
       if (res.code === 200) this.actionList = res.data;
-      console.log(res.data);
+      // console.log(res.data);
     },
   },
   created() {
-    console.log(this.$route.query.commanderId);
+    // console.log(this.$route.query.commanderId);
 
     this.getActionList();
   },

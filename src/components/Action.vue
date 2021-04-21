@@ -98,7 +98,7 @@ export default {
     },
     // 点击切换tab
     handleClick: function (e) {
-      console.log(e, "e");
+      // console.log(e, "e");
       if (e.name === "inAction") {
         this.$router.push({
           path: "/inAction",
@@ -132,10 +132,10 @@ export default {
     dialog() {
       // 查询走失者未行动
       this.$http.get("/command/lost/not-actioned").then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.code === 200) {
           this.options = res.data.data;
-          console.log(this.options);
+          // console.log(this.options);
         } else {
           this.$message("走失者加载失败");
         }
@@ -146,7 +146,7 @@ export default {
     upload() {
       var _this = this;
       this.$refs.addFormref.validate((valid) => {
-        console.log(_this.commanderId);
+        // console.log(_this.commanderId);
         if (!valid) return;
         this.$http
           .post(
@@ -163,7 +163,7 @@ export default {
             }
           )
           .then((res) => {
-            console.log(res);
+            // console.log(res);
             if (res.data.code === 200) {
               this.$message.success("创建活动成功");
               _this.adddialogVisible = false;
@@ -183,7 +183,7 @@ export default {
     },
   },
   created() {
-    console.log(this.$route.query.commanderId, "创建活动");
+    // console.log(this.$route.query.commanderId, "创建活动");
     this.commanderId = this.$route.query.commanderId;
   },
   mounted() {

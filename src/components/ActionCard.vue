@@ -268,7 +268,7 @@ export default {
         methods: "delete",
         url: "/command/action/" + row.id,
       }).then((res) => {
-        console.log(res.data, '删除');
+        // console.log(res.data, '删除');
         if (res.data.code === 200) {
           this.$message.success("删除成功");
           this.$emit("flush");
@@ -310,9 +310,9 @@ export default {
         this.action.status === "2" ||
         this.action.status === "3"
       ) {
-        console.log(this.$route.query.commanderId);
+        // console.log(this.$route.query.commanderId);
 
-        console.log("mmm", item.lostId);
+        // console.log("mmm", item.lostId);
         this.$router.push({
           path: "/elderMsg",
           query: {
@@ -331,7 +331,7 @@ export default {
     getClickInfo(e) {
       this.center.lng = e.point.lng;
       this.center.lat = e.point.lat;
-      console.log(this.center);
+      // console.log(this.center);
       this.location.latitude = this.center.lat.toString();
       this.location.longitude = this.center.lng.toString();
     },
@@ -366,8 +366,8 @@ export default {
       this.addundia = true;
     },
     send() {
-      console.log("test")
-      console.log(this.action.id);
+      // console.log("test")
+      // console.log(this.action.id);
       this.$refs.locationref.validate((valid) => {
         if (!valid) return;
         this.$http({
@@ -414,7 +414,7 @@ export default {
       //   const leave2 = leave1 % (60 * 1000);
       //  const staySec = Math.floor(leave2 / 1000);
       this.action.lostHours = stayHour;
-      console.log(this.action);
+      // console.log(this.action);
       this.$http({
         method: "post", // method
         url: "/command/action/sendDraftMsg/" + this.action.id,
@@ -429,7 +429,7 @@ export default {
           "Content-Type": "application/json",
         },
       }).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.data.code === 200) {
           this.$message.success("发送成功");
           this.volundia = false;
@@ -451,7 +451,7 @@ export default {
     // 选中表格
     handleSelectionChange(val) {
       this.multipleSelection = val;
-      console.log(val);
+      // console.log(val);
       var arr = [];
       this.multipleSelection.forEach((element) => {
         arr.push(parseInt(element.id));
@@ -471,7 +471,7 @@ export default {
   },
   created() {
     this.id = this.$route.query.id;
-    console.log("get:id" + this.id)
+    // console.log("get:id" + this.id)
   }
 };
 </script>

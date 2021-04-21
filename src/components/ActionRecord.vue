@@ -162,7 +162,7 @@ export default {
       this.$http
         .get("/record/" + this.$route.query.id)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           var data = res.data.data;
           var notice = [];
           // 处理老人消息
@@ -222,16 +222,16 @@ export default {
             return a.createTime < b.createTime ? -1 : 1;
           });
           _this.notices = notice;
-          console.log("获取行程完毕");
-          console.log(_this.notices);
+          // console.log("获取行程完毕");
+          // console.log(_this.notices);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     seeDetail(item) {
-      console.log("展示详情");
-      console.log(item);
+      // console.log("展示详情");
+      // console.log(item);
       if (item.msgType === "notice") {
         this.see_notice_detail(item);
       } else if (item.msgType === "clue") {
@@ -258,9 +258,9 @@ export default {
       this.see_notice = true;
       this.notice_msg.msg = item.msg;
       this.notice_msg.time = item.createTime;
-      console.log(this.notice_msg.msg);
-      console.log((this.notice_msg.time = item.createTime));
-      console.log(item);
+      // console.log(this.notice_msg.msg);
+      // console.log((this.notice_msg.time = item.createTime));
+      // console.log(item);
     },
     see_clue_detail(item) {
       this.see_clue = true;
@@ -271,11 +271,11 @@ export default {
       item.content.imgs.forEach((element) => {
         _this.clue_msg.imgs.push(devServer.proxy["/"].target + element);
       });
-      console.log(this.clue_msg.imgs);
+      // console.log(this.clue_msg.imgs);
     },
     see_identify_detail(item) {
       this.see_identify = true;
-      console.log(item);
+      // console.log(item);
       this.identify_msg.url =
         devServer.proxy["/"].target + "/files/download?filename=" + item.imgUrl;
       this.identify_msg.srcList = [
