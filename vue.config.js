@@ -1,13 +1,30 @@
 // const webpack = require('webpack')
 module.exports = {
-  chainWebpack: config => {
-    config.when(process.env.NODE_ENV === 'production', config => {
-      config.entry('app').clear().add('./src/main-prod.js')
-    })
-    config.when(process.env.NODE_ENV === 'development', config => {
-      config.entry('app').clear().add('./src/main-dev.js')
-    })
-  },
+  // chainWebpack: config => {
+  //   config.when(process.env.NODE_ENV === 'production', config => {
+  //     config.entry('app').clear().add('./src/main-prod.js')
+  //   })
+  //   config.when(process.env.NODE_ENV === 'development', config => {
+  //     config.entry('app').clear().add('./src/main-dev.js')
+  //   })
+  // },
+  pwa: {
+
+    iconPaths: {
+
+        favicon32: 'favicon.ico',
+
+        favicon16: 'favicon.ico',
+
+        appleTouchIcon: 'favicon.ico',
+
+        maskIcon: 'favicon.ico',
+
+        msTileImage: 'favicon.ico'
+
+    }
+
+},
     configureWebpack: {
       externals: {
         // eslint-disable-next-line quote-props
