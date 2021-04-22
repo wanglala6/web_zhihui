@@ -115,7 +115,7 @@ export default {
     leftScreenfull: function () {
       return {
         screenfull: this.actionNumberScreenfull || this.rangeScreenfull,
-        hide: this.successScreenfull || this.volChartScreenfull,
+        hide: this.successScreenfull || this.volChartScreenfull || this.locationScreenfull,
       };
     },
     rightScreenfull: function () {

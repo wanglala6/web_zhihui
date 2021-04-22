@@ -1,5 +1,5 @@
 <template>
-  <div class="pie" id="2" @keyup.enter="show2">
+  <div class="pie" id="2">
     <el-row class="overview">
       <!-- <el-row class="piehead">
         <span>走失者年龄阶段分布</span>
@@ -119,35 +119,22 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      //  var th = this;
-      document.onkeydown = function (e) {
-        const key = window.event.keyCode;
-        if (key === 66) {
-          // document.getElementById("5").resize(function () {
-          //   myChart.resize();
-          // });
-          setInterval(function () {
-            myChart.resize();
-          }, 1000);
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("2");
 
-          const MutationObserver =
-            window.MutationObserver ||
-            window.WebKitMutationObserver ||
-            window.MozMutationObserver;
-          const element = document.getElementById("2");
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
+        myChart.resize();
+      });
 
-          this.observer = new MutationObserver((res) => {
-            console.log("回调");
-            myChart.resize();
-          });
-
-          this.observer.observe(element, {
-            attributes: true,
-            attributeFilter: ["class"],
-            attributeOldValue: true,
-          });
-        }
-      };
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+        attributeOldValue: true,
+      });
     },
   },
 };

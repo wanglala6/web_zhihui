@@ -1,5 +1,5 @@
 <template>
-  <div class="vol" id="1" @keyup.enter="show1">
+  <div class="vol" id="1">
     <div class="inner">
       <!-- <div class="head">
         <span>行动统计模块</span>
@@ -129,43 +129,23 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      // var th = this;
-      document.onkeydown = function (e) {
-        const key = window.event.keyCode;
-        if (key === 65) {
-          // document.getElementById("5").resize(function () {
-          //   myChart.resize();
-          // });
-          setInterval(function () {
-            myChart.resize();
-          }, 100);
 
-          // window.addEventListener("click", function () {
-          //   myChart.resize();
-          // });
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("1");
 
-          const MutationObserver =
-            window.MutationObserver ||
-            window.WebKitMutationObserver ||
-            window.MozMutationObserver;
-          const element = document.getElementById("1");
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
+        myChart.resize();
+      });
 
-          this.observer = new MutationObserver((res) => {
-            console.log("回调");
-            myChart.resize();
-          });
-
-          this.observer.observe(element, {
-            attributes: true,
-            attributeFilter: ["class"],
-            attributeOldValue: true,
-          });
-
-          // document.getElementById("1").addEventListener("resize", function () {
-          //   myChart.resize();
-          // });
-        }
-      };
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+        attributeOldValue: true,
+      });
     },
     getact() {
       this.$http({

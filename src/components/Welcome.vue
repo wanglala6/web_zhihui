@@ -18,7 +18,6 @@
               class="head-item"
               :underline="false"
               :class="{ 'el-upload-active': isActionManage }"
-              :color="color"
               @click="toActionManage"
               >行动管理</el-link
             >
