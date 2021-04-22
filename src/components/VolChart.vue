@@ -1,6 +1,6 @@
 <template>
   <div class="vol" id="5">
-    <div class="inner" >
+    <div class="inner">
       <!-- <el-row class="head">
         <span>志愿者统计模块</span>
       </el-row> -->
@@ -155,34 +155,22 @@ export default {
         myChart.resize();
       });
       // var th = this;
-      document.onkeydown = function (e) {
-        const key = window.event.keyCode;
-        if (key === 70) {
-          // document.getElementById("5").resize(function () {
-          //   myChart.resize();
-          // });
-          setInterval(function () {
-            myChart.resize();
-          }, 100);
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("5");
 
-          const MutationObserver =
-            window.MutationObserver ||
-            window.WebKitMutationObserver ||
-            window.MozMutationObserver;
-          const element = document.getElementById("5");
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
+        myChart.resize();
+      });
 
-          this.observer = new MutationObserver((res) => {
-            console.log("回调");
-            myChart.resize();
-          });
-
-          this.observer.observe(element, {
-            attributes: true,
-            attributeFilter: ["class", "style"],
-            attributeOldValue: true,
-          });
-        }
-      };
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class", "style"],
+        attributeOldValue: true,
+      });
     },
     // show5(e) {
     //   if (e.keyCode === 53) {

@@ -383,35 +383,23 @@ export default {
       window.addEventListener("resize", function () {
         myChart.resize();
       });
-      // var th = this;
-      document.onkeydown = function (e) {
-        const key = window.event.keyCode;
-        if (key === 69) {
-          // document.getElementById("5").resize(function () {
-          //   myChart.resize();
-          // });
-          setInterval(function () {
-            myChart.resize();
-          }, 100);
 
-          const MutationObserver =
-            window.MutationObserver ||
-            window.WebKitMutationObserver ||
-            window.MozMutationObserver;
-          const element = document.getElementById("4");
+      const MutationObserver =
+        window.MutationObserver ||
+        window.WebKitMutationObserver ||
+        window.MozMutationObserver;
+      const element = document.getElementById("4");
 
-          this.observer = new MutationObserver((res) => {
-            console.log("回调");
-            myChart.resize();
-          });
+      this.observer = new MutationObserver((res) => {
+        console.log("回调");
+        myChart.resize();
+      });
 
-          this.observer.observe(element, {
-            attributes: true,
-            attributeFilter: ["class"],
-            attributeOldValue: true,
-          });
-        }
-      };
+      this.observer.observe(element, {
+        attributes: true,
+        attributeFilter: ["class"],
+        attributeOldValue: true,
+      });
     },
   },
   mounted() {
