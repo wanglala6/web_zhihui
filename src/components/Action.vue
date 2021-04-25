@@ -1,8 +1,19 @@
 <template>
   <div>
     <el-row class="nav">
-      <el-col :span="20"  data-step="2" data-intro="点击尚未开始,查看创建活动" data-position="bottom">
-        <el-tabs v-model="tab_active_value" @tab-click="handleClick" data-step="3" data-intro="点击正在进行,查看正在进行的活动" data-position="bottom">
+      <el-col
+        :span="20"
+        data-step="2"
+        data-intro="点击尚未开始,查看创建活动"
+        data-position="bottom"
+      >
+        <el-tabs
+          v-model="tab_active_value"
+          @tab-click="handleClick"
+          data-step="3"
+          data-intro="点击正在进行,查看正在进行的活动"
+          data-position="bottom"
+        >
           <el-tab-pane label="正在进行" name="inAction"></el-tab-pane>
           <el-tab-pane label="尚未开始" name="unAction"></el-tab-pane>
           <el-tab-pane label="已遗留" name="achivedAction"></el-tab-pane>
@@ -10,7 +21,7 @@
         </el-tabs>
       </el-col>
       <el-col :span="2" data-step="1" data-intro="点击创建活动">
-        <el-button type="primary" @click="dialog" >创建行动</el-button>
+        <el-button type="primary" @click="dialog">创建行动</el-button>
       </el-col>
     </el-row>
     <div class="Inaction_container">
@@ -93,6 +104,13 @@ export default {
           showStepNumbers: false, // 是否显示红色圆圈的步骤编号
           disableInteraction: true, // 是否禁用与突出显示的框内的元素的交互，就是禁止点击
           showBullets: false, // 是否显示面板指示点
+        })
+        .oncomplete(() => {
+          // 点击结束按钮后执行的事件
+        })
+        .onexit(() => {
+          // 点击跳过按钮后执行的事件
+          introJs().exit();
         })
         .start();
     },
@@ -187,7 +205,10 @@ export default {
     this.commanderId = this.$route.query.commanderId;
   },
   mounted() {
-    this.guide();
+    if ((window.new1 === "")) {
+      this.guide();
+      window.new1 = "1";
+    }
   },
 };
 </script>

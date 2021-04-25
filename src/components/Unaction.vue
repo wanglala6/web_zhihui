@@ -76,7 +76,10 @@ export default {
     this.getunactionlist();
   },
   mounted() {
-    this.guide2();
+    if (window.new2 === "") {
+      this.guide2();
+      window.new2 = "2";
+    }
   },
 };
 </script>

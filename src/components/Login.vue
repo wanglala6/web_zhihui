@@ -40,7 +40,7 @@
         归家行动项目创建于2003年11月29日，主要用于帮助寻走走失老人。带他们回家！
       </p>
     </el-dialog>
-    <el-dialog title="登录" :visible.sync="see_login" class="login_style" >
+    <el-dialog title="登录" :visible.sync="see_login" class="login_style">
       <div class="login_con">
         <div class="login_box">
           <el-form
@@ -59,7 +59,7 @@
               <el-input v-model="loginform.password" type="password"></el-input>
             </el-form-item>
             <!-- 按钮 -->
-            <el-form-item class="btn_s" >
+            <el-form-item class="btn_s">
               <el-button type="primary" @click="login">登录</el-button>
               <el-button type="info" @click="resetlogin">重置</el-button>
             </el-form-item>
@@ -191,7 +191,7 @@ export default {
               console.log(Cookies.get("COOKIE-TOKEN"));
               // var strCookie = document.cookie;
               // var arrCookie = strCookie.split("; ");
-              // for (var i = 0; i < arrCookie.length; i++) {
+              // for (var i = 0; i <script arrCookie.length; i++) {
               //   var arr = arrCookie[i].split("=");
               //   console.log(arr);
               // }
@@ -220,8 +220,12 @@ export default {
     },
   },
   mounted() {
-    this.guide();
+    if (window.new3 === "") {
+      this.guide();
+      window.new3 = "3";
+    }
   },
+  created() {},
 };
 </script>
 <style lang="less" scoped>
