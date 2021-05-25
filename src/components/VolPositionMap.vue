@@ -1,14 +1,27 @@
 <template>
   <div class="amount">
-    <baidu-map class="map" :style="{height: height}" :center="center" :zoom="11" enableScrollWheelZoom="true"
-               :scroll-wheel-zoom="true">
-<!--      <bm-view></bm-view>-->
-      <bm-control :offset="{width: '100px', height: '100px'}">
-        <bm-auto-complete :v-model="keyword" :sugStyle="{zIndex: 1}">
-          <el-input placeholder="请输入地名关键字" v-model="keyword" class="search_box"></el-input>
+    <baidu-map
+      class="map"
+      :style="{ height: height }"
+      :center="center"
+      :zoom="11"
+      enableScrollWheelZoom="true"
+      :scroll-wheel-zoom="true"
+    >
+      <!--      <bm-view></bm-view>-->
+      <bm-control :offset="{ width: '100px', height: '100px' }">
+        <bm-auto-complete :v-model="keyword" :sugStyle="{ zIndex: 1 }">
+          <el-input
+            placeholder="请输入地名关键字"
+            v-model="keyword"
+            class="search_box"
+          ></el-input>
         </bm-auto-complete>
       </bm-control>
-      <bm-local-search :keyword="keyword" :auto-viewport="true" ></bm-local-search>
+      <bm-local-search
+        :keyword="keyword"
+        :auto-viewport="true"
+      ></bm-local-search>
       <bm-marker
         :position="position"
         :title="position.name"
@@ -17,8 +30,8 @@
         v-for="position in positionList"
         :key="position.id"
         :icon="{ url: volIcon, size: { width: 32, height: 32 } }"
-        >
-<!--        :icon="{ url: position.avatar, size: { width: 70, height: 70 } }"-->
+      >
+        <!--        :icon="{ url: position.avatar, size: { width: 70, height: 70 } }"-->
         <bm-info-window
           :show="position.showInfo"
           @close="infoWindowClose(position)"
@@ -38,7 +51,7 @@
           :show="elderPosition.showInfo"
           @close="infoWindowClose(elderPosition)"
           @open="infoWindowOpen(elderPosition)"
-        >老人</bm-info-window
+          >老人</bm-info-window
         >
       </bm-marker>
     </baidu-map>
@@ -66,9 +79,9 @@ export default {
       elderPosition: {},
       markerIcon: "",
       infoWindow: {
-        name: ""
+        name: "",
       },
-      keyword: '',
+      keyword: "",
     };
   },
   methods: {
@@ -91,7 +104,7 @@ export default {
               name: element.volunteer.name,
               id: element.id,
               avatar: element.volunteer.avatar,
-              showInfo: false
+              showInfo: false,
             };
             _this.positionList.push(tmp);
           });
@@ -108,12 +121,12 @@ export default {
       await this.$http
         .get("/command/lost/" + this.$route.query.lostId)
         .then((res) => {
-          console.log(res)
+          console.log(res);
           // console.log(res.data.data.longitude);
           _this.center = {
             lng: res.data.data.longitude,
             lat: res.data.data.latitude,
-          }
+          };
           _this.elderPosition = {
             lng: res.data.data.longitude,
             lat: res.data.data.latitude,
@@ -140,11 +153,14 @@ export default {
     lookDetail(position) {
       position.showInfo = true;
       this.infoWindow.name = position.name;
-    }
+    },
   },
   created() {
     this.getOld();
     this.getPosition();
+    var _this = this;
+    setInterval(_this.getOld(), 5000);
+    setInterval(_this.getPosition(), 5000);
   },
 };
 </script>
@@ -153,7 +169,7 @@ export default {
 .map {
   width: 100%;
 }
-.search-box{
+.search-box {
   width: 200px;
 }
 </style>

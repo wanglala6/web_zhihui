@@ -4,7 +4,7 @@
       <!--    <el-col :span="5"></el-col>-->
       <el-col :span="20" :offset="2" class="edit_content">
         <el-row>
-          <el-col :span="12"><h1>发送通知</h1></el-col>
+          <el-col :span="12"><h1>发送消息</h1></el-col>
           <el-col :span="12"><p class="goto_notice_label" @click="goto_history">已发通知</p></el-col>
         </el-row>
         <el-select v-model="type" placeholder="请选择通知类型" class="select_box">

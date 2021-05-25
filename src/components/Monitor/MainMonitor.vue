@@ -19,14 +19,14 @@
             trigger="click"
             :offset="-100"
           >
-<!--            <div class="donutChartWrapper">-->
-<!--              <div class="donutChart">-->
-<!--                <DonutChart gaugeData="gaugeData"></DonutChart>-->
-<!--              </div>-->
-<!--            </div>-->
+            <!--            <div class="donutChartWrapper">-->
+            <!--              <div class="donutChart">-->
+            <!--                <DonutChart gaugeData="gaugeData"></DonutChart>-->
+            <!--              </div>-->
+            <!--            </div>-->
             <div class="com_img box_style">
               <div v-if="maxSimilarityImg !== ''">
-                <div class="image-top">相似度:{{maxSimilarity}}%</div>
+                <div class="image-top">相似度:{{ maxSimilarity }}%</div>
                 <el-image
                   :src="maxSimilarityImg"
                   fit="fit"
@@ -80,7 +80,7 @@ import MsgBox from "@/components/Monitor/MsgBox";
 import VaryMsgTabs from "@/components/Monitor/VaryMsgTabs";
 import MapBtn from "@/components/Monitor/MapBtn";
 import StatisticsCard from "@/components/Monitor/StatisticsCard";
-import VolPositionMap from "@/components/VolPositionMap"
+import VolPositionMap from "@/components/VolPositionMap";
 import { devServer } from "../../../vue.config";
 
 export default {
@@ -100,7 +100,7 @@ export default {
         guageColor: "#878787",
         gaugeTitle: "相似度",
       },
-      maxSimilarityImg: '',
+      maxSimilarityImg: "",
       maxSimilarity: 0,
       mapHeight: document.body.clientHeight - 60 + "px",
     };
@@ -108,18 +108,26 @@ export default {
   methods: {
     getMaxSimilarityImg() {
       var _this = this;
-      console.log("获取最高相似度记录")
-      this.$http.get("/command/identify/highest-score/" + this.$route.query.id).then(res => {
-        console.log(res)
-        _this.maxSimilarityImg = devServer.proxy['/'].target + "/files/download?filename=" + res.data.data.imgUrl
-        _this.maxSimilarity = Math.ceil(res.data.data.similarity)
-      }).catch(err => {
-        console.log(err)
-      })
-    }
+      console.log("获取最高相似度记录");
+      this.$http
+        .get("/command/identify/highest-score/" + this.$route.query.id)
+        .then((res) => {
+          console.log(res);
+          _this.maxSimilarityImg =
+            devServer.proxy["/"].target +
+            "/files/download?filename=" +
+            res.data.data.imgUrl;
+          _this.maxSimilarity = Math.ceil(res.data.data.similarity);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
-    this.getMaxSimilarityImg()
+    this.getMaxSimilarityImg();
+  },
+  mounted() {
   },
 };
 </script>
@@ -231,8 +239,7 @@ export default {
 .left_bottom {
   height: 40%;
 }
-.imgs{
-
+.imgs {
 }
 
 .without-identify {

@@ -1,19 +1,22 @@
 <template>
   <div class="clue_container">
     <div v-if="tableData.length !== 0">
-      <el-link type="primary" @click="goto_detail" class="link_style">查看详情</el-link>
+      <el-link type="primary" @click="goto_detail" class="link_style"
+        >查看详情</el-link
+      >
       <el-timeline :reverse="false" class="timeline">
         <el-timeline-item
           v-for="clue in tableData"
           :key="clue.id"
-          :timestamp="clue.createTime">
-          <p class="clue_content">{{clue.volunteer.name}}:{{clue.content.content}}</p>
+          :timestamp="clue.createTime"
+        >
+          <p class="clue_content">
+            {{ clue.volunteer.name }}:{{ clue.content.content }}
+          </p>
         </el-timeline-item>
       </el-timeline>
     </div>
-    <div class="without-clue" v-if="tableData.length === 0">
-      暂无线索
-    </div>
+    <div class="without-clue" v-if="tableData.length === 0">暂无线索</div>
   </div>
 </template>
 
@@ -27,16 +30,16 @@ export default {
         pageSize: 9999,
         total: 0,
       },
-      tableData: []
+      tableData: [],
     };
   },
   methods: {
     goto_detail() {
-      var id = this.$route.query.id
-      var lostId = this.$route.query.lostId
+      var id = this.$route.query.id;
+      var lostId = this.$route.query.lostId;
       this.$router.push({
         path: "/clue",
-        query: { id: id, lostId: lostId }
+        query: { id: id, lostId: lostId },
       });
     },
     getclue() {
@@ -60,17 +63,19 @@ export default {
   },
   created() {
     this.getclue();
+    var _this = this;
+    setInterval(_this.getclue(), 3000);
   },
 };
 </script>
 
 <style scoped>
-.link_style{
+.link_style {
   position: absolute;
   font-size: 10px;
   right: 20px;
 }
-.timeline{
+.timeline {
   padding: 20px;
 }
 .clue_container {

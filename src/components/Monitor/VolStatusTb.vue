@@ -25,7 +25,7 @@ export default {
       page: {
         currentPage: 1,
         pageSize: 9999,
-        total: 0
+        total: 0,
       },
     };
   },
@@ -68,8 +68,10 @@ export default {
     },
   },
   created() {
-    this.getVolunteerStatus()
-  }
+    this.getVolunteerStatus();
+    var _this = this;
+    setInterval(_this.getVolunteerStatus(), 1000);
+  },
 };
 </script>
 .el-table .warning-row {
