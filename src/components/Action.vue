@@ -91,7 +91,7 @@ export default {
     };
   },
   methods: {
-    guide() {
+    guide2() {
       introJs()
         .setOptions({
           nextLabel: "下一个", // 下一个按钮文字
@@ -205,9 +205,9 @@ export default {
     this.commanderId = this.$route.query.commanderId;
   },
   mounted() {
-    if ((window.new1 === "")) {
-      this.guide();
-      window.new1 = "1";
+    if ((window.new2 === "")) {
+      this.guide2();
+      window.new2 = 2;
     }
   },
 };

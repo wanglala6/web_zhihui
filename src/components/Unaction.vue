@@ -45,7 +45,7 @@ export default {
     },
   },
   methods: {
-    guide2() {
+    guide3() {
       introJs()
         .setOptions({
           nextLabel: "下一个", // 下一个按钮文字
@@ -76,9 +76,9 @@ export default {
     this.getunactionlist();
   },
   mounted() {
-    if (window.new2 === "") {
-      this.guide2();
-      window.new2 = "2";
+    if (window.new3 === "") {
+      this.guide3();
+      window.new3 = "3";
     }
   },
 };

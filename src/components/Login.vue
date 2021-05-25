@@ -144,7 +144,7 @@ export default {
     };
   },
   methods: {
-    guide() {
+    guide1() {
       introJs()
         .setOptions({
           nextLabel: "下一个", // 下一个按钮文字
@@ -220,9 +220,9 @@ export default {
     },
   },
   mounted() {
-    if (window.new3 === "") {
-      this.guide();
-      window.new3 = "3";
+    if (window.new1 === "") {
+      this.guide1();
+      window.new1 = 1;
     }
   },
   created() {},

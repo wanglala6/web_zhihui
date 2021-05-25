@@ -76,10 +76,15 @@
             <!-- 一级菜单模板任务管理 -->
             <el-submenu index="2">
               <template slot="title">
-                <!-- 图标 -->
-                <i class="el-icon-edit"></i>
-                <!-- 文本 -->
-                <span>行动管理</span>
+                <div
+                  data-step="1"
+                  data-intro="点击行动管理，对任务状态进行更新，查询志愿者相关状态，为志愿者分配队伍，查看项目进展动态"
+                >
+                  <!-- 图标 -->
+                  <i class="el-icon-edit"></i>
+                  <!-- 文本 -->
+                  <span>行动管理</span>
+                </div>
               </template>
               <!-- 二级菜单 -->
               <el-menu-item
@@ -129,10 +134,15 @@
             <el-submenu index="1">
               <!-- 一级菜单模板数据查询 -->
               <template slot="title">
-                <!-- 图标 -->
-                <i class="el-icon-search"></i>
-                <!-- 文本 -->
-                <span>数据查询</span>
+                <div
+                  data-step="2"
+                  data-intro="点击数据查询，查询老人信息,志愿者信息及地图查询"
+                >
+                  <!-- 图标 -->
+                  <i class="el-icon-search"></i>
+                  <!-- 文本 -->
+                  <span>数据查询</span>
+                </div>
               </template>
               <!-- 二级菜单 -->
               <el-menu-item
@@ -181,11 +191,16 @@
             <!-- 一级菜单模板监控模块 -->
             <el-submenu index="3">
               <template slot="title">
+                 <div
+                  data-step="3"
+                  data-intro="点击监控模块，查看报备线索甄别记录"
+                >
                 <!-- 图标 -->
                 <i class="el-icon-data-line"></i>
                 <!-- 文本 -->
                 <!--跳转到监控模块-->
                 <span>监控模块</span>
+                 </div>
               </template>
               <!-- 二级菜单 -->
               <el-menu-item
@@ -261,10 +276,15 @@
             <el-submenu index="4" router>
               <!-- 一级菜单模板qu -->
               <template slot="title">
+                 <div
+                  data-step="4"
+                  data-intro="点击消息通知，查看消息"
+                >
                 <!-- 图标 -->
                 <i class="el-icon-chat-dot-square"></i>
                 <!-- 文本 -->
                 <span>消息通知</span>
+                 </div>
               </template>
 
               <el-menu-item
@@ -311,10 +331,16 @@
     <!--      <img src="../assets/alarm.svg" class="alarm_style">-->
     <!--      <p style="color:#fff;text-align:center;font-size:25px;">警报：志愿者hxx上传的甄别照片相似度达90%</p>-->
     <!--    </div>-->
-    <alarm :isHide="isHide" :volunteer="volunteer" :similarity="similarity" @close="close"></alarm>
+    <alarm
+      :isHide="isHide"
+      :volunteer="volunteer"
+      :similarity="similarity"
+      @close="close"
+    ></alarm>
   </div>
 </template>
 <script>
+import introJs from "intro.js";
 import Stomp from "stompjs";
 // ---jq:在sysconstant.js配置文件中配置mqtt的服务端地址，账号等信息
 import {
@@ -357,8 +383,24 @@ export default {
     };
   },
   methods: {
+    guide4() {
+      introJs()
+        .setOptions({
+          nextLabel: "下一个", // 下一个按钮文字
+          prevLabel: "上一个", // 上一个按钮文字
+          skipLabel: "跳过", // 跳过按钮文字
+          doneLabel: "立即体验", // 完成按钮文字
+          hidePrev: true, // 在第一步中是否隐藏上一个按钮
+          hideNext: true, // 在最后一步中是否隐藏下一个按钮
+          exitOnOverlayClick: false, // 点击叠加层时是否退出介绍
+          showStepNumbers: false, // 是否显示红色圆圈的步骤编号
+          disableInteraction: true, // 是否禁用与突出显示的框内的元素的交互，就是禁止点击
+          showBullets: false, // 是否显示面板指示点
+        })
+        .start();
+    },
     close() {
-      this.isHide = true
+      this.isHide = true;
     },
     logout() {
       // window.sessionStorage.clear();
@@ -422,8 +464,8 @@ export default {
       this.type = JSON.parse(this.evil(frame.body).replace("/\\", "")).type;
 
       if (this.type === "EMERGENCY_NOTICE") {
-        this.volunteer = this.news.volunteer
-        this.similarity = Math.ceil(this.news.score)
+        this.volunteer = this.news.volunteer;
+        this.similarity = Math.ceil(this.news.score);
         this.isHide = false;
       } else {
         console.log(this.type);
@@ -593,9 +635,16 @@ export default {
 
     const oScript = document.createElement("script");
     oScript.type = "text/javascript";
+
     oScript.src =
       "https://widget.qweather.net/simple/static/js/he-simple-common.js?v=2.0";
     document.body.appendChild(oScript);
+  },
+  mounted() {
+    if (window.new4 === "") {
+      this.guide4();
+      window.new4 = "4";
+    }
   },
 };
 </script>
